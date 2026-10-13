@@ -1,23 +1,33 @@
 <?php
-/**
- * GYMSHOP - Kết nối cơ sở dữ liệu MySQL bằng PDO.
- * Cấu hình mặc định cho XAMPP (root / không mật khẩu).
- * Import gymshop.sql vào phpMyAdmin trước khi chạy.
- */
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'gymshop');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_CHARSET', 'utf8mb4');
-
-try {
-    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
-    $conn = new PDO($dsn, DB_USER, DB_PASS, array(
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   => false,
-    ));
-} catch (PDOException $e) {
-    http_response_code(500);
-    exit('Không thể kết nối CSDL. Kiểm tra model/database.php và import gymshop.sql. Chi tiết: ' . $e->getMessage());
+class DATABASE{
+    private static $dns = "mysql:host=localhost;dbname=gymshop;port=3306";
+    private static $username = "root";
+    private static $password = "";
+    private static $options = array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, 
+                                    PDO::MYSQL_ATTR_INIT_COMMAND=>"SET NAMES utf8");    
+    private static $db;
+    
+    private function __construct(){} 
+    
+    public static function connect(){
+        if(!isset(self::$db)){
+            try{
+                self::$db = new PDO(self::$dns, 
+                                    self::$username, 
+                                    self::$password, 
+                                    self::$options);
+            }
+            catch(PDOException $e){
+                $error_message = $e->getMessage();
+                echo "<p>Lỗi kết nối: $error_message</p>";
+                exit();
+            }
+        }
+        return self::$db;
+    }
+    
+    public static function disconnect(){
+        self::$db = null;
+    }
 }
+?>
