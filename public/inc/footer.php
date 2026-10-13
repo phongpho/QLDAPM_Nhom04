@@ -1,6 +1,3 @@
-<?php /* ============================================================
-   GYMSHOP - Footer + Scripts
-   ============================================================ */ ?>
 <footer class="gs-footer">
     <div class="container">
         <div class="row g-4">
