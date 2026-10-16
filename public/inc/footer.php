@@ -1,9 +1,9 @@
 <footer class="gs-footer">
     <div class="container">
         <div class="row g-4">
-            <!-- Cột 1: Về GYMSHOP -->
+            <!-- Cột 1: Về GYMBRO -->
             <div class="col-lg-3 col-md-6">
-                <a class="gs-footer__logo" href="index.php">GYM<em style="color:#767676;">SHOP</em></a>
+                <a class="gs-footer__logo" href="index.php">GYM<em style="color:#767676;">BRO</em></a>
                 <p class="gs-footer__desc">
                     Trang phục tập luyện, phụ kiện và thực phẩm bổ sung được cá nhân hóa theo chỉ số cơ thể, đồng hành cùng bạn trên hành trình chinh phục vóc dáng.
                 </p>
@@ -55,7 +55,7 @@
     <div class="gs-footer__bottom">
         <div class="container">
             <div class="gs-footer__bottom-inner">
-                <span>&copy; <?php echo date('Y'); ?> GYMSHOP. Đồ án Quản lý dự án phần mềm - Nhóm 04.</span>
+                <span>&copy; <?php echo date('Y'); ?> GYMBRO. Đồ án Quản lý dự án phần mềm - Nhóm 04.</span>
                 <span>Thiết kế lấy cảm hứng từ phong cách Gymshark.</span>
             </div>
         </div>

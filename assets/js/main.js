@@ -1,5 +1,5 @@
 /* ============================================================
-   GYMSHOP - Tương tác Frontend (Vanilla JS)
+   GYMBRO - Tương tác Frontend (Vanilla JS)
    Bootstrap 5 + SweetAlert2
    ============================================================ */
 (function () {
@@ -22,7 +22,7 @@
             '<rect x="170" y="260" width="260" height="280" rx="8"/>' +
             '<circle cx="300" cy="210" r="70"/>' +
             '</g>' +
-            '<text x="300" y="600" text-anchor="middle" font-family="Arial" font-size="32" fill="#a3a3a3" letter-spacing="6">GYMSHOP</text>' +
+            '<text x="300" y="600" text-anchor="middle" font-family="Arial" font-size="32" fill="#a3a3a3" letter-spacing="6">GYMBRO</text>' +
             '</svg>'
         );
     };
@@ -117,7 +117,7 @@
                 gsAlert({
                     icon: 'success',
                     title: 'Đăng ký thành công!',
-                    text: 'Cảm ơn bạn đã đăng ký nhận tin & voucher từ GYMSHOP.',
+                    text: 'Cảm ơn bạn đã đăng ký nhận tin & voucher từ GYMBRO.',
                     confirmButtonText: 'Đóng',
                     customClass: { popup: 'gs-swal-popup' }
                 });
