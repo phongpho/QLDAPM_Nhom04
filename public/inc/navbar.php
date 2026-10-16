@@ -1,57 +1,3 @@
-<style>
-    .gs-dropdown-menu {
-        display: block;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(12px);
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        border-radius: 10px;
-        min-width: 200px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    }
-
-    .nav-item.dropdown.show .gs-dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-    .nav-item.dropdown .dropdown-toggle::after {
-        transition: transform 0.25s ease;
-    }
-
-    .nav-item.dropdown.show .dropdown-toggle::after {
-        transform: rotate(180deg);
-    }
-
-    .gs-dropdown-item {
-        color: rgba(255, 255, 255, 0.8);
-        padding: 10px 16px;
-        border-radius: 6px;
-        transition: all 0.2s ease;
-        font-weight: 600;
-    }
-
-    .gs-dropdown-item:hover,
-    .gs-dropdown-item:focus {
-        background-color: rgba(220, 53, 69, 0.15);
-        color: #fff;
-        transform: translateX(5px);
-    }
-
-    @media (min-width: 992px) {
-        .nav-item.dropdown:hover .gs-dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .nav-item.dropdown:hover .dropdown-toggle::after {
-            transform: rotate(180deg);
-        }
-    }
-</style>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand fw-bold fs-3 text-uppercase text-white text-decoration-none d-flex align-items-center gap-2"
@@ -103,7 +49,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white px-3 d-flex align-items-center gap-1 text-nowrap" href="goy.php">
                         Gợi ý theo chỉ số
-                        <span class="badge bg-danger text-white rounded-pill ms-1" style="font-size: 0.65rem;">Cá nhân
+                        <span class="badge bg-danger text-white rounded-pill ms-1 gs-badge-sm">Cá nhân
                             hóa</span>
                     </a>
                 </li>
@@ -118,8 +64,7 @@
                 <a href="yeuthich.php" class="btn btn-outline-secondary border-0 text-white position-relative p-2"
                     aria-label="Yêu thích">
                     <i class="fa-regular fa-heart fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style="font-size: 0.65rem;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger gs-badge-sm">
                         2
                     </span>
                 </a>
@@ -132,8 +77,7 @@
                     aria-label="Giỏ hàng">
                     <i class="fa-solid fa-bag-shopping fs-5"></i>
                     <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark fw-bold"
-                        style="font-size: 0.65rem;">
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark fw-bold gs-badge-sm">
                         3
                     </span>
                 </a>

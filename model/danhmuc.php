@@ -92,5 +92,68 @@ class DANHMUC
             exit();
         }
     }
+
+    // =================================================================
+    // MODULE 3 - DANH MỤC (PHẦN BỔ SUNG)
+    // =================================================================
+
+    // Lấy danh mục theo nhóm lớn: quanao / phukien / tpbs
+    public function laydanhmuctheoloai($loai)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT * FROM danhmuc WHERE loai = :loai ORDER BY tendanhmuc ASC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":loai", $loai);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // Đếm số sản phẩm đang bán của 1 danh mục (hiển thị "X sản phẩm" trên thẻ danh mục)
+    public function laysoluongsanphamtheodanhmuc($danhmuc_id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) AS tong FROM sanpham WHERE danhmuc_id = :danhmuc_id AND trangthai = 1";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":danhmuc_id", (int) $danhmuc_id, PDO::PARAM_INT);
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+            return $row ? (int) $row['tong'] : 0;
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // Đếm số sản phẩm đang bán theo nhóm lớn (quanao / phukien / tpbs)
+    public function laysoluongsanphamtheoloai($loai, $doituong = '')
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) AS tong
+                    FROM sanpham s
+                    JOIN danhmuc d ON d.id = s.danhmuc_id
+                    WHERE s.trangthai = 1 AND d.loai = :loai";
+            if ($doituong === 'nam' || $doituong === 'nu') {
+                $sql .= " AND s.doituong IN (:doituong, 'unisex')";
+            }
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":loai", $loai);
+            if ($doituong === 'nam' || $doituong === 'nu') {
+                $cmd->bindValue(":doituong", $doituong);
+            }
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+            return $row ? (int) $row['tong'] : 0;
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
 }
 ?>
