@@ -17,21 +17,21 @@
 
 <body>
     <div class="wrapper">
-        <?php include('../inc/sidebar.php');?>
+        <?php include('../inc/sidebar.php'); ?>
 
         <div class="main">
-            <?php include('../inc/header.php');?>
+            <?php include('../inc/header.php'); ?>
 
             <main class="content">
                 <div class="container-fluid p-0">
                     <div>
                         <h4>Trang quản trị</h4>
-                        <p>SV hãy cập nhật nội dung tùy thích...</p>
+                        <p>Chào quản trị viên</p>
                     </div>
                 </div>
             </main>
 
-            <?php include('../inc/footer.php');?>
+            <?php include('../inc/footer.php'); ?>
         </div>
     </div>
 

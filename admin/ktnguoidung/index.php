@@ -25,10 +25,19 @@ switch ($action) {
     case "xldangnhap":
         $email = $_POST["txtemail"];
         $matkhau = $_POST["txtmatkhau"];
+
         if ($nd->kiemtranguoidunghople($email, $matkhau) == TRUE) {
-            $_SESSION["nguoidung"] = $nd->laythongtinnguoidung($email);
-            include("main.php");
+            $user = $nd->laythongtinnguoidung($email);
+            $_SESSION["nguoidung"] = $user;
+
+            if ($user["loai"] == 3) {
+                header("Location: ../../public/index.php");
+                exit();
+            } else {
+                include("main.php");
+            }
         } else {
+            $thongbao = "Đăng nhập không thành công!";
             include("dangnhap.php");
         }
         break;
@@ -65,7 +74,7 @@ switch ($action) {
         $matkhaucu = $_POST["txtmatkhaucu"];
         $matkhaumoi = $_POST["txtmatkhaumoi"];
         $xacnhanmatkhau = $_POST["txtxacnhanmatkhau"];
-        
+
         // kiểm tra lại mk cũ
         if ($nd->kiemtranguoidunghople($email, $matkhaucu) == FALSE) {
             $msg_error = "Mật khẩu hiện tại không chính xác!";
