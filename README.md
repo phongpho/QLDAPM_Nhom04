@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏋️‍♂️ GYMBRO - WEBSITE BÁN ĐỒ TẬP GYM & SẢN PHẨM BỔ TRỢ CÁ NHÂN HÓA
+#  GYMBRO - WEBSITE BÁN ĐỒ TẬP GYM & SẢN PHẨM BỔ TRỢ CÁ NHÂN HÓA
 
 [![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-InnoDB-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
@@ -20,7 +20,7 @@
 
 ---
 
-## 📖 Giới thiệu dự án
+##  Giới thiệu dự án
 
 **GymBro (GymShop)** là nền tảng thương mại điện tử chuyên cung cấp quần áo tập gym, phụ kiện thể thao và các dòng thực phẩm bổ sung (Whey Protein, BCAA, Creatine, Pre-workout, Vitamin...). 
 
@@ -32,47 +32,47 @@ Kết hợp cùng bảng quy tắc thể hình, website tự động đề xuấ
 
 ---
 
-## ✨ Tính năng nổi bật
+##  Tính năng nổi bật
 
 Hệ thống được thiết kế theo kiến trúc phân tầng với **7 module chức năng chính**:
 
-### 1. 🧠 Module Tính chỉ số cơ thể & Gợi ý cá nhân hóa
+### 1. Module Tính chỉ số cơ thể & Gợi ý cá nhân hóa
 * **Form tư vấn trực quan:** Nhập chiều cao, cân nặng, độ tuổi, giới tính và mục tiêu tập luyện.
 * **Đánh giá thể trạng tự động:** Tính toán chỉ số $\text{BMI}$ và phân loại thể trạng ngay lập tức.
 * **Thuật toán gợi ý thông minh:** Tự động lọc và đề xuất danh sách trang phục đúng kích cỡ (S/M/L/XL) cùng các sản phẩm bổ trợ/combo tối ưu theo mục tiêu tập luyện của từng khách hàng.
 
-### 2. 🛍️ Module Hiển thị sản phẩm
+### 2. Module Hiển thị sản phẩm
 * **Danh mục đa dạng:** Phân nhóm rõ ràng gồm Đồ tập Nam/Nữ, Phụ kiện tập luyện và Thực phẩm bổ sung; hiển thị danh sách sản phẩm mới, bán chạy, nổi bật và đang khuyến mãi.
 * **Chi tiết sản phẩm chuyên sâu:** Cung cấp đầy đủ hình ảnh, giá bán, bảng chọn Size/Màu sắc, chất liệu vải (đối với đồ tập) hoặc bảng thành phần dinh dưỡng, hướng dẫn sử dụng, hạn sử dụng (đối với thực phẩm bổ sung).
 
-### 3. 🔍 Module Tìm kiếm & Bộ lọc đa tiêu chí
+### 3. Module Tìm kiếm & Bộ lọc đa tiêu chí
 * **Tìm kiếm thông minh:** Tra cứu nhanh theo tên sản phẩm, thương hiệu hoặc từ khóa công dụng/mục tiêu tập luyện.
 * **Bộ lọc nâng cao & So sánh:** Lọc đồng thời theo khoảng giá, thương hiệu, kích cỡ (Size) và mục tiêu tập luyện; hỗ trợ đối chiếu thông số giữa các sản phẩm.
 
-### 4. 👤 Module Người dùng (Khách hàng)
+### 4. Module Người dùng (Khách hàng)
 * Đăng ký, đăng nhập, bảo mật tài khoản và quản lý sổ địa chỉ giao hàng.
 * Lưu trữ và cập nhật **Hồ sơ thể trạng cá nhân** để nhận gợi ý xuyên suốt quá trình mua sắm.
 * Theo dõi lịch sử đơn hàng theo thời gian thực và quản lý danh sách sản phẩm yêu thích (*Wishlist*).
 
-### 5. 🛒 Module Giỏ hàng & Thanh toán
+### 5. Module Giỏ hàng & Thanh toán
 * Thêm, sửa, xóa sản phẩm, tự động tính toán tổng tiền và kiểm tra tồn kho.
 * Áp dụng linh hoạt mã giảm giá (*Voucher*) và chương trình khuyến mãi.
 * Hỗ trợ thanh toán đa phương thức, tích hợp cổng thanh toán thử nghiệm (*Sandbox*).
 
-### 6. ⭐ Module Đánh giá & Phản hồi
+### 6. Module Đánh giá & Phản hồi
 * Cho phép khách hàng đã mua sản phẩm gửi đánh giá sao và nhận xét thực tế sau quá trình sử dụng, tăng tính minh bạch và hỗ trợ cộng đồng người mua.
 
-### 7. ⚙️ Module Quản trị hệ thống (Admin Dashboard)
+### 7. Module Quản trị hệ thống (Admin Dashboard)
 * **Quản lý danh mục & sản phẩm:** Thêm, sửa, xóa, phân loại sản phẩm, kiểm soát số lượng tồn kho và hạn sử dụng.
 * **Cấu hình thuật toán gợi ý:** Tùy chỉnh linh hoạt các mốc chỉ số $\text{BMI}$, bảng size và ma trận gợi ý sản phẩm theo mục tiêu.
-* **Quản lý đơn hàng & vận chuyển:** Duyệt đơn và cập nhật luồng trạng thái (*Mới $\rightarrow$ Đã xác nhận $\rightarrow$ Đã đóng gói $\rightarrow$ Đang giao $\rightarrow$ Đã giao/Hoàn thành $\rightarrow$ Đã hủy*).
+* **Quản lý đơn hàng & vận chuyển:** Duyệt đơn và cập nhật luồng trạng thái.
 * **Quản lý người dùng & phân quyền:** Quản lý tài khoản, khóa/mở khóa và phân quyền chi tiết (*Admin, Nhân viên, Khách hàng*).
 * **Tiếp thị & Nội dung:** Quản lý sự kiện khuyến mãi, mã giảm giá (*Voucher*) và bài viết tin tức/kiến thức thể hình.
 * **Báo cáo & Thống kê:** Trực quan hóa doanh thu theo ngày/tháng và thống kê danh sách sản phẩm bán chạy.
 
 ---
 
-## 🛠 Công nghệ sử dụng
+## Công nghệ sử dụng
 
 | Thành phần | Công nghệ / Công cụ |
 | :--- | :--- |
@@ -80,14 +80,14 @@ Hệ thống được thiết kế theo kiến trúc phân tầng với **7 modu
 | **Ngôn ngữ Backend** | PHP (Kết nối cơ sở dữ liệu qua **PDO** an toàn, chống SQL Injection) |
 | **Cơ sở dữ liệu** | MySQL / MariaDB (Engine: `InnoDB`, Collation: `utf8mb4_unicode_ci`) |
 | **Giao diện (Frontend)** | HTML5, CSS3, JavaScript (Thiết kế Responsive, phong cách thể thao năng động) |
-| **Môi trường phát triển** | XAMPP (Apache + MySQL), Visual Studio Code, Git/GitHub |
+| **Môi trường phát triển** | XAMPP (Apache + MySQL), Git/GitHub |
 | **Tích hợp bên thứ ba** | Cổng thanh toán trực tuyến (Môi trường *Sandbox*) |
 
 ---
 
-## 🗄 Cấu trúc Cơ sở dữ liệu (`gymshop`)
+## 🗄 Cấu trúc Cơ sở dữ liệu (`gymbro`)
 
-Cơ sở dữ liệu **`gymshop`** bao gồm **14 bảng dữ liệu (Tables)** và **2 khung nhìn thống kê (Views)** được thiết kế chuẩn hóa:
+Cơ sở dữ liệu **`gymbro`** bao gồm **14 bảng dữ liệu (Tables)** và **2 khung nhìn thống kê (Views)** được thiết kế chuẩn hóa:
 
 | STT | Tên Bảng / View | Loại | Mô tả chức năng |
 | :-: | :--- | :---: | :--- |
@@ -105,12 +105,11 @@ Cơ sở dữ liệu **`gymshop`** bao gồm **14 bảng dữ liệu (Tables)** 
 | 12 | `danhgia` | Table | Lưu điểm xếp hạng (sao) và nội dung phản hồi của khách hàng về sản phẩm |
 | 13 | `yeuthich` | Table | Danh sách sản phẩm yêu thích (*Wishlist*) của từng khách hàng |
 | 14 | `tintuc` | Table | Bài viết cẩm nang tập luyện, dinh dưỡng và tin tức sự kiện |
-| 15 | `v_doanhthu_ngay` | View | Tổng hợp và thống kê báo cáo doanh thu theo từng ngày |
-| 16 | `v_sanpham_banchay` | View | Thống kê danh sách các sản phẩm có sản lượng tiêu thụ cao nhất |
+
 
 ---
 
-## 📂 Cấu trúc thư mục dự án
+## Cấu trúc thư mục dự án
 
 ```text
 QLDAPM_Nhom04/
@@ -132,7 +131,7 @@ QLDAPM_Nhom04/
 
 ---
 
-## 🚀 Hướng dẫn cài đặt
+## Hướng dẫn cài đặt
 
 Thực hiện theo các bước dưới đây để chạy dự án trên môi trường máy cá nhân (**Localhost / XAMPP**):
 
@@ -150,7 +149,7 @@ git clone https://github.com/phongpho/QLDAPM_Nhom04.git
 ### Bước 3: Khởi tạo Cơ sở dữ liệu
 1. Mở **XAMPP Control Panel**, khởi động hai dịch vụ **Apache** và **MySQL**.
 2. Truy cập [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
-3. Tạo một cơ sở dữ liệu mới với tên **`gymshop`** (chọn bảng mã `utf8mb4_unicode_ci`).
+3. Tạo một cơ sở dữ liệu mới với tên **`gymbro`** (chọn bảng mã `utf8mb4_unicode_ci`).
 4. Chọn tab **Import** (Nhập), tải lên file `gymshop.sql` trong thư mục `database/` của dự án và nhấn **Go** để tạo toàn bộ 14 bảng và 2 view.
 
 ### Bước 4: Cấu hình kết nối Database
@@ -170,7 +169,7 @@ Mở trình duyệt web và truy cập vào đường dẫn:
 
 ---
 
-## 📈 Quy trình phát triển (WBS)
+##  Quy trình phát triển (WBS)
 
 Dự án được triển khai bài bản qua 6 giai đoạn theo Cấu trúc phân chia công việc (Work Breakdown Structure):
 1. **Phân tích yêu cầu:** Khảo sát các hệ thống lớn (Gymshark, Nike, MyProtein, Wheystore...), chuẩn hóa công thức $\text{BMI}$, bảng size và đặc tả thuật toán gợi ý.
@@ -182,16 +181,16 @@ Dự án được triển khai bài bản qua 6 giai đoạn theo Cấu trúc ph
 
 ---
 
-## 👥 Thành viên nhóm (Nhóm 04)
+##  Thành viên nhóm (Nhóm 04)
 
 Dự án được thực hiện bởi tập thể **Nhóm 04**:
 
 | STT | Họ và Tên | Vai trò |
 | :-: | :--- | :--- |
-| 1 | **Phó Bảo Phong** | Trưởng nhóm / Phát triển hệ thống & Quản lý phạm vi |
-| 2 | **Thái Vĩnh Nghi** | Thành viên / Phân tích thiết kế & Phát triển hệ thống |
-| 3 | **Huỳnh Minh Thuận** | Thành viên / Phân tích thiết kế & Phát triển hệ thống |
-| 4 | **Tôn Anh Quân** | Thành viên / Phân tích thiết kế & Kiểm thử hệ thống |
+| 1 | **Phó Bảo Phong** | Trưởng nhóm  |
+| 2 | **Thái Vĩnh Nghi** | Thành viên  |
+| 3 | **Huỳnh Minh Thuận** | Thành viên  |
+| 4 | **Tôn Anh Quân** | Thành viên |
 
 ---
 
