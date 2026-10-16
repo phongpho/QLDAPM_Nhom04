@@ -1,3 +1,12 @@
+<?php
+/* Truy cập trực tiếp public/main.php (không qua router): nạp router Module 3 & 6
+   để có model, session và dữ liệu sản phẩm; router sẽ nạp lại chính file này. */
+if (!isset($gsModule36)) {
+    $_REQUEST['action'] = 'macdinh';
+    require __DIR__ . '/index.php';
+    return;
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -90,39 +99,39 @@
             </div>
             <div class="gs-cat-grid">
 
-                <!-- Danh mục 1 -->
+                <!-- Danh mục 1: Đồ tập nam -->
                 <a class="gs-cat-card" href="sanpham.php?loai=quanao&doituong=nam">
                     <img class="gs-cat-card__img" src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80" alt="Đồ tập nam" loading="lazy" onerror="gsOnErrorImg(this)">
                     <div class="gs-cat-card__overlay">
                         <h3 class="gs-cat-card__title">Đồ tập nam</h3>
-                        <span class="gs-cat-card__count">5 sản phẩm</span>
+                        <span class="gs-cat-card__count"><?php echo (int) $dm36->laysoluongsanphamtheoloai('quanao', 'nam'); ?> sản phẩm</span>
                     </div>
                 </a>
 
-                <!-- Danh mục 2 -->
+                <!-- Danh mục 2: Đồ tập nữ -->
                 <a class="gs-cat-card" href="sanpham.php?loai=quanao&doituong=nu">
                     <img class="gs-cat-card__img" src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=800&q=80" alt="Đồ tập nữ" loading="lazy" onerror="gsOnErrorImg(this)">
                     <div class="gs-cat-card__overlay">
                         <h3 class="gs-cat-card__title">Đồ tập nữ</h3>
-                        <span class="gs-cat-card__count">4 sản phẩm</span>
+                        <span class="gs-cat-card__count"><?php echo (int) $dm36->laysoluongsanphamtheoloai('quanao', 'nu'); ?> sản phẩm</span>
                     </div>
                 </a>
 
-                <!-- Danh mục 3 -->
+                <!-- Danh mục 3: Thực phẩm bổ sung -->
                 <a class="gs-cat-card" href="sanpham.php?loai=tpbs">
                     <img class="gs-cat-card__img" src="https://images.unsplash.com/photo-1594882645126-14020914d58d?auto=format&fit=crop&w=800&q=80" alt="Whey & TPBS" loading="lazy" onerror="gsOnErrorImg(this)">
                     <div class="gs-cat-card__overlay">
-                        <h3 class="gs-cat-card__title">Whey & TPBS</h3>
-                        <span class="gs-cat-card__count">8 sản phẩm</span>
+                        <h3 class="gs-cat-card__title">Whey &amp; TPBS</h3>
+                        <span class="gs-cat-card__count"><?php echo (int) $dm36->laysoluongsanphamtheoloai('tpbs'); ?> sản phẩm</span>
                     </div>
                 </a>
 
-                <!-- Danh mục 4 -->
+                <!-- Danh mục 4: Phụ kiện -->
                 <a class="gs-cat-card" href="sanpham.php?loai=phukien">
                     <img class="gs-cat-card__img" src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=800&q=80" alt="Phụ kiện" loading="lazy" onerror="gsOnErrorImg(this)">
                     <div class="gs-cat-card__overlay">
                         <h3 class="gs-cat-card__title">Phụ kiện</h3>
-                        <span class="gs-cat-card__count">3 sản phẩm</span>
+                        <span class="gs-cat-card__count"><?php echo (int) $dm36->laysoluongsanphamtheoloai('phukien'); ?> sản phẩm</span>
                     </div>
                 </a>
 
@@ -130,238 +139,52 @@
         </div>
     </section>
 
-    <!-- TRENDING PRODUCTS -->
-    <section class="gs-section gs-section--grey">
-        <div class="container">
-            <div class="gs-section__head">
-                <div>
-                    <h2 class="gs-section__title">Sản phẩm bán chạy</h2>
+    <?php
+    /* Gợi ý cá nhân hóa theo chỉ số cơ thể (khối này tự ẩn với khách chưa đăng nhập) */
+    include('inc/khoi-goiy.php');
+    ?>
+
+    <?php
+    /* Các section sản phẩm bên dưới lấy dữ liệu thật từ CSDL (Module 3)
+       Gồm: Đồ tập Nam, Đồ tập Nữ, Phụ kiện, Thực phẩm bổ sung,
+             Sản phẩm mới, Bán chạy, Nổi bật, Khuyến mãi */
+    $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
+    $gsKhoi = array(
+        array('tieude' => 'Đồ tập Nam', 'mota' => 'Trang phục tập luyện nam co giãn, thoát mồ hôi nhanh', 'link' => 'sanpham.php?loai=quanao&doituong=nam', 'ds' => $sp->laysanphamtheonhom('quanao', 'nam', 4), 'nen' => ''),
+        array('tieude' => 'Đồ tập Nữ', 'mota' => 'Bộ sưu tập nữ ôm form, nâng mông, thấm hút tốt', 'link' => 'sanpham.php?loai=quanao&doituong=nu', 'ds' => $sp->laysanphamtheonhom('quanao', 'nu', 4), 'nen' => 'grey'),
+        array('tieude' => 'Phụ kiện tập luyện', 'mota' => 'Găng tay, đai lưng, bình lắc và phụ kiện hỗ trợ khác', 'link' => 'sanpham.php?loai=phukien', 'ds' => $sp->laysanphamtheonhom('phukien', '', 4), 'nen' => ''),
+        array('tieude' => 'Thực phẩm bổ sung', 'mota' => 'Whey, Creatine, hỗ trợ đốt mỡ chính hãng', 'link' => 'sanpham.php?loai=tpbs', 'ds' => $sp->laysanphamtheonhom('tpbs', '', 4), 'nen' => 'grey'),
+        array('tieude' => 'Sản phẩm mới', 'mota' => 'Những sản phẩm vừa lên kệ tại GYMBRO', 'link' => 'sanpham.php?sapxep=moi', 'ds' => $sp->laysanphammoi(4), 'nen' => ''),
+        array('tieude' => 'Sản phẩm bán chạy', 'mota' => 'Được khách hàng GYMBRO chọn mua nhiều nhất', 'link' => 'sanpham.php?sapxep=banchay', 'ds' => $sp->laysanphambanchay(4), 'nen' => 'grey'),
+        array('tieude' => 'Sản phẩm nổi bật', 'mota' => 'Danh mục sản phẩm do GYMBRO tuyển chọn', 'link' => 'sanpham.php', 'ds' => $sp->laysanphamnoibatmoi(4), 'nen' => ''),
+        array('tieude' => 'Sản phẩm khuyến mãi', 'mota' => 'Ưu đãi giảm giá sâu, số lượng có hạn', 'link' => 'sanpham.php?sapxep=giamgia', 'ds' => $sp->laysanphamkhuyenmai(4), 'nen' => 'grey')
+    );
+    ?>
+
+    <?php foreach ($gsKhoi as $khoi) : ?>
+        <section class="gs-section<?php echo ($khoi['nen'] === 'grey') ? ' gs-section--grey' : ''; ?>">
+            <div class="container">
+                <div class="gs-section__head">
+                    <div>
+                        <h2 class="gs-section__title"><?php echo htmlspecialchars($khoi['tieude']); ?></h2>
+                        <span class="gs-section__sub"><?php echo htmlspecialchars($khoi['mota']); ?></span>
+                    </div>
+                    <a class="gs-section__link" href="<?php echo htmlspecialchars($khoi['link']); ?>">
+                        Xem tất cả <i class="fa-solid fa-arrow-right-long"></i>
+                    </a>
                 </div>
-                <a class="gs-section__link" href="sanpham.php">Xem tất cả <i class="fa-solid fa-arrow-right-long"></i></a>
+                <?php if (count($khoi['ds']) === 0) : ?>
+                    <p class="text-secondary">Danh mục này đang được cập nhật sản phẩm.</p>
+                <?php else : ?>
+                    <div class="row g-4">
+                        <?php foreach ($khoi['ds'] as $card) : ?>
+                            <?php include('inc/card-sanpham.php'); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
-            <div class="row g-4">
-
-                <!-- Sản phẩm 1 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="10" data-name="Bình lắc Shaker 700ml">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=10">
-                                <img class="gs-product-card__img" src="uploads/shaker-700.jpg" alt="Bình lắc Shaker 700ml" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-23%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Bình nước & túi</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=10">Bình lắc Shaker 700ml</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">99.000đ</span>
-                                <span class="gs-price--old">129.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 2 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="12" data-name="Whey Gold Standard 5lb">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=12">
-                                <img class="gs-product-card__img" src="uploads/whey-gold.jpg" alt="Whey Gold Standard 5lb" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-10%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Whey Protein</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=12">Whey Gold Standard 5lb</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">1.790.000đ</span>
-                                <span class="gs-price--old">1.990.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 3 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="11" data-name="Whey Isolate 2lb">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=11">
-                                <img class="gs-product-card__img" src="uploads/whey-isolate.jpg" alt="Whey Isolate 2lb" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-14%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Whey Protein</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=11">Whey Isolate 2lb</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">1.250.000đ</span>
-                                <span class="gs-price--old">1.450.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 4 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="14" data-name="Creatine Monohydrate 300g">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=14">
-                                <img class="gs-product-card__img" src="uploads/creatine.jpg" alt="Creatine Monohydrate 300g" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-13%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Creatine</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=14">Creatine Monohydrate 300g</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">390.000đ</span>
-                                <span class="gs-price--old">450.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 5 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="16" data-name="L-Carnitine 3000 dạng nước">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=16">
-                                <img class="gs-product-card__img" src="uploads/l-carnitine.jpg" alt="L-Carnitine 3000 dạng nước" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-14%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Hỗ trợ đốt mỡ</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=16">L-Carnitine 3000 dạng nước</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">420.000đ</span>
-                                <span class="gs-price--old">490.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 6 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="5" data-name="Quần legging nữ cạp cao">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=5">
-                                <img class="gs-product-card__img" src="uploads/legging-caocap.jpg" alt="Quần legging nữ cạp cao" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-17%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <div class="gs-size-pills">
-                                    <button type="button" class="gs-size-pill" data-size="S">S</button>
-                                    <button type="button" class="gs-size-pill" data-size="M">M</button>
-                                    <button type="button" class="gs-size-pill" data-size="L">L</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Quần tập</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=5">Quần legging nữ cạp cao</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">399.000đ</span>
-                                <span class="gs-price--old">479.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 7 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="18" data-name="Vitamin tổng hợp Daily 90 viên">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=18">
-                                <img class="gs-product-card__img" src="uploads/vitamin.jpg" alt="Vitamin tổng hợp Daily 90 viên" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-16%</span>
-                                    <span class="badge-gs badge-gs--new">Mới</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <button type="button" class="gs-quick-add"><i class="fa-solid fa-bag-shopping"></i> Thêm nhanh</button>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Vitamin & Khoáng chất</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=18">Vitamin tổng hợp Daily 90 viên</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">320.000đ</span>
-                                <span class="gs-price--old">380.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sản phẩm 8 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="gs-product-card" data-id="4" data-name="Áo bra thể thao nữ Support">
-                        <div class="gs-product-card__media">
-                            <a class="gs-product-card__link" href="chitiet.php?id=4">
-                                <img class="gs-product-card__img" src="uploads/bra-support.jpg" alt="Áo bra thể thao nữ Support" loading="lazy" onerror="gsOnErrorImg(this)">
-                                <span class="gs-product-card__badges">
-                                    <span class="badge-gs badge-gs--sale">-19%</span>
-                                    <span class="badge-gs badge-gs--hot">Hot</span>
-                                </span>
-                            </a>
-                            <div class="gs-product-card__actions">
-                                <div class="gs-size-pills">
-                                    <button type="button" class="gs-size-pill" data-size="S">S</button>
-                                    <button type="button" class="gs-size-pill" data-size="M">M</button>
-                                    <button type="button" class="gs-size-pill" data-size="L">L</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gs-product-card__body">
-                            <div class="gs-product-card__cat">Áo tập</div>
-                            <a class="gs-product-card__name" href="chitiet.php?id=4">Áo bra thể thao nữ Support</a>
-                            <div class="gs-product-card__price">
-                                <span class="gs-price">259.000đ</span>
-                                <span class="gs-price--old">319.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
+        </section>
+    <?php endforeach; ?>
     <?php include('inc/footer.php'); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
