@@ -12,35 +12,95 @@ class NGUOIDUNG
     private $hinhanh;
     private $ngaytao;
 
-    public function getID() { return $this->id; }
-    public function setID($value) { $this->id = $value; }
+    public function getID()
+    {
+        return $this->id;
+    }
+    public function setID($value)
+    {
+        $this->id = $value;
+    }
 
-    public function getGmail() { return $this->gmail; }
-    public function setGmail($value) { $this->gmail = $value; }
+    public function getGmail()
+    {
+        return $this->gmail;
+    }
+    public function setGmail($value)
+    {
+        $this->gmail = $value;
+    }
 
-    public function getGoogle_id() { return $this->google_id; }
-    public function setGoogle_id($value) { $this->google_id = $value; }
+    public function getGoogle_id()
+    {
+        return $this->google_id;
+    }
+    public function setGoogle_id($value)
+    {
+        $this->google_id = $value;
+    }
 
-    public function getSodienthoai() { return $this->sodienthoai; }
-    public function setSodienthoai($value) { $this->sodienthoai = $value; }
+    public function getSodienthoai()
+    {
+        return $this->sodienthoai;
+    }
+    public function setSodienthoai($value)
+    {
+        $this->sodienthoai = $value;
+    }
 
-    public function getMatkhau() { return $this->matkhau; }
-    public function setMatkhau($value) { $this->matkhau = $value; }
+    public function getMatkhau()
+    {
+        return $this->matkhau;
+    }
+    public function setMatkhau($value)
+    {
+        $this->matkhau = $value;
+    }
 
-    public function getHoten() { return $this->hoten; }
-    public function setHoten($value) { $this->hoten = $value; }
+    public function getHoten()
+    {
+        return $this->hoten;
+    }
+    public function setHoten($value)
+    {
+        $this->hoten = $value;
+    }
 
-    public function getLoai() { return $this->loai; }
-    public function setLoai($value) { $this->loai = $value; }
+    public function getLoai()
+    {
+        return $this->loai;
+    }
+    public function setLoai($value)
+    {
+        $this->loai = $value;
+    }
 
-    public function getTrangthai() { return $this->trangthai; }
-    public function setTrangthai($value) { $this->trangthai = $value; }
+    public function getTrangthai()
+    {
+        return $this->trangthai;
+    }
+    public function setTrangthai($value)
+    {
+        $this->trangthai = $value;
+    }
 
-    public function getHinhanh() { return $this->hinhanh; }
-    public function setHinhanh($value) { $this->hinhanh = $value; }
+    public function getHinhanh()
+    {
+        return $this->hinhanh;
+    }
+    public function setHinhanh($value)
+    {
+        $this->hinhanh = $value;
+    }
 
-    public function getNgaytao() { return $this->ngaytao; }
-    public function setNgaytao($value) { $this->ngaytao = $value; }
+    public function getNgaytao()
+    {
+        return $this->ngaytao;
+    }
+    public function setNgaytao($value)
+    {
+        $this->ngaytao = $value;
+    }
 
     public function laydanhsachnguoidung()
     {
@@ -211,5 +271,6 @@ class NGUOIDUNG
             exit();
         }
     }
+
+    // kiểm tra đăng nhập
 }
-?>
