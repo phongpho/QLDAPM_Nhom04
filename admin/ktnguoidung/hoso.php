@@ -18,11 +18,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="text-center mb-3">
                         <?php 
                         $hinhanh = $_SESSION["nguoidung"]["hinhanh"] ?? '';
-                        // Kiểm tra nếu không có tên ảnh hoặc file thực tế không tồn tại trên ổ đĩa
-                        if (empty($hinhanh) || !file_exists("../../images/users/" . $hinhanh)) {
-                            $imgSrc = "../../images/users/user.png";
+                        if (!empty($hinhanh) && file_exists("../../assets/images/users/" . $hinhanh)) {
+                            $imgSrc = "../../assets/images/users/" . $hinhanh;
                         } else {
-                            $imgSrc = "../../images/users/" . $hinhanh;
+                            $imgSrc = "../../assets/images/users/user.png";
                         }
                         ?>
                         <img class="img-thumbnail rounded-circle" src="<?php echo $imgSrc; ?>" 

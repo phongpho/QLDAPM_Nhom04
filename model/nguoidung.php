@@ -137,18 +137,19 @@ class NGUOIDUNG
         }
     }
 
-    public function themnguoidung($email, $matkhau, $sodt, $hoten, $loai = 3)
+    public function themnguoidung($email, $matkhau, $sodt, $hoten, $loai = 3, $hinhanh = null)
     {
         $dbcon = DATABASE::connect();
         try {
-            $sql = "INSERT INTO nguoidung (gmail, matkhau, sodienthoai, hoten, loai)
-                    VALUES (:gmail, :matkhau, :sodienthoai, :hoten, :loai)";
+            $sql = "INSERT INTO nguoidung (gmail, matkhau, sodienthoai, hoten, loai, hinhanh)
+                    VALUES (:gmail, :matkhau, :sodienthoai, :hoten, :loai, :hinhanh)";
             $cmd = $dbcon->prepare($sql);
             $cmd->bindValue(":gmail", $email);
             $cmd->bindValue(":matkhau", password_hash($matkhau, PASSWORD_DEFAULT));
             $cmd->bindValue(":sodienthoai", $sodt);
             $cmd->bindValue(":hoten", $hoten);
             $cmd->bindValue(":loai", (int) $loai, PDO::PARAM_INT);
+            $cmd->bindValue(":hinhanh", $hinhanh);
             return $cmd->execute();
         } catch (PDOException $e) {
             echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";

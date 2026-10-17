@@ -40,16 +40,34 @@ switch ($action) {
     case "xlthem":
         $email = trim($_POST["txtemail"]);
         $matkhau = $_POST["txtmatkhau"];
-        $sodt = trim($_POST["txtdienthoai"]);
+        $sodt = trim($_POST["txtsodt"] ?? $_POST["txtdienthoai"] ?? "");
         $hoten = trim($_POST["txthoten"]);
         $loai = (int)$_POST["optloai"]; // 1: Admin, 2: Nhân viên, 3: Khách
+
+        // Xử lý upload hình ảnh nhân viên với tên file duy nhất (không trùng)
+        $hinhanh = null;
+        $fileUpload = $_FILES["hinhanh"] ?? $_FILES["fhinh"] ?? null;
+        if ($fileUpload && $fileUpload["error"] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($fileUpload["name"], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            if (in_array($ext, $allowed)) {
+                // Đặt tên file duy nhất kết hợp tiền tố, thời gian và uniqid
+                $hinhanh = "nv_" . time() . "_" . uniqid() . "." . $ext;
+                $uploadDir = "../../assets/images/users/";
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                move_uploaded_file($fileUpload["tmp_name"], $uploadDir . $hinhanh);
+            }
+        }
 
         // Kiểm tra trùng email hoặc số điện thoại
         if ($nd->kiemtratrung($email, $sodt)) {
             $msg_error = "Email hoặc Số điện thoại đã tồn tại trong hệ thống!";
-            include("them.php");
+            $nguoidung = $nd->laydanhsachnguoidung();
+            include("main.php");
         } else {
-            $nd->themnguoidung($email, $matkhau, $sodt, $hoten, $loai);
+            $nd->themnguoidung($email, $matkhau, $sodt, $hoten, $loai, $hinhanh);
             header("Location: index.php");
             exit();
         }

@@ -27,20 +27,21 @@
                                     <form action="index.php" method="post">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input class="form-control form-control-lg"
-                                                type="email"
-                                                name="txtemail" placeholder="Nhập email" />
+                                            <input class="form-control form-control-lg" type="email" name="txtemail" placeholder="Nhập email" />
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Mật khẩu</label>
-                                            <input class="form-control form-control-lg"
-                                                type="password"
-                                                name="txtmatkhau" placeholder="Nhập mật khẩu" />
+                                            <input class="form-control form-control-lg" type="password" name="txtmatkhau" placeholder="Nhập mật khẩu" />
                                         </div>
+                                        <?php if (!empty($thongbao)): ?>
+                                            <div class="alert alert-danger py-2" role="alert">
+                                                <i class="align-middle" data-feather="alert-circle"></i>
+                                                <?= htmlspecialchars($thongbao) ?>
+                                            </div>
+                                        <?php endif; ?>
                                         <div class="d-grid gap-2 my-3">
                                             <input type="hidden" name="action" value="xldangnhap">
-                                            <input type="submit" class="btn btn-lg btn-primary"
-                                                value="Đăng nhập">
+                                            <input type="submit" class="btn btn-lg btn-primary" value="Đăng nhập">
                                         </div>
                                     </form>
                                 </div>
