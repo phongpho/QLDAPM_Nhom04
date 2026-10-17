@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG CHI TIẾT SẢN PHẨM (Module 3)
-   Nạp từ router: index.php?action=chitiet&id=...
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'chitiet';
     require __DIR__ . '/index.php';
@@ -29,9 +25,9 @@ include(__DIR__ . '/inc/head-client.php');
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb gs-breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="sanpham.php">Sản phẩm</a></li>
+                <li class="breadcrumb-item"><a href="index.php?action=sanpham">Sản phẩm</a></li>
                 <li class="breadcrumb-item">
-                    <a href="sanpham.php?loai=<?php echo urlencode($sanpham['loai']); ?>"><?php echo htmlspecialchars($danhmucCha); ?></a>
+                    <a href="index.php?action=sanpham&loai=<?php echo urlencode($sanpham['loai']); ?>"><?php echo htmlspecialchars($danhmucCha); ?></a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($sanpham['tensanpham']); ?></li>
             </ol>
@@ -43,7 +39,6 @@ include(__DIR__ . '/inc/head-client.php');
     <div class="container">
         <div class="row g-5">
 
-            <!-- ===== Hình ảnh ===== -->
             <div class="col-12 col-lg-5">
                 <div class="gs-detail__media">
                     <img class="gs-detail__img" src="uploads/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>"
@@ -54,7 +49,6 @@ include(__DIR__ . '/inc/head-client.php');
                 </div>
             </div>
 
-            <!-- ===== Thông tin & chọn size ===== -->
             <div class="col-12 col-lg-7">
                 <span class="gs-detail__cat"><?php echo htmlspecialchars($danhmucCha); ?></span>
                 <h1 class="gs-detail__title"><?php echo htmlspecialchars($sanpham['tensanpham']); ?></h1>
@@ -89,7 +83,6 @@ include(__DIR__ . '/inc/head-client.php');
                     <?php endif; ?>
                 </p>
 
-                <!-- Form thêm vào giỏ hàng (chọn size + màu sắc) -->
                 <form class="gs-form-cart gs-detail__form" method="post" action="index.php">
                     <input type="hidden" name="action" value="themvaogiohang">
                     <input type="hidden" name="sanpham_id" value="<?php echo (int) $sanpham['id']; ?>">
@@ -150,7 +143,6 @@ include(__DIR__ . '/inc/head-client.php');
             </div>
         </div>
 
-        <!-- ===== Thông tin chi tiết theo loại danh mục ===== -->
         <div class="gs-detail__info">
             <ul class="nav nav-tabs gs-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -262,7 +254,6 @@ include(__DIR__ . '/inc/head-client.php');
 </section>
 
 <?php
-/* Khối gợi ý sản phẩm/combo theo chỉ số cơ thể (chỉ hiện cho khách đã đăng nhập) */
 $gsGoiyTieude = 'Sản phẩm & combo gợi ý theo chỉ số cơ thể của bạn';
 include(__DIR__ . '/inc/khoi-goiy.php');
 ?>
@@ -274,7 +265,7 @@ include(__DIR__ . '/inc/khoi-goiy.php');
                 <div>
                     <h2 class="gs-section__title">Sản phẩm cùng danh mục</h2>
                 </div>
-                <a class="gs-section__link" href="sanpham.php?loai=<?php echo urlencode($sanpham['loai']); ?>">
+                <a class="gs-section__link" href="index.php?action=sanpham&loai=<?php echo urlencode($sanpham['loai']); ?>">
                     Xem tất cả <i class="fa-solid fa-arrow-right-long"></i>
                 </a>
             </div>

@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG KẾT QUẢ ĐẶT HÀNG (Module 6) - COD & chuyển khoản
-   Nạp từ router: index.php?action=hoantat&madonhang=...
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'hoantat';
     require __DIR__ . '/index.php';
@@ -150,7 +146,7 @@ include(__DIR__ . '/inc/head-client.php');
                             <a class="btn-gs btn-gs--light w-100" href="index.php?action=donhang">
                                 <i class="fa-solid fa-receipt"></i> Xem đơn hàng của tôi
                             </a>
-                            <a class="gs-cart__link mt-3" href="sanpham.php"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
+                            <a class="gs-cart__link mt-3" href="index.php?action=sanpham"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG THANH TOÁN (Module 6)
-   Nạp từ router: index.php?action=thanhtoan (hoặc file shim thanhtoan.php)
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'thanhtoan';
     require __DIR__ . '/index.php';
@@ -22,7 +18,7 @@ include(__DIR__ . '/inc/head-client.php');
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb gs-breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="giohang.php">Giỏ hàng</a></li>
+                <li class="breadcrumb-item"><a href="index.php?action=giohang">Giỏ hàng</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
             </ol>
         </nav>
@@ -36,7 +32,6 @@ include(__DIR__ . '/inc/head-client.php');
         <form method="post" action="index.php" class="gs-checkout">
             <input type="hidden" name="action" value="datchotdon">
             <div class="row g-4">
-                <!-- ===== Thông tin nhận hàng ===== -->
                 <div class="col-12 col-lg-7">
                     <div class="gs-checkout__box">
                         <h3 class="gs-checkout__title"><i class="fa-solid fa-truck"></i> Thông tin nhận hàng</h3>
@@ -103,7 +98,6 @@ include(__DIR__ . '/inc/head-client.php');
                         </div>
                     </div>
 
-                    <!-- ===== Phương thức thanh toán ===== -->
                     <div class="gs-checkout__box mt-4">
                         <h3 class="gs-checkout__title"><i class="fa-solid fa-hand-holding-dollar"></i> Phương thức thanh toán</h3>
 
@@ -145,7 +139,6 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
                 </div>
 
-                <!-- ===== Tóm tắt đơn hàng ===== -->
                 <div class="col-12 col-lg-5">
                     <div class="gs-cart-summary gs-checkout__summary">
                         <h3 class="gs-cart-summary__title">Đơn hàng của bạn (<?php echo count($giohang); ?> sản phẩm)</h3>
@@ -187,7 +180,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <button type="submit" class="btn-gs btn-gs--dark w-100">
                             <i class="fa-solid fa-circle-check"></i> Hoàn tất đặt hàng
                         </button>
-                        <a class="gs-cart__link mt-3" href="giohang.php"><i class="fa-solid fa-arrow-left-long"></i> Quay lại giỏ hàng</a>
+                        <a class="gs-cart__link mt-3" href="index.php?action=giohang"><i class="fa-solid fa-arrow-left-long"></i> Quay lại giỏ hàng</a>
                     </div>
                 </div>
             </div>

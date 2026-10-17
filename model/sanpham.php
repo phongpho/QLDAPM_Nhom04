@@ -86,7 +86,6 @@ class SANPHAM
     public function getNgaytao() { return $this->ngaytao; }
     public function setNgaytao($value) { $this->ngaytao = $value; }
 
-
     public function laysanpham()
     {
         $dbcon = DATABASE::connect();
@@ -103,7 +102,6 @@ class SANPHAM
         }
     }
 
-    // Lấy sản phẩm theo danh mục
     public function laysanphamtheodanhmuc($danhmuc_id)
     {
         $dbcon = DATABASE::connect();
@@ -121,7 +119,6 @@ class SANPHAM
         }
     }
 
-    // Lấy sản phẩm theo id
     public function laysanphamtheoid($id)
     {
         $dbcon = DATABASE::connect();
@@ -139,7 +136,6 @@ class SANPHAM
         }
     }
 
-    // Cập nhật lượt xem
     public function tangluotxem($id)
     {
         $dbcon = DATABASE::connect();
@@ -156,12 +152,10 @@ class SANPHAM
         }
     }
 
-    // Lấy sản phẩm nổi bật (lượt xem cao)
     public function laysanphamnoibat()
     {
         $dbcon = DATABASE::connect();
         try{
-            // Thêm điều kiện trangthai = 1 (đang bán) cho chặt chẽ với CSDL mới
             $sql = "SELECT * FROM sanpham WHERE trangthai = 1 
                     ORDER BY luotxem DESC 
                     LIMIT 3";
@@ -177,7 +171,6 @@ class SANPHAM
         }
     }
 
-    // Lấy 4 sản phẩm theo danh mục (Dùng cho trang chủ)
     public function lay4sanphamtheodanhmuc($danhmuc_id)
     {
         $dbcon = DATABASE::connect();
@@ -196,11 +189,8 @@ class SANPHAM
         }
     }
 
-    // =================================================================
-    // MODULE 3 - HIỂN THỊ SẢN PHẨM (PHẦN BỔ SUNG)
-    // =================================================================
+    
 
-    // Tách chuỗi sizes ("S,M,L,XL") thành mảng; NULL/rỗng -> mảng rỗng
     public function tachsizethanhmmang($sizes)
     {
         if ($sizes === null || trim($sizes) === '') {
@@ -216,7 +206,6 @@ class SANPHAM
         return $mang;
     }
 
-    // Điều kiện lọc dùng chung cho trang danh mục & tìm kiếm
     private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params)
     {
         $dk = " WHERE s.trangthai = 1 ";
@@ -241,8 +230,7 @@ class SANPHAM
         return $dk;
     }
 
-    // Lấy sản phẩm theo nhóm lớn (danhmuc.loai) kết hợp đối tượng
-    // Nam: doituong IN ('nam','unisex') - Nữ: IN ('nu','unisex') - Phụ kiện/TPBS: không lọc đối tượng
+     
     public function laysanphamtheonhom($loai, $doituong = '', $limit = 4)
     {
         $dbcon = DATABASE::connect();
@@ -272,7 +260,6 @@ class SANPHAM
         }
     }
 
-    // Sản phẩm mới: ngày tạo giảm dần
     public function laysanphammoi($limit = 4)
     {
         return $this->laysanphamtheodanhsach(
@@ -286,7 +273,6 @@ class SANPHAM
         );
     }
 
-    // Sản phẩm bán chạy: lượt mua giảm dần
     public function laysanphambanchay($limit = 4)
     {
         return $this->laysanphamtheodanhsach(
@@ -300,7 +286,6 @@ class SANPHAM
         );
     }
 
-    // Sản phẩm nổi bật (admin bật cờ noibat): mới nhất trước
     public function laysanphamnoibatmoi($limit = 4)
     {
         return $this->laysanphamtheodanhsach(
@@ -314,7 +299,6 @@ class SANPHAM
         );
     }
 
-    // Sản phẩm khuyến mãi: giagoc > giaban, giảm nhiều nhất trước
     public function laysanphamkhuyenmai($limit = 4)
     {
         return $this->laysanphamtheodanhsach(
@@ -328,7 +312,6 @@ class SANPHAM
         );
     }
 
-    // Chạy một câu SELECT trả về nhiều dòng (dùng nội bộ cho các hàm danh sách)
     private function laysanphamtheodanhsach($sql)
     {
         $dbcon = DATABASE::connect();
@@ -342,7 +325,6 @@ class SANPHAM
         }
     }
 
-    // Chi tiết sản phẩm: JOIN danhmuc (biết loai) + thuonghieu (tenthuonghieu)
     public function laysanphamchitiet($id)
     {
         $dbcon = DATABASE::connect();
@@ -363,7 +345,6 @@ class SANPHAM
         }
     }
 
-    // Sản phẩm cùng danh mục (trang chi tiết)
     public function laysanphamtuongtu($danhmuc_id, $tru_id = 0, $limit = 4)
     {
         $dbcon = DATABASE::connect();
@@ -386,7 +367,6 @@ class SANPHAM
         }
     }
 
-    // Trang danh mục / tìm kiếm: lọc theo loại, đối tượng, mục tiêu, từ khóa + sắp xếp + phân trang
     public function timkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $sapxep = 'moi', $limit = 12, $offset = 0)
     {
         $dbcon = DATABASE::connect();
@@ -430,7 +410,6 @@ class SANPHAM
         }
     }
 
-    // Đếm tổng số sản phẩm thỏa điều kiện lọc (phục vụ phân trang)
     public function demtimkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '')
     {
         $dbcon = DATABASE::connect();
@@ -453,7 +432,6 @@ class SANPHAM
         }
     }
 
-    // Sản phẩm gợi ý cá nhân hóa: đúng mục tiêu tập luyện + đúng giới tính + còn hàng
     public function laysanphamtheomuctieu($muctieu, $gioitinh = 'nam', $limit = 8)
     {
         $dbcon = DATABASE::connect();
@@ -478,7 +456,6 @@ class SANPHAM
         }
     }
 
-    // Gợi ý Combo theo thể trạng: 1 Đồ tập + 1 Phụ kiện + 1 TPBS phù hợp mục tiêu & giới tính
     public function laysanphamtheocombo($muctieu, $gioitinh = 'nam')
     {
         return array(
@@ -488,7 +465,6 @@ class SANPHAM
         );
     }
 
-    // Lấy 1 sản phẩm đại diện cho một nhóm lớn trong combo gợi ý
     private function laymotdientrongcombo($loai, $muctieu, $gioitinh)
     {
         $dbcon = DATABASE::connect();
@@ -516,13 +492,6 @@ class SANPHAM
         }
     }
 
-    /**
-     * Quy tắc gợi ý size từ bảng bangsize:
-     * - size_cao: chieucao >= chieucao_min AND chieucao < chieucao_max
-     * - size_nang: cannang >= cannang_min AND cannang < cannang_max
-     * - Size gợi ý = size có thutu LỚN HƠN trong 2 size trên
-     * Trả về mảng: size, thutu, size_cao, size_nang (null nếu không tra được)
-     */
     public function laysizegoiy($gioitinh, $chieucao, $cannang)
     {
         $dbcon = DATABASE::connect();
@@ -570,7 +539,6 @@ class SANPHAM
         }
     }
 
-    // Đối chiếu BMI với bảng cauhinh_bmi để lấy phân loại + lời khuyên
     public function laycauhinhbmi($bmi)
     {
         $dbcon = DATABASE::connect();
@@ -589,7 +557,6 @@ class SANPHAM
         }
     }
 
-    // Hồ sơ thể trạng của khách đang đăng nhập
     public function layhosothetrang($nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -605,7 +572,6 @@ class SANPHAM
         }
     }
 
-    // Lưu hồ sơ thể trạng (mỗi người dùng 1 dòng -> nếu có thì cập nhật)
     public function luuhosothetrang($nguoidung_id, $chieucao, $cannang, $gioitinh, $tuoi, $muctieu, $bmi)
     {
         $dbcon = DATABASE::connect();
@@ -630,7 +596,6 @@ class SANPHAM
         }
     }
 
-    // Danh sách đánh giá đang hiển thị của sản phẩm
     public function laydanhgiasanpham($sanpham_id, $limit = 10)
     {
         $dbcon = DATABASE::connect();
@@ -651,7 +616,6 @@ class SANPHAM
         }
     }
 
-    // Điểm đánh giá trung bình + số lượt đánh giá
     public function laydiemdanhgiasanpham($sanpham_id)
     {
         $dbcon = DATABASE::connect();
@@ -673,7 +637,6 @@ class SANPHAM
         }
     }
 
-    // Số lượng còn trong kho
     public function laysoluongton($sanpham_id)
     {
         $dbcon = DATABASE::connect();
@@ -690,8 +653,7 @@ class SANPHAM
         }
     }
 
-    // Trừ tồn kho + tăng lượt mua (dùng trong transaction khi đặt hàng)
-    // Trả về true nếu trừ được (kho còn đủ), false nếu không đủ hàng
+    
     public function trusoluongvatangluotmua($sanpham_id, $soluong)
     {
         $dbcon = DATABASE::connect();

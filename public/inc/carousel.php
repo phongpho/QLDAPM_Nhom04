@@ -18,8 +18,8 @@
                         Trang phục tập luyện, phụ kiện và thực phẩm bổ sung được cá nhân hóa theo chỉ số cơ thể của riêng bạn.
                     </p>
                     <div class="gs-hero__cta">
-                        <a href="sanpham.php?loai=quanao" class="btn-gs btn-gs--light">Đồ tập gym</a>
-                        <a href="sanpham.php?loai=tpbs" class="btn-gs btn-gs--outline-light">Thực phẩm bổ trợ</a>
+                        <a href="index.php?action=sanpham&loai=quanao" class="btn-gs btn-gs--light">Đồ tập gym</a>
+                        <a href="index.php?action=sanpham&loai=tpbs" class="btn-gs btn-gs--outline-light">Thực phẩm bổ trợ</a>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         Các dòng Whey Protein, Pre-Workout chính hãng nhập khẩu giúp tối đa hóa hiệu suất tập luyện.
                     </p>
                     <div class="gs-hero__cta">
-                        <a href="sanpham.php?loai=tpbs" class="btn-gs btn-gs--light">Xem thực phẩm bổ sung</a>
+                        <a href="index.php?action=sanpham&loai=tpbs" class="btn-gs btn-gs--light">Xem thực phẩm bổ sung</a>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                         Đai lưng, quấn cổ tay, bình lắc và các phụ kiện cao cấp hỗ trợ tối đa cho bài tập nặng.
                     </p>
                     <div class="gs-hero__cta">
-                        <a href="sanpham.php?loai=phukien" class="btn-gs btn-gs--light">Khám phá phụ kiện</a>
+                        <a href="index.php?action=sanpham&loai=phukien" class="btn-gs btn-gs--light">Khám phá phụ kiện</a>
                     </div>
                 </div>
             </div>

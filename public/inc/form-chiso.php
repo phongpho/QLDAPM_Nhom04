@@ -1,11 +1,4 @@
 <?php
-/* =====================================================================
-   FORM NHẬP CHỈ SỐ CƠ THỂ (dùng ở trang chủ, trang gợi ý, trang chi tiết)
-   - Khách đã đăng nhập : POST -> action=luuhoso (lưu vào hosothetrang)
-   - Khách chưa đăng nhập: GET  -> action=goy   (tính gợi ý ngay, không lưu)
-   Biến cần có: $gsGoiy (có thể null), $gsNguoidungId
-   ===================================================================== */
-/* Partial chỉ dùng trong hệ thống trang: truy cập trực tiếp thì quay về trang chủ */
 if (!isset($gsModule36)) {
     header('Location: ../index.php');
     exit();
@@ -66,7 +59,7 @@ $hoso = $cohoso ? $gsGoiy : null;
                 <?php echo ($gsNguoidungId > 0) ? 'Lưu chỉ số & xem gợi ý' : 'Tính chỉ số & gợi ý ngay'; ?>
             </button>
             <?php if ($gsNguoidungId > 0) : ?>
-                <a class="gs-chiso__link" href="goy.php">Xem trang gợi ý cá nhân hóa <i class="fa-solid fa-arrow-right-long"></i></a>
+                <a class="gs-chiso__link" href="index.php?action=goy">Xem trang gợi ý cá nhân hóa <i class="fa-solid fa-arrow-right-long"></i></a>
             <?php else : ?>
                 <span class="small text-secondary">
                     <i class="fa-solid fa-circle-info"></i>

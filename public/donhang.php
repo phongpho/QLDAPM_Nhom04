@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   DANH SÁCH ĐƠN HÀNG CỦA KHÁCH (Module 6)
-   Nạp từ router: index.php?action=donhang
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'donhang';
     require __DIR__ . '/index.php';
@@ -10,7 +6,6 @@ if (!isset($gsModule36)) {
 }
 $gsTieude = 'Đơn hàng của tôi';
 
-// Nếu view được nạp trực tiếp qua guard ở trên thì router đã tính $dsDonhang
 if (!isset($dsDonhang)) {
     $dsDonhang = array();
 }
@@ -37,7 +32,7 @@ include(__DIR__ . '/inc/head-client.php');
                 <i class="fa-solid fa-receipt"></i>
                 <h3>Bạn chưa có đơn hàng nào</h3>
                 <p>Hãy chọn sản phẩm phù hợp với mục tiêu tập luyện và đặt đơn đầu tiên nhé!</p>
-                <a class="btn-gs btn-gs--dark" href="sanpham.php">Mua sắm ngay</a>
+                <a class="btn-gs btn-gs--dark" href="index.php?action=sanpham">Mua sắm ngay</a>
             </div>
         <?php else : ?>
             <?php foreach ($dsDonhang as $od) : ?>
@@ -66,7 +61,7 @@ include(__DIR__ . '/inc/head-client.php');
                                     <img src="uploads/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
                                         alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                     <div>
-                                        <a class="gs-order__name" href="chitiet.php?id=<?php echo (int) $ct['sanpham_id']; ?>">
+                                        <a class="gs-order__name" href="index.php?action=chitiet&id=<?php echo (int) $ct['sanpham_id']; ?>">
                                             <?php echo htmlspecialchars($ct['tensanpham']); ?>
                                         </a>
                                         <span class="gs-order__meta">

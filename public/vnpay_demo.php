@@ -1,10 +1,4 @@
 <?php
-/* =====================================================================
-   CỔNG THANH TOÁN VNPAY SANDBOX - CHẾ ĐỘ MÔ PHỎNG (Module 6)
-   Dùng khi chưa cấu hình vnp_TmnCode / vnp_HashSecret thật (chạy localhost,
-   không có mạng) để luồng đặt hàng - thanh toán luôn demo được.
-   Nạp từ router: index.php?action=vnpay_demo&madonhang=...
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'vnpay_demo';
     require __DIR__ . '/index.php';
@@ -20,7 +14,7 @@ include(__DIR__ . '/inc/head-client.php');
             <div class="gs-empty">
                 <i class="fa-solid fa-circle-question"></i>
                 <h3>Không tìm thấy đơn hàng cần thanh toán</h3>
-                <a class="btn-gs btn-gs--dark" href="giohang.php">Về giỏ hàng</a>
+                <a class="btn-gs btn-gs--dark" href="index.php?action=giohang">Về giỏ hàng</a>
             </div>
         <?php else : ?>
             <div class="gs-vnpay">

@@ -24,7 +24,7 @@
                         aria-labelledby="fashionDropdown">
                         <li>
                             <a class="dropdown-item gs-dropdown-item d-flex align-items-center gap-2"
-                                href="sanpham.php?doituong=nam">
+                                href="index.php?action=sanpham&doituong=nam">
                                 <i class="fa-solid fa-mars text-danger"></i> Nam
                             </a>
                         </li>
@@ -33,21 +33,21 @@
                         </li>
                         <li>
                             <a class="dropdown-item gs-dropdown-item d-flex align-items-center gap-2"
-                                href="sanpham.php?doituong=nu">
+                                href="index.php?action=sanpham&doituong=nu">
                                 <i class="fa-solid fa-venus text-danger"></i> Nữ
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="sanpham.php?loai=phukien">Phụ
+                    <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="index.php?action=sanpham&loai=phukien">Phụ
                         kiện</a>
                 <li class="nav-item">
-                    <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="sanpham.php?loai=tpbs">Thực
+                    <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="index.php?action=sanpham&loai=tpbs">Thực
                         phẩm bổ sung</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white px-3 d-flex align-items-center gap-1 text-nowrap" href="goy.php">
+                    <a class="nav-link text-white px-3 d-flex align-items-center gap-1 text-nowrap" href="index.php?action=goy">
                         Gợi ý theo chỉ số
                         <span class="badge bg-danger text-white rounded-pill ms-1 gs-badge-sm">Cá nhân
                             hóa</span>
@@ -73,7 +73,7 @@
                     <i class="fa-regular fa-user fs-5"></i>
                 </a>
 
-                <a href="giohang.php" class="btn btn-outline-secondary border-0 text-white position-relative p-2"
+                <a href="index.php?action=giohang" class="btn btn-outline-secondary border-0 text-white position-relative p-2"
                     aria-label="Giỏ hàng">
                     <i class="fa-solid fa-bag-shopping fs-5"></i>
                     <span
@@ -97,7 +97,8 @@
                     aria-label="Đóng"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="sanpham.php" method="get">
+                <form action="index.php" method="get">
+                    <input type="hidden" name="action" value="sanpham">
                     <div class="input-group input-group-lg mb-3">
                         <input type="text" name="q" class="form-control bg-black text-white border-secondary"
                             placeholder="Tìm kiếm sản phẩm, thương hiệu, mục tiêu tập luyện..." autocomplete="off">
@@ -106,12 +107,12 @@
                 </form>
                 <div>
                     <span class="text-secondary small me-2">Gợi ý tìm kiếm:</span>
-                    <a href="sanpham.php?q=whey" class="badge bg-secondary text-decoration-none me-1">Whey Protein</a>
-                    <a href="sanpham.php?q=legging" class="badge bg-secondary text-decoration-none me-1">Legging</a>
-                    <a href="sanpham.php?q=creatine" class="badge bg-secondary text-decoration-none me-1">Creatine</a>
-                    <a href="sanpham.php?doituong=nam" class="badge bg-secondary text-decoration-none me-1">Đồ tập
+                    <a href="index.php?action=sanpham&q=whey" class="badge bg-secondary text-decoration-none me-1">Whey Protein</a>
+                    <a href="index.php?action=sanpham&q=legging" class="badge bg-secondary text-decoration-none me-1">Legging</a>
+                    <a href="index.php?action=sanpham&q=creatine" class="badge bg-secondary text-decoration-none me-1">Creatine</a>
+                    <a href="index.php?action=sanpham&doituong=nam" class="badge bg-secondary text-decoration-none me-1">Đồ tập
                         nam</a>
-                    <a href="sanpham.php?doituong=nu" class="badge bg-secondary text-decoration-none">Đồ tập nữ</a>
+                    <a href="index.php?action=sanpham&doituong=nu" class="badge bg-secondary text-decoration-none">Đồ tập nữ</a>
                 </div>
             </div>
         </div>

@@ -1,11 +1,5 @@
 <?php
-/* =====================================================================
-   MODULE 6 - ĐƠN HÀNG & THANH TOÁN (donhang, donhangct)
-   Việc tạo đơn hàng được thực hiện trong 1 PDO Transaction:
-   1. Sinh mã đơn hàng        4. Trừ tồn kho + tăng lượt mua (sanpham)
-   2. Thêm donhang            5. Tăng dasudung (voucher)
-   3. Thêm donhangct          6. Xóa giỏ hàng của khách
-   ===================================================================== */
+
 class DONHANG
 {
     private $id;
@@ -77,7 +71,6 @@ class DONHANG
     public function getGhichu() { return $this->ghichu; }
     public function setGhichu($value) { $this->ghichu = $value; }
 
-    // Tên trạng thái đơn hàng theo quy ước CSDL
     public function laytentrangthai($trangthai)
     {
         $mang = array(
@@ -91,7 +84,6 @@ class DONHANG
         return isset($mang[(int) $trangthai]) ? $mang[(int) $trangthai] : 'Không xác định';
     }
 
-    // Class badge Bootstrap tương ứng trạng thái
     public function laymautrangthai($trangthai)
     {
         $mang = array(
@@ -105,7 +97,6 @@ class DONHANG
         return isset($mang[(int) $trangthai]) ? $mang[(int) $trangthai] : 'bg-secondary';
     }
 
-    // Tên phương thức thanh toán
     public function laytenphuongthuc($phuongthuc)
     {
         $mang = array(
@@ -116,12 +107,7 @@ class DONHANG
         return isset($mang[$phuongthuc]) ? $mang[$phuongthuc] : $phuongthuc;
     }
 
-    /* ------------------------------------------------------------------
-       TẠO ĐƠN HÀNG (PDO Transaction)
-       $items: mảng các dòng giỏ hàng đã chốt (sanpham_id, size, dongia, soluong)
-       $voucher: array('id' => x, 'giamgia' => y) hoặc null
-       Trả về: array('ok', 'message', 'madonhang', 'donhang_id', 'tongtien')
-       ------------------------------------------------------------------ */
+   
     public function taidonhang($nguoidung_id, $tennguoinhan, $sdtnhan, $diachinhan, $phuongthuc_tt, $ghichu, $items, $voucher = null, $phivanchuyen = 0, $datt = 0)
     {
         if (count($items) === 0) {
@@ -147,7 +133,6 @@ class DONHANG
         try {
             $dbcon->beginTransaction();
 
-            // 2. Thêm đơn hàng
             $sql = "INSERT INTO donhang (nguoidung_id, tennguoinhan, sdtnhan, diachinhan, trangthai,
                                          phuongthuc_tt, datt, voucher_id, tamtinh, giamgia, phivanchuyen,
                                          tongtien, madonhang, ghichu)
@@ -175,7 +160,6 @@ class DONHANG
             $cmd->execute();
             $donhang_id = (int) $dbcon->lastInsertId();
 
-            // 3. Thêm chi tiết đơn hàng + 4. Trừ tồn kho, tăng lượt mua
             foreach ($items as $item) {
                 $thanhtien = (float) $item['dongia'] * (int) $item['soluong'];
 
@@ -196,14 +180,12 @@ class DONHANG
                 }
             }
 
-            // 5. Tăng lượt sử dụng voucher
             if ($voucher && isset($voucher['id']) && (int) $voucher['id'] > 0) {
                 if (!$vc->tangdasudung((int) $voucher['id'])) {
                     throw new Exception('Mã giảm giá đã hết lượt sử dụng!');
                 }
             }
 
-            // 6. Xóa giỏ hàng của khách sau khi tạo đơn
             $sqlxoa = "DELETE FROM giohang WHERE nguoidung_id = :nguoidung_id";
             $cmdxoa = $dbcon->prepare($sqlxoa);
             $cmdxoa->bindValue(":nguoidung_id", (int) $nguoidung_id, PDO::PARAM_INT);
@@ -229,7 +211,6 @@ class DONHANG
         }
     }
 
-    // Lấy đơn hàng theo id
     public function laydonhangtheoid($id)
     {
         $dbcon = DATABASE::connect();
@@ -250,7 +231,6 @@ class DONHANG
         }
     }
 
-    // Lấy đơn hàng theo mã đơn hàng (dùng cho VNPay return)
     public function laydonhangtheoma($madonhang)
     {
         $dbcon = DATABASE::connect();
@@ -267,7 +247,6 @@ class DONHANG
         }
     }
 
-    // Chi tiết các sản phẩm trong đơn hàng
     public function laychitietdonhang($donhang_id)
     {
         $dbcon = DATABASE::connect();
@@ -287,7 +266,6 @@ class DONHANG
         }
     }
 
-    // Danh sách đơn hàng của 1 khách
     public function laydanhsachdonhang($nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -307,7 +285,6 @@ class DONHANG
         }
     }
 
-    // Cập nhật cờ đã thanh toán (VNPay / chuyển khoản xác nhận)
     public function capnhatdatt($donhang_id, $datt = 1)
     {
         $dbcon = DATABASE::connect();
@@ -323,7 +300,6 @@ class DONHANG
         }
     }
 
-    // Cập nhật trạng thái đơn hàng
     public function capnhattrangthai($donhang_id, $trangthai)
     {
         $dbcon = DATABASE::connect();

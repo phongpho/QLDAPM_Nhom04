@@ -1,24 +1,12 @@
 <?php
-/* =====================================================================
-   KHỐI "GỢI Ý CÁ NHÂN HÓA CHO BẠN" (Module 3)
-   - Có hồ sơ thể trạng : hiện BMI, phân loại BMI, mục tiêu, size gợi ý,
-                          lời khuyên, danh sách sản phẩm gợi ý và combo gợi ý
-   - Chưa có hồ sơ      : hiện banner kêu gọi nhập chỉ số cơ thể
-   - Khách CHƯA đăng nhập: ẨN hoàn toàn khối này (theo yêu cầu của nhóm,
-                          khối gợi ý cá nhân hóa chỉ hiện sau khi đăng nhập)
-   Biến cần có: $gsGoiy, $gsNguoidungId, $gsND, $sp
-   Tùy chọn   : $gsGoiyTieude, $gsGoiyChiTiet (false: chỉ hiện danh sách sản phẩm)
-   ===================================================================== */
 if (!isset($gsGoiyTieude) || $gsGoiyTieude === '') {
     $gsGoiyTieude = 'Gợi ý cá nhân hóa cho bạn';
 }
 
-// Khách vãng lai không thấy khối gợi ý cá nhân hóa (chỉ hiện sau khi đăng nhập)
 if (!isset($gsNguoidungId) || $gsNguoidungId <= 0) {
     return;
 }
 
-/* Partial chỉ dùng trong hệ thống trang: truy cập trực tiếp thì quay về trang chủ */
 if (!isset($gsModule36)) {
     header('Location: ../index.php');
     exit();
@@ -49,7 +37,6 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
         </div>
 
         <?php if (!$gsGoiy) : ?>
-            <!-- ===== Chưa nhập chỉ số cơ thể: banner kêu gọi nhập ===== -->
             <div class="gs-cta-banner">
                 <div class="gs-cta-banner__text">
                     <h3>Bạn chưa nhập chỉ số cơ thể!</h3>
@@ -66,7 +53,6 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
             <?php include(__DIR__ . '/form-chiso.php'); ?>
 
         <?php else : ?>
-            <!-- ===== Đã có chỉ số: bảng tóm tắt + sản phẩm + combo gợi ý ===== -->
             <div class="gs-goiy-summary">
                 <div class="gs-goiy-summary__item">
                     <span>Chỉ số BMI</span>
@@ -137,7 +123,7 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
                             <?php $motsp = $combo[$nhom]; ?>
                             <?php if ($motsp) : ?>
                                 <div class="col-12 col-md-4">
-                                    <a class="gs-combo__item" href="chitiet.php?id=<?php echo (int) $motsp['id']; ?>">
+                                    <a class="gs-combo__item" href="index.php?action=chitiet&id=<?php echo (int) $motsp['id']; ?>">
                                         <span class="gs-combo__nhom"><?php echo htmlspecialchars($tennhom); ?></span>
                                         <img class="gs-combo__img" src="uploads/<?php echo htmlspecialchars($motsp['hinhanh']); ?>"
                                             alt="<?php echo htmlspecialchars($motsp['tensanpham']); ?>" loading="lazy" onerror="gsOnErrorImg(this)">

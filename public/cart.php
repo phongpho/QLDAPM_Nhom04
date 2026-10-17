@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG GIỎ HÀNG (Module 6)
-   Nạp từ router: index.php?action=giohang (hoặc file shim giohang.php)
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'giohang';
     require __DIR__ . '/index.php';
@@ -38,11 +34,10 @@ include(__DIR__ . '/inc/head-client.php');
                 <i class="fa-solid fa-bag-shopping"></i>
                 <h3>Giỏ hàng đang trống</h3>
                 <p>Hãy chọn cho mình sản phẩm phù hợp với mục tiêu tập luyện nhé!</p>
-                <a class="btn-gs btn-gs--dark" href="sanpham.php">Tiếp tục mua sắm</a>
+                <a class="btn-gs btn-gs--dark" href="index.php?action=sanpham">Tiếp tục mua sắm</a>
             </div>
         <?php else : ?>
             <div class="row g-4">
-                <!-- ===== Danh sách sản phẩm trong giỏ ===== -->
                 <div class="col-12 col-lg-8">
                     <div class="gs-cart">
                         <?php foreach ($giohang as $dong) : ?>
@@ -52,13 +47,13 @@ include(__DIR__ . '/inc/head-client.php');
                             $thanhtien = $giaban * (int) $dong['soluong'];
                             ?>
                             <div class="gs-cart__row">
-                                <a class="gs-cart__media" href="chitiet.php?id=<?php echo (int) $dong['sanpham_id']; ?>">
+                                <a class="gs-cart__media" href="index.php?action=chitiet&id=<?php echo (int) $dong['sanpham_id']; ?>">
                                     <img src="uploads/<?php echo htmlspecialchars($dong['hinhanh']); ?>"
                                         alt="<?php echo htmlspecialchars($dong['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                 </a>
 
                                 <div class="gs-cart__info">
-                                    <a class="gs-cart__name" href="chitiet.php?id=<?php echo (int) $dong['sanpham_id']; ?>">
+                                    <a class="gs-cart__name" href="index.php?action=chitiet&id=<?php echo (int) $dong['sanpham_id']; ?>">
                                         <?php echo htmlspecialchars($dong['tensanpham']); ?>
                                     </a>
                                     <div class="gs-cart__meta">
@@ -118,7 +113,7 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
 
                     <div class="gs-cart__actions">
-                        <a class="gs-cart__link" href="sanpham.php"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
+                        <a class="gs-cart__link" href="index.php?action=sanpham"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
                         <form method="post" action="index.php" onsubmit="return confirm('Bạn chắc chắn muốn xóa toàn bộ giỏ hàng?');">
                             <input type="hidden" name="action" value="xoatoangiohang">
                             <button type="submit" class="gs-cart__link gs-cart__link--danger">
@@ -128,7 +123,6 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
                 </div>
 
-                <!-- ===== Khung tổng kết đơn hàng ===== -->
                 <div class="col-12 col-lg-4">
                     <div class="gs-cart-summary">
                         <h3 class="gs-cart-summary__title">Tổng kết đơn hàng</h3>
@@ -204,7 +198,6 @@ include(__DIR__ . '/inc/head-client.php');
 </section>
 
 <?php if ($gh->dadangnhap() && count($goiyMuakem) > 0) : ?>
-    <!-- Gợi ý mua kèm dành riêng cho mục tiêu của khách -->
     <section class="gs-section gs-section--grey">
         <div class="container">
             <div class="gs-section__head">
@@ -214,7 +207,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <?php if ($gsGoiy) : ?>
                             Các sản phẩm phù hợp mục tiêu <?php echo htmlspecialchars(gsTenMuctieu($gsGoiy['muctieu'])); ?> mà bạn chưa có trong giỏ.
                         <?php else : ?>
-                            Nhập <a href="goy.php">chỉ số cơ thể</a> để nhận gợi ý sát với thể trạng của bạn hơn.
+                            Nhập <a href="index.php?action=goy">chỉ số cơ thể</a> để nhận gợi ý sát với thể trạng của bạn hơn.
                         <?php endif; ?>
                     </span>
                 </div>
