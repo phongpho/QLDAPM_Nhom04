@@ -10,7 +10,7 @@ if (!isset($gsModule36)) {
 $gsFlash = gsLayThongBao();
 ?>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,24 @@ $gsFlash = gsLayThongBao();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/main.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d0d0d !important;
+            color: #ffffff !important;
+        }
+        .gs-section--grey {
+            background-color: #141414 !important;
+        }
+        .gs-page-head__title, .gs-page-head__sub, .gs-section__title, .gs-section__sub {
+            color: #ffffff !important;
+        }
+        .breadcrumb-item a, .breadcrumb-item.active {
+            color: #888888 !important;
+        }
+        .gs-empty {
+            color: #888888 !important;
+        }
+    </style>
 
     <script src="../assets/js/main.js"></script>
     <?php if ($gsFlash) : ?>

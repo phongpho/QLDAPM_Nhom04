@@ -47,44 +47,98 @@
                         phẩm bổ sung</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white px-3 d-flex align-items-center gap-1 text-nowrap" href="index.php?action=goy">
+                    <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="index.php?action=goy">
                         Gợi ý theo chỉ số
-                        <span class="badge bg-danger text-white rounded-pill ms-1 gs-badge-sm">Cá nhân
-                            hóa</span>
                     </a>
                 </li>
             </ul>
 
             <div class="d-flex align-items-center gap-3 pt-3 pt-lg-0">
-                <button type="button" class="btn btn-outline-secondary border-0 text-white p-2" data-bs-toggle="modal"
-                    data-bs-target="#gsSearchModal" aria-label="Tìm kiếm">
-                    <i class="fa-solid fa-magnifying-glass fs-5"></i>
-                </button>
 
-                <a href="yeuthich.php" class="btn btn-outline-secondary border-0 text-white position-relative p-2"
-                    aria-label="Yêu thích">
-                    <i class="fa-regular fa-heart fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger gs-badge-sm">
-                        2
-                    </span>
-                </a>
+                <!-- Thanh tìm kiếm -->
+                <form action="index.php" method="get" class="m-0">
+                    <input type="hidden" name="action" value="sanpham">
+                    <div class="input-group input-group-sm">
+                        <input type="text" name="q"
+                            class="form-control text-white border-secondary"
+                            style="background-color: #1a1a1a; min-width: 200px; color: #fff !important;"
+                            placeholder="Tìm sản phẩm..."
+                            value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                        <button class="btn btn-danger px-3 d-flex align-items-center justify-content-center" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
 
-                <a href="taikhoan.php" class="btn btn-outline-secondary border-0 text-white p-2" aria-label="Tài khoản">
-                    <i class="fa-regular fa-user fs-5"></i>
-                </a>
+                <!-- Menu dropdown 3 dấu gạch ngang (Bootstrap) -->
+                <div class="dropdown gs-user-dropdown">
+                    <button class="btn btn-outline-secondary border-0 text-white p-2" type="button" id="menuNguoiDung" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" title="Menu tài khoản">
+                        <i class="fa-solid fa-bars fs-4"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary p-2" aria-labelledby="menuNguoiDung" style="min-width: 230px;">
+                        <?php if (isset($_SESSION['nguoidung'])): ?>
+                            <li class="px-3 py-2 text-white-50 small border-bottom border-secondary mb-1">
+                                Xin chào, <strong class="text-white d-block text-truncate"><?= htmlspecialchars($_SESSION['nguoidung']['hoten']) ?></strong>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="taikhoan.php">
+                                    <i class="fa-solid fa-id-card text-info"></i> Hồ sơ cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=donhang">
+                                    <i class="fa-solid fa-box text-success"></i> Đơn hàng của tôi
+                                </a>
+                            </li>
+                        <?php else: ?>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=dangnhap">
+                                    <i class="fa-solid fa-right-to-bracket text-danger"></i> Đăng nhập / Đăng ký
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
-                <a href="index.php?action=giohang" class="btn btn-outline-secondary border-0 text-white position-relative p-2"
-                    aria-label="Giỏ hàng">
-                    <i class="fa-solid fa-bag-shopping fs-5"></i>
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark fw-bold gs-badge-sm">
-                        3
-                    </span>
-                </a>
+                        <li><hr class="dropdown-divider border-secondary my-1"></li>
+
+                        <li>
+                            <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="yeuthich.php">
+                                <span><i class="fa-regular fa-heart text-danger me-2"></i> Yêu thích</span>
+                                <span class="badge rounded-pill bg-danger">2</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=giohang">
+                                <span><i class="fa-solid fa-bag-shopping text-warning me-2"></i> Giỏ hàng</span>
+                                <span class="badge rounded-pill bg-warning text-dark fw-bold">3</span>
+                            </a>
+                        </li>
+
+                        <?php if (isset($_SESSION['nguoidung'])): ?>
+                            <li><hr class="dropdown-divider border-secondary my-1"></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger d-flex align-items-center gap-2" href="index.php?action=dangxuat">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
 </nav>
+
+<style>
+    /* Hỗ trợ rê chuột (hover) trên màn hình máy tính cho menu 3 gạch */
+    @media (min-width: 992px) {
+        .gs-user-dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+    }
+</style>
 
 <div class="modal fade" id="gsSearchModal" tabindex="-1" aria-labelledby="gsSearchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
