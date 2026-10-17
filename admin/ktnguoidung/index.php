@@ -57,7 +57,7 @@ switch ($action) {
 
         if (isset($_FILES["fhinh"]) && $_FILES["fhinh"]["name"] != null) {
             $hinhanh = basename($_FILES["fhinh"]["name"]);
-            $duongdan = "../../images/users/" . $hinhanh;
+            $duongdan = "../../assets/images/users/" . $hinhanh;
             move_uploaded_file($_FILES["fhinh"]["tmp_name"], $duongdan);
         }
 

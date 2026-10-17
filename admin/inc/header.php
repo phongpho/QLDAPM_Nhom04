@@ -56,13 +56,13 @@
                                     <?php
                                     $hinhanh = $_SESSION["nguoidung"]["hinhanh"] ?? "";
 
-                                    if (empty($hinhanh) || !file_exists("../../images/users/" . $hinhanh)) {
-                                        $imgSrc = "../../images/users/user.png";
+                                    if (!empty($hinhanh) && file_exists("../../assets/images/users/" . $hinhanh)) {
+                                        $imgSrc = "../../assets/images/users/" . $hinhanh;
                                     } else {
-                                        $imgSrc = "../../images/users/" . $hinhanh;
+                                        $imgSrc = "../../assets/images/users/user.png";
                                     }
                                     ?>
-                                    <img src="<?php echo $imgSrc; ?>" class="avatar img-fluid rounded-circle" alt="<?php echo $_SESSION["nguoidung"]["hoten"]; ?>">
+                                    <img src="<?php echo $imgSrc; ?>" class="avatar img-fluid rounded-circle" alt="<?php echo htmlspecialchars($_SESSION["nguoidung"]["hoten"] ?? "Admin"); ?>">
                                 </div>
                                 <div class="col-10 ps-2">
                                     <div class="text-dark">Doraemon</div>

@@ -5,202 +5,171 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Quản lý nhân sự – GymBro Admin</title>
+    <title>Quản lý nhân sự - GymBro Admin</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="../inc/css/app.css" rel="stylesheet">
     <script src="../inc/js/app.js"></script>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <!-- Design System -->
+    <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="wrapper">
-    <?php include('../inc/sidebar.php'); ?>
+    <div class="wrapper">
+        <?php include('../inc/sidebar.php'); ?>
 
-    <div class="main">
-        <?php include('../inc/header.php'); ?>
+        <div class="main">
+            <?php include('../inc/header.php'); ?>
 
-        <main class="content">
-            <div class="container-fluid p-0">
-
-                <!-- Tiêu đề trang -->
-                <div class="mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <main class="content">
+                <div class="container-fluid p-0">
                     <div>
-                        <h1 class="h3 mb-0">Quản lý nhân sự</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-0 small">
-                                <li class="breadcrumb-item"><a href="../ktnguoidung/index.php">Trang chủ</a></li>
-                                <li class="breadcrumb-item active">Nhân sự</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <a href="index.php?action=them" class="btn btn-primary">
-                        <i class="align-middle" data-feather="user-plus"></i>
-                        Thêm nhân sự
-                    </a>
-                </div>
+                        <h4>Trang quản trị nhân sự</h4>
+                        <table class="table table-hover">
+                            <tr>
+                                <th><a class="text-decoration-none" href="?sort=hinhanh">Hình ảnh</a></th>
+                                <th><a class="text-decoration-none" href="?sort=hoten">Họ và tên</a></th>
+                                <th><a class="text-decoration-none" href="?sort=email">Email</a></th>
+                                <th><a class="text-decoration-none" href="?sort=sodienthoai">Số điện thoại</a></th>
+                                <th><a class="text-decoration-none" href="?sort=trangthai">Trạng thái</a></th>
+                            </tr>
 
-                <!-- Thống kê nhanh -->
-                <?php
-                $tongSo    = count($nguoidung);
-                $soAdmin   = count(array_filter($nguoidung, fn($u) => $u['loai'] == 1));
-                $soNhanVien = count(array_filter($nguoidung, fn($u) => $u['loai'] == 2));
-                $soKhach   = count(array_filter($nguoidung, fn($u) => $u['loai'] == 3));
-                ?>
-                <div class="row mb-3 g-3">
-                    <div class="col-6 col-md-3">
-                        <div class="card text-center py-3 border-0 shadow-sm">
-                            <div class="fs-2 fw-bold text-primary"><?= $tongSo ?></div>
-                            <div class="small text-muted">Tổng tài khoản</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card text-center py-3 border-0 shadow-sm">
-                            <div class="fs-2 fw-bold text-danger"><?= $soAdmin ?></div>
-                            <div class="small text-muted">Admin</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card text-center py-3 border-0 shadow-sm">
-                            <div class="fs-2 fw-bold text-warning"><?= $soNhanVien ?></div>
-                            <div class="small text-muted">Nhân viên</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="card text-center py-3 border-0 shadow-sm">
-                            <div class="fs-2 fw-bold text-success"><?= $soKhach ?></div>
-                            <div class="small text-muted">Khách hàng</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bảng danh sách -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-white d-flex align-items-center justify-content-between flex-wrap gap-2">
-                        <h5 class="card-title mb-0">Danh sách tài khoản</h5>
-                        <!-- Lọc nhanh -->
-                        <div class="d-flex gap-2 flex-wrap">
-                            <button class="btn btn-sm btn-outline-secondary active" onclick="filterTable('all', this)">Tất cả</button>
-                            <button class="btn btn-sm btn-outline-danger"          onclick="filterTable('1', this)">Admin</button>
-                            <button class="btn btn-sm btn-outline-warning"         onclick="filterTable('2', this)">Nhân viên</button>
-                            <button class="btn btn-sm btn-outline-success"         onclick="filterTable('3', this)">Khách hàng</button>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped mb-0 align-middle" id="tableNhanSu">
-                                <thead class="table-light">
+                            <?php foreach ($nguoidung as $nd): ?>
+                                <?php if ($nd["loai"] == 2): ?>
                                     <tr>
-                                        <th style="width:50px">#</th>
-                                        <th>Họ tên</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th style="width:130px">Vai trò</th>
-                                        <th style="width:110px">Trạng thái</th>
-                                        <th style="width:160px" class="text-center">Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php if (empty($nguoidung)): ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">Chưa có tài khoản nào.</td>
-                                    </tr>
-                                <?php else: ?>
-                                    <?php foreach ($nguoidung as $i => $u): ?>
-                                    <?php
-                                        // Badge vai trò
-                                        $loaiBadge = match((int)$u['loai']) {
-                                            1 => ['danger',  'Admin'],
-                                            2 => ['warning', 'Nhân viên'],
-                                            3 => ['success', 'Khách hàng'],
-                                            default => ['secondary', 'Không rõ'],
-                                        };
-                                        $isMe = ($u['id'] == $_SESSION['nguoidung']['id']);
-                                    ?>
-                                    <tr data-loai="<?= $u['loai'] ?>">
-                                        <td class="text-muted small"><?= $i + 1 ?></td>
-                                        <td>
-                                            <div class="fw-semibold"><?= htmlspecialchars($u['hoten']) ?></div>
-                                            <?php if ($isMe): ?>
-                                                <span class="badge bg-secondary" style="font-size:.65rem">Bạn</span>
-                                            <?php endif; ?>
+                                        <td class="d-flex justify-content-center align-items-center" style="height: 70px;">
+                                            <?php
+                                            if (!empty($nd["hinhanh"]) && file_exists("../../assets/images/users/" . $nd["hinhanh"])) {
+                                                $hinh = "../../assets/images/users/" . $nd["hinhanh"];
+                                            } else {
+                                                $hinh = "../../assets/images/users/user.png";
+                                            }
+                                            ?>
+                                            <img src="<?php echo $hinh; ?>" width="45" height="45" class="rounded-circle" style="object-fit: cover;" alt="<?php echo htmlspecialchars($nd["hoten"]); ?>">
                                         </td>
-                                        <td class="small"><?= htmlspecialchars($u['email']) ?></td>
-                                        <td class="small"><?= htmlspecialchars($u['sodienthoai']) ?></td>
-
-                                        <!-- Đổi vai trò -->
+                                        <td><?php echo $nd["hoten"]; ?></td>
+                                        <td><?php echo $nd["email"]; ?></td>
+                                        <td><?php echo $nd["sodienthoai"]; ?></td>
                                         <td>
-                                            <?php if ($isMe): ?>
-                                                <span class="badge bg-<?= $loaiBadge[0] ?>"><?= $loaiBadge[1] ?></span>
-                                            <?php else: ?>
-                                                <form method="POST" action="index.php?action=doiloai" class="d-inline">
-                                                    <input type="hidden" name="email" value="<?= htmlspecialchars($u['email']) ?>">
-                                                    <select name="loai" class="form-select form-select-sm"
-                                                            onchange="this.form.submit()" style="min-width:110px">
-                                                        <option value="1" <?= $u['loai']==1 ? 'selected':'' ?>>Admin</option>
-                                                        <option value="2" <?= $u['loai']==2 ? 'selected':'' ?>>Nhân viên</option>
-                                                        <option value="3" <?= $u['loai']==3 ? 'selected':'' ?>>Khách hàng</option>
-                                                    </select>
-                                                </form>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <!-- Trạng thái -->
-                                        <td>
-                                            <?php if ((int)$u['trangthai'] === 1): ?>
-                                                <span class="badge bg-success-subtle text-success border border-success-subtle">Hoạt động</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Bị khóa</span>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <!-- Thao tác -->
-                                        <td class="text-center">
-                                            <?php if ($isMe): ?>
-                                                <span class="text-muted small">–</span>
-                                            <?php else: ?>
-                                                <?php if ((int)$u['trangthai'] === 1): ?>
-                                                    <a href="index.php?action=khoa&id=<?= $u['id'] ?>&trangthai=0"
-                                                       class="btn btn-sm btn-outline-danger"
-                                                       title="Khóa tài khoản"
-                                                       onclick="return confirm('Bạn có chắc muốn KHÓA tài khoản này?')">
-                                                        <i data-feather="lock" style="width:14px;height:14px"></i> Khóa
-                                                    </a>
-                                                <?php else: ?>
-                                                    <a href="index.php?action=khoa&id=<?= $u['id'] ?>&trangthai=1"
-                                                       class="btn btn-sm btn-outline-success"
-                                                       title="Mở khóa tài khoản">
-                                                        <i data-feather="unlock" style="width:14px;height:14px"></i> Mở khóa
-                                                    </a>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
+                                            <?php if ($nd["trangthai"] == 1) {
+                                                echo "Kích hoạt"; ?>
+                                            <?php } else echo "Đã khóa"; ?>
                                         </td>
                                     </tr>
-                                    <?php endforeach; ?>
                                 <?php endif; ?>
-                                </tbody>
-                            </table>
+                            <?php endforeach; ?>
+                        </table>
+
+                        <button class="btn btn-primary my-3" data-bs-toggle="collapse" data-bs-target="#demo">
+                            <i class="fa fa-user-plus me-1"></i> Thêm nhân viên
+                        </button>
+
+                        <div id="demo" class="collapse <?php if (isset($msg_error)) echo 'show'; ?> card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-primary mb-3">Thêm mới nhân viên</h5>
+                                <?php if (isset($msg_error)): ?>
+                                    <div class="alert alert-danger text-center mb-3"><?= $msg_error ?></div>
+                                <?php endif; ?>
+
+                                <form method="post" action="index.php" enctype="multipart/form-data" onsubmit="return validateForm();">
+                                    <input type="hidden" name="action" value="xlthem">
+
+                                    <div class="row g-4">
+                                        <!-- Form nhập liệu (bên trái) -->
+                                        <div class="col-md-7 col-lg-8">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" id="txtemail" name="txtemail" placeholder="nhapemail@domain.com" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
+                                                <input type="password" class="form-control" id="txtmatkhau" name="txtmatkhau" placeholder="Nhập mật khẩu khởi tạo" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Số điện thoại <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="txtsodt" name="txtsodt" placeholder="Nhập số điện thoại" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Họ tên <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="txthoten" name="txthoten" placeholder="Nhập họ và tên đầy đủ" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Loại quyền <span class="text-danger">*</span></label>
+                                                <select class="form-select" name="optloai">
+                                                    <option value="2" selected>Nhân viên</option>
+                                                    <option value="1">Quản trị viên</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Hình ảnh nhân viên</label>
+                                                <input type="file" class="form-control" id="hinhanh" name="hinhanh" accept="image/*" onchange="previewImage(event)">
+                                                <small class="text-muted">Hỗ trợ các định dạng: JPG, PNG, GIF, WEBP</small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Khung xem trước ảnh (bên phải) -->
+                                        <div class="col-md-5 col-lg-4 d-flex flex-column align-items-center justify-content-center p-3 border-start text-center">
+                                            <label class="form-label fw-semibold mb-3">Xem trước hình ảnh</label>
+                                            <div class="border rounded-circle p-1 d-inline-block shadow-sm bg-light mb-2">
+                                                <img id="imgPreview" src="../../assets/images/users/user.png"
+                                                    class="rounded-circle"
+                                                    style="width: 140px; height: 140px; object-fit: cover;"
+                                                    alt="Xem trước ảnh">
+                                            </div>
+                                            <span class="text-muted small mt-2" id="fileNamePreview">Chưa chọn ảnh tải lên</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <input type="submit" class="btn btn-primary me-2 px-4" value="Thêm mới">
+                                        <a href="index.php" class="btn btn-secondary px-4">Hủy bỏ</a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+
                     </div>
-                </div><!-- /card -->
+                </div>
+            </main>
 
-            </div>
-        </main>
-
-        <?php include('../inc/footer.php'); ?>
+            <?php include('../inc/footer.php'); ?>
+        </div>
     </div>
-</div>
 
-<script>
-    // Lọc bảng theo vai trò
-    function filterTable(loai, btn) {
-        document.querySelectorAll('.d-flex.gap-2 button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    <script>
+        // Hàm xem trước hình ảnh khi người dùng chọn từ máy tính
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('imgPreview');
+            const fileNameLabel = document.getElementById('fileNamePreview');
 
-        document.querySelectorAll('#tableNhanSu tbody tr').forEach(tr => {
-            const trLoai = tr.getAttribute('data-loai');
-            tr.style.display = (loai === 'all' || trLoai === loai) ? '' : 'none';
-        });
-    }
-</script>
+            if (file) {
+                fileNameLabel.innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '../../assets/images/users/user.png';
+                fileNameLabel.innerText = 'Chưa chọn ảnh tải lên';
+            }
+        }
+
+        function validateForm() {
+            return true;
+        }
+    </script>
 </body>
+
 </html>
