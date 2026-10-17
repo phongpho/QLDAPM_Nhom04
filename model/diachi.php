@@ -1,7 +1,5 @@
 <?php
-/* =====================================================================
-   MODULE 6 - SỔ ĐỊA CHỈ GIAO HÀNG (bảng diachi)
-   ===================================================================== */
+
 class DIACHI
 {
     private $id;
@@ -29,7 +27,6 @@ class DIACHI
     public function getMacdinh() { return $this->macdinh; }
     public function setMacdinh($value) { $this->macdinh = $value; }
 
-    // Danh sách địa chỉ của khách (mặc định lên đầu)
     public function laydanhsachdiachi($nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -47,7 +44,6 @@ class DIACHI
         }
     }
 
-    // Địa chỉ mặc định (nếu có) để điền sẵn vào form thanh toán
     public function laydiachimacdinh($nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -67,7 +63,6 @@ class DIACHI
         }
     }
 
-    // Lấy 1 địa chỉ theo id (kiểm tra thuộc đúng khách hàng)
     public function laydiachitheoid($id, $nguoidung_id = 0)
     {
         $dbcon = DATABASE::connect();
@@ -91,7 +86,6 @@ class DIACHI
         }
     }
 
-    // Thêm địa chỉ mới (nếu đặt làm mặc định thì bỏ mặc định của các địa chỉ cũ)
     public function themdiachi($nguoidung_id, $tennguoinhan, $sodienthoai, $diachi, $macdinh = 0)
     {
         $dbcon = DATABASE::connect();
@@ -116,7 +110,6 @@ class DIACHI
         }
     }
 
-    // Cập nhật địa chỉ
     public function suadiachi($id, $nguoidung_id, $tennguoinhan, $sodienthoai, $diachi, $macdinh = 0)
     {
         $dbcon = DATABASE::connect();
@@ -145,7 +138,6 @@ class DIACHI
         }
     }
 
-    // Xóa địa chỉ
     public function xoadiachi($id, $nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -161,7 +153,6 @@ class DIACHI
         }
     }
 
-    // Đặt 1 địa chỉ làm mặc định
     public function datmacdinh($id, $nguoidung_id)
     {
         $dbcon = DATABASE::connect();
@@ -178,7 +169,6 @@ class DIACHI
         }
     }
 
-    // Bỏ cờ mặc định của toàn bộ địa chỉ thuộc 1 khách hàng
     private function bodiacchimacdinh($nguoidung_id)
     {
         $dbcon = DATABASE::connect();

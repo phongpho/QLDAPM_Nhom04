@@ -28,11 +28,11 @@
             <!-- Cột 3: Danh mục theo mục tiêu -->
             <div class="col-lg-3 col-md-6">
                 <h4 class="gs-footer__title">Danh mục theo mục tiêu</h4>
-                <a class="gs-footer__link" href="sanpham.php?muctieu=tangcan">Tăng cân / Tăng cơ</a>
-                <a class="gs-footer__link" href="sanpham.php?muctieu=giamcan">Giảm cân / Giảm mỡ</a>
-                <a class="gs-footer__link" href="sanpham.php?muctieu=duytri">Duy trì vóc dáng</a>
-                <a class="gs-footer__link" href="sanpham.php?loai=quanao">Đồ tập gym</a>
-                <a class="gs-footer__link" href="sanpham.php?loai=tpbs">Thực phẩm bổ sung</a>
+                <a class="gs-footer__link" href="index.php?action=sanpham&muctieu=tangcan">Tăng cân / Tăng cơ</a>
+                <a class="gs-footer__link" href="index.php?action=sanpham&muctieu=giamcan">Giảm cân / Giảm mỡ</a>
+                <a class="gs-footer__link" href="index.php?action=sanpham&muctieu=duytri">Duy trì vóc dáng</a>
+                <a class="gs-footer__link" href="index.php?action=sanpham&loai=quanao">Đồ tập gym</a>
+                <a class="gs-footer__link" href="index.php?action=sanpham&loai=tpbs">Thực phẩm bổ sung</a>
             </div>
 
             <!-- Cột 4: Đăng ký nhận tin & Voucher -->

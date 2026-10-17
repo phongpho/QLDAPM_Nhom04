@@ -800,11 +800,8 @@ img {
     }
 }
 
-/* ============================================================
-   MODULE 3 & 6 - TRANG DANH MỤC, CHI TIẾT, GIỎ HÀNG, THANH TOÁN
-   ============================================================ */
 
-/* ---------- Tiêu đề trang con + breadcrumb ---------- */
+
 .gs-page-head {
     padding: 2.5rem 0 2rem;
 }
@@ -848,7 +845,6 @@ img {
     font-weight: 700;
 }
 
-/* ---------- Bộ lọc trang danh mục ---------- */
 .gs-filter {
     background: var(--gs-white);
     border: 1px solid var(--gs-border);
@@ -916,7 +912,6 @@ img {
     color: #dc3545;
 }
 
-/* ---------- Thanh công cụ danh sách ---------- */
 .gs-toolbar {
     display: flex;
     align-items: center;
@@ -935,7 +930,6 @@ img {
     min-width: 210px;
 }
 
-/* ---------- Nút thêm vào giỏ / chọn size trên thẻ sản phẩm ---------- */
 .gs-add-btn {
     display: flex;
     align-items: center;
@@ -1015,7 +1009,6 @@ img {
     color: #dc3545;
 }
 
-/* ---------- Trạng thái rỗng ---------- */
 .gs-empty {
     background: var(--gs-white);
     border: 1px dashed var(--gs-border);
@@ -1041,7 +1034,6 @@ img {
     margin-bottom: 1.25rem;
 }
 
-/* ---------- Phân trang ---------- */
 .gs-pagination {
     margin-top: 2.5rem;
 }
@@ -1059,7 +1051,6 @@ img {
     color: #ffffff;
 }
 
-/* ---------- Khối gợi ý cá nhân hóa ---------- */
 .gs-section--goiy {
     background: #0f0f0f;
     color: #ffffff;
@@ -1144,7 +1135,6 @@ img {
     background: #ffffff;
 }
 
-/* ---------- Banner kêu gọi nhập chỉ số ---------- */
 .gs-cta-banner {
     display: flex;
     align-items: center;
@@ -1177,7 +1167,6 @@ img {
     line-height: 1;
 }
 
-/* ---------- Form nhập chỉ số cơ thể ---------- */
 .gs-card.gs-chiso {
     background: #171717;
     color: #ffffff;
@@ -1241,7 +1230,6 @@ img {
     color: #dc3545;
 }
 
-/* ---------- Khối combo gợi ý ---------- */
 .gs-combo {
     margin-top: 2.5rem;
     background: rgba(255, 255, 255, 0.05);
@@ -1351,7 +1339,6 @@ img {
     color: #ffffff;
 }
 
-/* ---------- Trang chi tiết sản phẩm ---------- */
 .gs-detail__media {
     position: relative;
     border-radius: var(--gs-radius);
@@ -1663,7 +1650,6 @@ img {
     color: #3d3d3d;
 }
 
-/* ---------- Giỏ hàng ---------- */
 .gs-cart {
     background: var(--gs-white);
     border: 1px solid var(--gs-border);
@@ -1982,7 +1968,6 @@ img {
     color: var(--gs-muted);
 }
 
-/* ---------- Thanh toán ---------- */
 .gs-checkout__box {
     background: var(--gs-white);
     border: 1px solid var(--gs-border);
@@ -2142,7 +2127,6 @@ img {
     white-space: nowrap;
 }
 
-/* ---------- Kết quả đặt hàng / VNPay ---------- */
 .gs-result {
     max-width: 1080px;
     margin: 0 auto;
@@ -2201,7 +2185,6 @@ img {
     font-size: 0.88rem;
 }
 
-/* ---------- Cổng VNPay mô phỏng ---------- */
 .gs-vnpay {
     max-width: 1000px;
     margin: 0 auto;
@@ -2300,7 +2283,6 @@ img {
     margin-top: 1rem;
 }
 
-/* ---------- Danh sách đơn hàng ---------- */
 .gs-order {
     background: var(--gs-white);
     border: 1px solid var(--gs-border);
@@ -2417,7 +2399,6 @@ img {
     color: #dc3545;
 }
 
-/* ---------- Responsive Module 3 & 6 ---------- */
 @media (max-width: 1199.98px) {
     .gs-goiy-summary {
         grid-template-columns: repeat(3, 1fr);

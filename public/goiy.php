@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG GỢI Ý THEO CHỈ SỐ CƠ THỂ (Module 3)
-   Nạp từ router: index.php?action=goy (hoặc file shim goy.php)
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'goy';
     require __DIR__ . '/index.php';

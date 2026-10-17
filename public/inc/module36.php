@@ -1,17 +1,11 @@
 <?php
-/* =====================================================================
-   HÀM DÙNG CHUNG CHO MODULE 3 (HIỂN THỊ SẢN PHẨM) & MODULE 6 (GIỎ HÀNG)
-   Được nạp 1 lần từ router public/index.php
-   ===================================================================== */
 
-// Ghi thông báo hiển thị ở lần tải trang kế tiếp (SweetAlert2)
 if (!function_exists('gsThongBao')) {
     function gsThongBao($loai, $noidung)
     {
         $_SESSION['gs_flash'] = array('loai' => $loai, 'noidung' => $noidung);
     }
 
-    // Đọc và xóa thông báo đang chờ
     function gsLayThongBao()
     {
         if (!isset($_SESSION['gs_flash'])) {
@@ -22,14 +16,12 @@ if (!function_exists('gsThongBao')) {
         return $thongbao;
     }
 
-    // Chuyển trang rồi dừng xử lý
     function gsChuyenTrang($duongdan)
     {
         header('Location: ' . $duongdan);
         exit();
     }
 
-    // Quay lại trang trước đó (an toàn: chỉ chấp nhận referer cùng tên miền)
     function gsQuayLai($macdinh = 'index.php')
     {
         if (!empty($_SERVER['HTTP_REFERER'])) {
@@ -41,7 +33,6 @@ if (!function_exists('gsThongBao')) {
         return $macdinh;
     }
 
-    // Yêu cầu gửi từ fetch()/AJAX -> trả JSON thay vì chuyển trang
     function gsLaAjax()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
@@ -55,21 +46,11 @@ if (!function_exists('gsThongBao')) {
         exit();
     }
 
-    // Định dạng tiền Việt Nam
     function gsTien($sotien)
     {
         return number_format((float) $sotien, 0, ',', '.') . 'đ';
     }
 
-    /* ------------------------------------------------------------------
-       Tính BMI + gợi ý size + sản phẩm/combo theo chỉ số cơ thể
-       - Lấy hồ sơ thể trạng của khách đang đăng nhập (nếu có)
-       - Đối chiếu bmi với bảng cauhinh_bmi -> phanloai + khuyenghe
-       - Tra bảng bangsize -> size gợi ý (thutu lớn hơn giữa size theo cao và theo nặng)
-       - Lọc sản phẩm theo muctieu (FIND_IN_SET) + gioitinh (IN + 'unisex')
-       - Ghép combo: 1 Đồ tập + 1 Phụ kiện + 1 TPBS
-       Trả về null nếu chưa đủ dữ liệu để gợi ý
-       ------------------------------------------------------------------ */
     function gsTinhGoiyChiSo($sp, $nguoidung_id, $chieucao = null, $cannang = null, $gioitinh = null, $tuoi = null, $muctieu = null)
     {
         $hoso = ($nguoidung_id > 0) ? $sp->layhosothetrang($nguoidung_id) : null;
@@ -119,7 +100,6 @@ if (!function_exists('gsThongBao')) {
         );
     }
 
-    // BMI = cân nặng / (chiều cao/100)^2 (làm tròn 1 chữ số thập phân)
     function gsTinhBmi($chieucao, $cannang)
     {
         $m = (float) $chieucao / 100;
@@ -129,7 +109,6 @@ if (!function_exists('gsThongBao')) {
         return round((float) $cannang / ($m * $m), 1);
     }
 
-    // Nhãn mục tiêu tập luyện
     function gsTenMuctieu($muctieu)
     {
         $mang = array(
@@ -140,7 +119,6 @@ if (!function_exists('gsThongBao')) {
         return isset($mang[$muctieu]) ? $mang[$muctieu] : $muctieu;
     }
 
-    // Nhãn nhóm lớn danh mục
     function gsTenLoai($loai)
     {
         $mang = array(
@@ -151,10 +129,6 @@ if (!function_exists('gsThongBao')) {
         return isset($mang[$loai]) ? $mang[$loai] : $loai;
     }
 
-    /* ------------------------------------------------------------------
-       Tính tiền giỏ hàng: tạm tính - giảm giá + phí vận chuyển
-       Phí vận chuyển: 30.000đ, miễn phí cho đơn từ 500.000đ
-       ------------------------------------------------------------------ */
     function gsTinhTongtienGio($gh, $vc, $voucherApdung = null)
     {
         $tamtinh = (float) $gh->tamtinh();
@@ -182,7 +156,6 @@ if (!function_exists('gsThongBao')) {
         );
     }
 
-    /* Chuyển danh sách giỏ hàng thành danh sách dòng đơn hàng để tạo donhangct */
     function gsDongdonhang($giohang)
     {
         $items = array();

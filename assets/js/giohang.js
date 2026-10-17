@@ -1,9 +1,3 @@
-/* ============================================================
-   GYMBRO - Module 3 & 6: giỏ hàng, gợi ý, thanh toán
-   - Hiển thị thông báo (flash) bằng SweetAlert2
-   - Thêm vào giỏ hàng / thêm combo bằng AJAX (có fallback khi JS lỗi)
-   - Cập nhật badge số lượng trên navbar theo giỏ hàng thật
-   ============================================================ */
 (function () {
     'use strict';
 
@@ -28,9 +22,8 @@
         });
     }
 
-    /* Badge giỏ hàng trên navbar (navbar.php giữ nguyên markup) */
     function gsCapNhatBadge(soluong) {
-        var lienket = document.querySelector('a[href="giohang.php"] .badge');
+        var lienket = document.querySelector('a[href="index.php?action=giohang"] .badge');
         if (!lienket) {
             return;
         }
@@ -45,11 +38,10 @@
         fetch('index.php?action=demgiohang', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
             .then(function (kq) { return kq.json(); })
             .then(function (duLieu) { gsCapNhatBadge(duLieu.soluong); })
-            .catch(function () { /* bỏ qua: không ảnh hưởng luồng mua hàng */ });
+            .catch(function () {});
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        /* Thông báo sau khi chuyển trang (thêm giỏ, áp voucher, đặt hàng...) */
         if (window.gsFlash && window.gsFlash.noidung) {
             var loai = (window.gsFlash.loai === 'error') ? 'error' : (window.gsFlash.loai === 'warning' ? 'warning' : 'success');
             gsToast(window.gsFlash.noidung, loai);
@@ -57,7 +49,6 @@
 
         gsLaySoLuongGio();
 
-        /* Thêm vào giỏ / thêm combo bằng AJAX, không tải lại trang */
         if (typeof fetch === 'function') {
             document.addEventListener('submit', function (su) {
                 var form = su.target;
@@ -85,7 +76,6 @@
                         }
                     })
                     .catch(function () {
-                        /* Không gọi được AJAX (JS/PHP lỗi tạm thời) -> gửi form theo cách thông thường */
                         form.submit();
                     })
                     .then(function () {
@@ -96,7 +86,6 @@
             });
         }
 
-        /* Trang thanh toán: chọn địa chỉ có sẵn -> điền nhanh vào form */
         var oDiaChi = document.querySelectorAll('input[name="id_diachi"]');
         if (oDiaChi.length > 0) {
             var ten = document.getElementById('gsTenNguoiNhan');

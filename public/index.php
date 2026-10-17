@@ -2,18 +2,6 @@
 include ('../model/database.php');
 include ('../model/sanpham.php');
 
-
-// === BẮT ĐẦU CODE MODULE 3 & 6 ===
-/* =====================================================================
-   ROUTER MODULE 3 (HIỂN THỊ SẢN PHẨM) & MODULE 6 (GIỎ HÀNG - THANH TOÁN)
-   ---------------------------------------------------------------------
-   Cách gọi: index.php?action=<action>
-   - Khi KHÔNG truyền action (hoặc action không nằm trong danh sách), file
-     này nạp main.php đúng như hành vi cũ.
-   - Các file shim cùng thư mục (sanpham.php, chitiet.php, giohang.php,
-     thanhtoan.php, goy.php) chỉ gán $_REQUEST['action'] rồi require file
-     này, nhờ vậy các link cũ trong navbar/footer vẫn hoạt động bình thường.
-   ===================================================================== */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -25,9 +13,8 @@ require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/inc/module36.php');
 
-$gsModule36 = true;   // đánh dấu view đang được nạp qua router
+$gsModule36 = true;
 
-// Khách đang đăng nhập? (đăng nhập ở admin/ktnguoidung, khách có loai = 3)
 $gsND = isset($_SESSION['nguoidung']) ? $_SESSION['nguoidung'] : null;
 $gsNguoidungId = $gsND ? (int) $gsND['id'] : 0;
 
@@ -39,19 +26,14 @@ $dh   = new DONHANG();
 $dc   = new DIACHI();
 $vnpay = new VNPAY();
 
-// Khách vãng lai vừa đăng nhập: đồng bộ giỏ hàng trong session vào bảng giohang
 $gh->dongbo();
 
-// Mã giảm giá đang áp dụng cho giỏ hàng (lưu trong session)
 $gsVoucherApdung = isset($_SESSION['gs_voucher']) ? $_SESSION['gs_voucher'] : null;
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
 switch ($action) {
 
-    /* ===================== MODULE 3: HIỂN THỊ SẢN PHẨM ===================== */
-
-    // Trang danh mục: lọc theo nhóm + đối tượng + mục tiêu, tìm kiếm, sắp xếp, phân trang
     case 'sanpham':
         $loai     = isset($_GET['loai']) ? trim($_GET['loai']) : '';
         $doituong = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
@@ -68,7 +50,6 @@ switch ($action) {
         }
         $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang);
 
-        // Số lượng sản phẩm từng nhóm để hiển thị trên bộ lọc
         $soluongnhom = array(
             'quanao'  => $dm36->laysoluongsanphamtheoloai('quanao'),
             'phukien' => $dm36->laysoluongsanphamtheoloai('phukien'),
@@ -79,7 +60,6 @@ switch ($action) {
         include('danhmuc.php');
         break;
 
-    // Trang chi tiết sản phẩm
     case 'chitiet':
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         $sanpham = ($id > 0) ? $sp->laysanphamchitiet($id) : null;
@@ -94,7 +74,6 @@ switch ($action) {
         $diemDanhgia    = $sp->laydiemdanhgiasanpham($id);
         $sanphamtuongtu = $sp->laysanphamtuongtu($sanpham['danhmuc_id'], $id, 4);
 
-        // Gợi ý theo chỉ số cơ thể + size tự chọn sẵn cho sản phẩm này
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         $sizegoiy = '';
         if ($gsGoiy && $gsGoiy['sizegoiy'] && in_array($gsGoiy['sizegoiy']['size'], $mangsizes, true)) {
@@ -104,7 +83,6 @@ switch ($action) {
         include('detail.php');
         break;
 
-    // Trang nhập chỉ số cơ thể & xem gợi ý cá nhân hóa (chỉ dành cho khách đã đăng nhập)
     case 'goy':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem gợi ý cá nhân hóa theo chỉ số cơ thể!');
@@ -120,7 +98,6 @@ switch ($action) {
         include('goiy.php');
         break;
 
-    // Lưu hồ sơ thể trạng của khách đang đăng nhập
     case 'luuhoso':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để lưu hồ sơ thể trạng!');
@@ -145,14 +122,10 @@ switch ($action) {
         gsChuyenTrang('index.php?action=goy');
         break;
 
-    /* ===================== MODULE 6: GIỎ HÀNG ===================== */
-
-    // Trang giỏ hàng
     case 'giohang':
         $giohang    = $gh->laygiohang();
         $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung);
 
-        // Gợi ý mua kèm theo mục tiêu của khách (chỉ khách đã đăng nhập mới thấy khối này)
         $gsGoiy = $gh->dadangnhap() ? gsTinhGoiyChiSo($sp, $gsNguoidungId) : null;
         $goiyMuakem = array();
         $idsanphamtronggio = $gh->laysanphamidtronggio();
@@ -171,7 +144,6 @@ switch ($action) {
         include('cart.php');
         break;
 
-    // Thêm 1 sản phẩm vào giỏ (hỗ trợ cả AJAX)
     case 'themvaogiohang':
         $sanpham_id = isset($_POST['sanpham_id']) ? (int) $_POST['sanpham_id'] : 0;
         $size       = isset($_POST['size']) ? (string) $_POST['size'] : '';
@@ -185,7 +157,6 @@ switch ($action) {
         gsChuyenTrang(gsQuayLai('index.php?action=giohang'));
         break;
 
-    // Thêm cả combo gợi ý vào giỏ (đồ tập tự nhận size gợi ý, TPBS nhận size = '')
     case 'themcombo':
         $items = array();
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
@@ -208,7 +179,7 @@ switch ($action) {
             $mangsizes = $sp->tachsizethanhmmang($sanphamcombo['sizes']);
             $size = '';
             if ($nhom === 'quanao' && $sizechon !== '' && in_array($sizechon, $mangsizes, true)) {
-                $size = $sizechon;                                  // khách tự chọn size ở trang chi tiết
+                $size = $sizechon;
             } elseif (count($mangsizes) > 0) {
                 $size = ($sizegoiy !== '' && in_array($sizegoiy, $mangsizes, true)) ? $sizegoiy : $mangsizes[0];
             }
@@ -223,7 +194,6 @@ switch ($action) {
         gsChuyenTrang(gsQuayLai('index.php?action=giohang'));
         break;
 
-    // Tăng / giảm / cập nhật số lượng 1 dòng trong giỏ
     case 'capnhatgiohang':
         $sanpham_id = isset($_POST['sanpham_id']) ? (int) $_POST['sanpham_id'] : 0;
         $size       = isset($_POST['size']) ? (string) $_POST['size'] : '';
@@ -249,7 +219,6 @@ switch ($action) {
         gsChuyenTrang('index.php?action=giohang');
         break;
 
-    // Xóa 1 dòng trong giỏ
     case 'xoagiohang':
         $sanpham_id = isset($_REQUEST['sanpham_id']) ? (int) $_REQUEST['sanpham_id'] : 0;
         $size       = isset($_REQUEST['size']) ? (string) $_REQUEST['size'] : '';
@@ -258,7 +227,6 @@ switch ($action) {
         gsChuyenTrang('index.php?action=giohang');
         break;
 
-    // Xóa toàn bộ giỏ hàng
     case 'xoatoangiohang':
         $gh->xoatatca();
         unset($_SESSION['gs_voucher']);
@@ -266,7 +234,6 @@ switch ($action) {
         gsChuyenTrang('index.php?action=giohang');
         break;
 
-    // Áp dụng mã giảm giá
     case 'apdungvoucher':
         $ma = isset($_POST['ma']) ? $_POST['ma'] : (isset($_GET['ma']) ? $_GET['ma'] : '');
         $kq = $vc->kiemTraVoucher($ma, $gh->tamtinh());
@@ -286,21 +253,16 @@ switch ($action) {
         gsChuyenTrang($quaylai);
         break;
 
-    // Bỏ mã giảm giá đang áp dụng
     case 'boapdungvoucher':
         unset($_SESSION['gs_voucher']);
         gsThongBao('success', 'Đã bỏ mã giảm giá!');
         gsChuyenTrang(gsQuayLai('index.php?action=giohang'));
         break;
 
-    // Đếm số lượng sản phẩm trong giỏ (cập nhật badge trên navbar)
     case 'demgiohang':
         gsTraJson(array('soluong' => $gh->dem()));
         break;
 
-    /* ===================== MODULE 6: THANH TOÁN ===================== */
-
-    // Trang thanh toán
     case 'thanhtoan':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để tiến hành thanh toán!');
@@ -317,7 +279,6 @@ switch ($action) {
         include('checkout.php');
         break;
 
-    // Chốt đơn: COD / chuyển khoản / VNPay
     case 'datchotdon':
     case 'datcod':
     case 'datchuyenkhoan':
@@ -336,13 +297,12 @@ switch ($action) {
         $ghichu       = isset($_POST['ghichu']) ? trim($_POST['ghichu']) : '';
         $luudiachi    = isset($_POST['luudiachi']) && (int) $_POST['luudiachi'] === 1;
 
-        // Khách chọn địa chỉ có sẵn trong sổ địa chỉ -> dùng đúng thông tin đã lưu
         $diachidachon = ($id_diachi > 0) ? $dc->laydiachitheoid($id_diachi, $gsNguoidungId) : null;
         if ($diachidachon) {
             $tennguoinhan = $diachidachon['tennguoinhan'];
             $sdtnhan      = $diachidachon['sodienthoai'];
             $diachinhan   = $diachidachon['diachi'];
-            $luudiachi    = false;   // đã có trong sổ địa chỉ nên không lưu lại
+            $luudiachi    = false;
         } else {
             $tennguoinhan = isset($_POST['tennguoinhan']) ? trim($_POST['tennguoinhan']) : '';
             $sdtnhan      = isset($_POST['sdtnhan']) ? trim($_POST['sdtnhan']) : '';
@@ -354,7 +314,6 @@ switch ($action) {
             gsChuyenTrang('index.php?action=thanhtoan');
         }
 
-        // Phương thức thanh toán: ưu tiên radio ở trang thanh toán
         $phuongthuc_tt = 'cod';
         if (isset($_POST['phuongthuc_tt']) && in_array($_POST['phuongthuc_tt'], array('cod', 'chuyenkhoan', 'vnpay'), true)) {
             $phuongthuc_tt = $_POST['phuongthuc_tt'];
@@ -364,12 +323,10 @@ switch ($action) {
             $phuongthuc_tt = 'vnpay';
         }
 
-        // Lưu địa chỉ mới vào sổ địa chỉ nếu khách chọn
         if ($luudiachi) {
             $dc->themdiachi($gsNguoidungId, $tennguoinhan, $sdtnhan, $diachinhan, 1);
         }
 
-        // Tính tiền + kiểm tra lại voucher ngay tại thời điểm chốt đơn
         $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung);
         $voucherChot = null;
         if ($gsTongtien['voucher']) {
@@ -394,24 +351,20 @@ switch ($action) {
             gsChuyenTrang('index.php?action=thanhtoan');
         }
 
-        // Đơn đã tạo: bỏ voucher đang áp dụng và dọn giỏ hàng trong session
         unset($_SESSION['gs_voucher']);
         $_SESSION['cart'] = array();
 
         if ($phuongthuc_tt === 'vnpay') {
             if ($vnpay->dacauhinh()) {
-                // Đã có tài khoản VNPay Sandbox thật -> chuyển sang cổng thanh toán VNPay
                 header('Location: ' . $vnpay->taoUrlthanhtoan($kq['madonhang'], $kq['tongtien'], 'Thanh toan don hang'));
                 exit();
             }
-            // Chưa cấu hình: dùng cổng thanh toán VNPay mô phỏng để demo luôn chạy được
             gsChuyenTrang('vnpay_demo.php?madonhang=' . urlencode($kq['madonhang']));
         }
 
         gsChuyenTrang('index.php?action=hoantat&madonhang=' . urlencode($kq['madonhang']));
         break;
 
-    // Trang kết quả đặt hàng (COD / chuyển khoản)
     case 'hoantat':
         $madonhang = isset($_GET['madonhang']) ? trim($_GET['madonhang']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
@@ -419,14 +372,12 @@ switch ($action) {
         include('hoantat.php');
         break;
 
-    // Cổng thanh toán VNPay Sandbox mô phỏng (chế độ demo nội bộ)
     case 'vnpay_demo':
         $madonhang = isset($_GET['madonhang']) ? trim($_GET['madonhang']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
         include('vnpay_demo.php');
         break;
 
-    // Khách bấm "Xác nhận thanh toán" / "Hủy giao dịch" ở cổng mô phỏng
     case 'vnpay_demo_xuly':
         $madonhang = isset($_POST['madonhang']) ? trim($_POST['madonhang']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
@@ -441,7 +392,6 @@ switch ($action) {
             $dh->capnhatdatt($donhang['id'], 1);
         }
 
-        // Trả về đúng các tham số mà VNPay gửi cho vnp_ReturnUrl
         $truyvan = http_build_query(array(
             'vnp_TxnRef'            => $donhang['madonhang'],
             'vnp_Amount'            => (int) round((float) $donhang['tongtien']) * 100,
@@ -455,7 +405,6 @@ switch ($action) {
         gsChuyenTrang('vnpay_return.php?' . $truyvan);
         break;
 
-    // Trang nhận kết quả thanh toán VNPay (vnp_ReturnUrl)
     case 'vnpay_return':
         $madonhang = isset($_GET['vnp_TxnRef']) ? trim($_GET['vnp_TxnRef']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
@@ -486,7 +435,6 @@ switch ($action) {
         include('vnpay_return.php');
         break;
 
-    // Danh sách đơn hàng của khách
     case 'donhang':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem đơn hàng của bạn!');
@@ -497,10 +445,8 @@ switch ($action) {
         break;
 
     default:
-        // Trang chủ: tính trước khối "Gợi ý cá nhân hóa" + các section sản phẩm từ CSDL
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('main.php');
         break;
 }
-// === KẾT THÚC CODE MODULE 3 & 6 ===
 ?>

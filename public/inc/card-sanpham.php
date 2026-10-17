@@ -1,16 +1,8 @@
 <?php
-/* =====================================================================
-   THẺ SẢN PHẨM dùng chung (trang chủ, danh mục, gợi ý, chi tiết)
-   Biến cần có trước khi include:
-     $card       : 1 bản ghi sản phẩm (có tendanhmuc, loai, tenthuonghieu)
-     $gsSizeGoiy : size gợi ý của khách theo chỉ số cơ thể (có thể rỗng)
-     $sp         : đối tượng SANPHAM (để tách chuỗi sizes)
-   ===================================================================== */
 if (!isset($gsSizeGoiy)) {
     $gsSizeGoiy = '';
 }
 
-/* Partial chỉ dùng trong hệ thống trang: truy cập trực tiếp thì quay về trang chủ */
 if (!isset($gsModule36)) {
     header('Location: ../index.php');
     exit();
@@ -32,7 +24,7 @@ $duongdananh = ($hinhanh !== '') ? 'uploads/' . $hinhanh : '';
     <div class="gs-product-card" data-id="<?php echo (int) $card['id']; ?>"
         data-name="<?php echo htmlspecialchars($card['tensanpham']); ?>">
         <div class="gs-product-card__media">
-            <a class="gs-product-card__link" href="chitiet.php?id=<?php echo (int) $card['id']; ?>">
+            <a class="gs-product-card__link" href="index.php?action=chitiet&id=<?php echo (int) $card['id']; ?>">
                 <img class="gs-product-card__img" src="<?php echo htmlspecialchars($duongdananh); ?>"
                     alt="<?php echo htmlspecialchars($card['tensanpham']); ?>" loading="lazy" onerror="gsOnErrorImg(this)">
                 <span class="gs-product-card__badges">
@@ -80,7 +72,7 @@ $duongdananh = ($hinhanh !== '') ? 'uploads/' . $hinhanh : '';
 
         <div class="gs-product-card__body">
             <div class="gs-product-card__cat"><?php echo htmlspecialchars($tendanhmuc); ?></div>
-            <a class="gs-product-card__name" href="chitiet.php?id=<?php echo (int) $card['id']; ?>">
+            <a class="gs-product-card__name" href="index.php?action=chitiet&id=<?php echo (int) $card['id']; ?>">
                 <?php echo htmlspecialchars($card['tensanpham']); ?>
             </a>
 
@@ -98,7 +90,7 @@ $duongdananh = ($hinhanh !== '') ? 'uploads/' . $hinhanh : '';
                 <?php endif; ?>
             </div>
 
-            <a class="gs-card-link" href="chitiet.php?id=<?php echo (int) $card['id']; ?>">
+            <a class="gs-card-link" href="index.php?action=chitiet&id=<?php echo (int) $card['id']; ?>">
                 Xem chi tiết <i class="fa-solid fa-arrow-right-long"></i>
             </a>
         </div>

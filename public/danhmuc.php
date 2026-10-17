@@ -1,8 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG DANH MỤC SẢN PHẨM (Module 3)
-   Nạp từ router: index.php?action=sanpham&loai=&doituong=&muctieu=&q=&sapxep=&trang=
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'sanpham';
     require __DIR__ . '/index.php';
@@ -10,7 +6,6 @@ if (!isset($gsModule36)) {
 }
 $gsTieude = 'Sản phẩm';
 
-// Hàm dựng URL giữ nguyên các tham số lọc hiện tại (đổi tham số truyền vào)
 $taourl = function ($thaydoi = array()) use ($loai, $doituong, $muctieu, $tukhoa, $sapxep) {
     $thamso = array(
         'action'   => 'sanpham',
@@ -50,7 +45,7 @@ include(__DIR__ . '/inc/head-client.php');
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb gs-breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="sanpham.php">Sản phẩm</a></li>
+                <li class="breadcrumb-item"><a href="index.php?action=sanpham">Sản phẩm</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($tenloc); ?></li>
             </ol>
         </nav>
@@ -63,7 +58,6 @@ include(__DIR__ . '/inc/head-client.php');
     <div class="container">
         <div class="row g-4">
 
-            <!-- ===== Bộ lọc ===== -->
             <div class="col-12 col-lg-3">
                 <div class="gs-filter">
                     <form method="get" action="index.php" class="gs-filter__search">
@@ -118,7 +112,6 @@ include(__DIR__ . '/inc/head-client.php');
                 </div>
             </div>
 
-            <!-- ===== Danh sách sản phẩm ===== -->
             <div class="col-12 col-lg-9">
                 <div class="gs-toolbar">
                     <span class="gs-toolbar__count">

@@ -1,9 +1,4 @@
 <?php
-/* =====================================================================
-   TRANG NHẬN KẾT QUẢ THANH TOÁN VNPAY (vnp_ReturnUrl) - Module 6
-   Nạp từ router index.php?action=vnpay_return hoặc truy cập trực tiếp
-   (đây cũng chính là URL đặt trong tham số vnp_ReturnUrl).
-   ===================================================================== */
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'vnpay_return';
     require __DIR__ . '/index.php';
@@ -143,7 +138,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             <a class="btn-gs btn-gs--light w-100<?php echo $thanhcong ? '' : ' mt-2'; ?>" href="index.php?action=donhang">
                                 <i class="fa-solid fa-receipt"></i> Xem đơn hàng của tôi
                             </a>
-                            <a class="gs-cart__link mt-3" href="sanpham.php"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
+                            <a class="gs-cart__link mt-3" href="index.php?action=sanpham"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
                         </div>
                     </div>
                 </div>

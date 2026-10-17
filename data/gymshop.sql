@@ -177,7 +177,7 @@ CREATE TABLE donhang (
   giamgia       DECIMAL(12,0) NOT NULL DEFAULT 0,
   phivanchuyen  DECIMAL(12,0) NOT NULL DEFAULT 0,
   tongtien      DECIMAL(12,0) NOT NULL DEFAULT 0 COMMENT '= tamtinh - giamgia + phivanchuyen',
-  
+
   doitacgiaohang VARCHAR(255),
   madonhang VARCHAR(255),
   ghichu        VARCHAR(255) DEFAULT NULL,
@@ -245,7 +245,6 @@ CREATE TABLE tintuc (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-
 CREATE TABLE cauhinh_bmi (
   id INT NOT NULL AUTO_INCREMENT,
   phanloai VARCHAR(50) NOT NULL COMMENT 'Ví dụ: Gầy, Bình thường, Thừa cân, Béo phì',
@@ -267,11 +266,6 @@ INSERT INTO nguoidung (id,gmail,sodienthoai,matkhau,hoten,loai) VALUES
 (2,'nhanvien@gymshop.vn','0900000002','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Nhân viên bán hàng',2),
 (3,'an.nguyen@gmail.com','0900000003','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','Nguyễn Văn An',3);
 
--- =====================================================================
--- DỮ LIỆU MẪU CHO MODULE 3 (HIỂN THỊ SẢN PHẨM) & MODULE 6 (GIỎ HÀNG)
--- =====================================================================
-
--- 1. Thêm Danh mục (khớp ENUM: 'quanao','phukien','tpbs')
 INSERT INTO danhmuc (id, tendanhmuc, loai) VALUES
 (1, 'Áo tập Gym', 'quanao'),
 (2, 'Quần tập Gym', 'quanao'),
@@ -280,21 +274,18 @@ INSERT INTO danhmuc (id, tendanhmuc, loai) VALUES
 (5, 'Whey Protein & Tăng cơ', 'tpbs'),
 (6, 'Pre-Workout & Đốt mỡ', 'tpbs');
 
--- 2. Thêm Thương hiệu
 INSERT INTO thuonghieu (id, tenthuonghieu, logo) VALUES
 (1, 'Gymshark', 'gymshark.png'),
 (2, 'Nike Pro', 'nike.png'),
 (3, 'Optimum Nutrition', 'on.png'),
 (4, 'MyProtein', 'myprotein.png');
 
--- 3. Thêm Cấu hình BMI
 INSERT INTO cauhinh_bmi (id, phanloai, bmi_min, bmi_max, khuyenghe) VALUES
 (1, 'Thiếu cân (Gầy)', 0.0, 18.4, 'Bạn nên ưu tiên mục tiêu Tăng cân - Tăng cơ, kết hợp tập tạ và bổ sung Whey Protein, Mass Gainer cùng Creatine.'),
 (2, 'Bình thường (Chuẩn)', 18.5, 22.9, 'Thể trạng của bạn rất tốt! Hãy duy trì lịch tập đều đặn kết hợp trang phục thoáng khí và BCAA/Whey để giữ nét cơ.'),
 (3, 'Thừa cân', 23.0, 24.9, 'Bạn nên hướng tới mục tiêu Giảm mỡ - Giữ cơ, tăng cường Cardio/HIIT với đồ tập thấm hút mồ hôi và TPBS đốt mỡ an toàn.'),
 (4, 'Béo phì', 25.0, 99.9, 'Hãy ưu tiên chế độ Giảm cân, tập luyện cường độ vừa phải kết hợp bảo vệ khớp (đai lưng, băng gối) và kiểm soát calo.');
 
--- 4. Thêm Bảng Size (Quy tắc: S=1, M=2, L=3, XL=4)
 INSERT INTO bangsize (gioitinh, size, thutu, chieucao_min, chieucao_max, cannang_min, cannang_max) VALUES
 ('nam', 'S',  1, 150.0, 165.0, 45.0, 58.0),
 ('nam', 'M',  2, 165.0, 172.0, 58.0, 68.0),
@@ -305,14 +296,12 @@ INSERT INTO bangsize (gioitinh, size, thutu, chieucao_min, chieucao_max, cannang
 ('nu',  'L',  3, 162.0, 168.0, 53.0, 60.0),
 ('nu',  'XL', 4, 168.0, 195.0, 60.0, 120.0);
 
--- 5. Thêm Hồ sơ thể trạng & Địa chỉ mẫu cho khách hàng Nguyễn Văn An (id = 3)
 INSERT INTO hosothetrang (nguoidung_id, chieucao, cannang, gioitinh, tuoi, muctieu, bmi) VALUES
 (3, 173.0, 70.0, 'nam', 22, 'tangcan', 23.4);
 
 INSERT INTO diachi (nguoidung_id, tennguoinhan, sodienthoai, diachi, macdinh) VALUES
 (3, 'Nguyễn Văn An', '0900000003', '18 Ung Văn Khiêm, P. Đông Xuyên, TP. Long Xuyên, An Giang', 1);
 
--- 6. Thêm Sản phẩm mẫu (Đồ tập Nam/Nữ, Phụ kiện, TPBS)
 INSERT INTO sanpham (id, tensanpham, mota, giagoc, giaban, soluongton, hinhanh, danhmuc_id, thuonghieu_id, doituong, sizes, mausac, chatlieu, thanhphan, muctieu, hansudung, noibat, trangthai, luotxem, luotmua) VALUES
 (1, 'Áo Thun Tập Gym Nam Gymshark Onyx Compression', 'Áo tập ôm body tôn dáng cơ bắp, co giãn 4 chiều, thoát mồ hôi cực nhanh khi tập nặng.', 450000, 350000, 50, 'ao_nam_1.jpg', 1, 1, 'nam', 'S,M,L,XL', 'Đen,Xám,Xanh Navy', '88% Polyester, 12% Elastane', NULL, 'tangcan,duytri', NULL, 1, 1, 120, 45),
 (2, 'Quần Short Tập Gym Nam 2 Lớp Nike Pro Flex', 'Quần đùi 2 lớp có túi khóa kéo đựng điện thoại, phù hợp chạy bộ, Squat và Deadlift.', 380000, 290000, 40, 'quan_nam_1.jpg', 2, 2, 'nam', 'S,M,L,XL', 'Đen,Xám Đậm', 'Polyester kết hợp Spandex thoáng khí', NULL, 'giamcan,tangcan,duytri', NULL, 1, 1, 95, 38),
@@ -322,9 +311,7 @@ INSERT INTO sanpham (id, tensanpham, mota, giagoc, giaban, soluongton, hinhanh, 
 (6, 'Whey Gold Standard 100% Isolate 5Lbs (2.27kg)', 'Hỗ trợ phục hồi và phát triển cơ bắp nhanh chóng sau tập. Pha 1 muỗng với 250ml nước lạnh uống ngay sau buổi tập.', 2150000, 1890000, 25, 'whey_gold.jpg', 5, 3, 'unisex', NULL, 'Vị Chocolate,Vị Vani,Vị Dâu', NULL, '24g Protein, 5.5g BCAA, 4g Glutamine, 1g Carb, 120 Calories / 1 muỗng (30g)', 'tangcan,duytri', '2027-12-31', 1, 1, 310, 88),
 (7, 'Lipo-6 Black Ultra Concentrate Hỗ Trợ Đốt Mỡ (60 Viên)', 'Tăng sinh nhiệt, chuyển hóa mỡ thừa thành năng lượng trong buổi tập Cardio. Dùng 1 viên trước khi tập 30 phút.', 750000, 620000, 30, 'lipo6.jpg', 6, 3, 'unisex', NULL, 'Hộp 60 viên', NULL, 'Caffeine Anhydrous 200mg, L-Carnitine, Chiết xuất trà xanh & hạt tiêu đen', 'giamcan', '2027-08-15', 1, 1, 145, 41);
 
--- 7. Thêm Voucher khuyến mãi mẫu
 INSERT INTO voucher (id, ma, mota, loai, giatri, donhang_toithieu, giamtoida, ngayhethan, soluong, dasudung, trangthai) VALUES
 (1, 'GYM10', 'Giảm 10% tối đa 100.000đ cho đơn từ 300.000đ', 'phantram', 10, 300000, 100000, '2027-12-31 23:59:59', 100, 0, 1),
 (2, 'GIAM50K', 'Giảm trực tiếp 50.000đ cho đơn từ 500.000đ', 'sotien', 50000, 500000, NULL, '2027-12-31 23:59:59', 50, 0, 1),
 (3, 'TANBINH', 'Ưu đãi 20% tối đa 150.000đ cho hội viên mới', 'phantram', 20, 200000, 150000, '2027-12-31 23:59:59', 200, 0, 1);
-

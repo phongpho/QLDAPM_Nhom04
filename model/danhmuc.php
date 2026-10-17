@@ -14,7 +14,6 @@ class DANHMUC
     public function getLoai() { return $this->loai; }
     public function setLoai($value) { $this->loai = $value; }
 
-    // Lấy tất cả danh mục
     public function laydanhmuc()
     {
         $dbcon = DATABASE::connect();
@@ -29,7 +28,6 @@ class DANHMUC
         }
     }
 
-    // Lấy danh mục theo ID
     public function laydanhmuctheoid($id)
     {
         $dbcon = DATABASE::connect();
@@ -45,7 +43,6 @@ class DANHMUC
         }
     }
 
-    // Thêm danh mục
     public function themdanhmuc($tendanhmuc, $loai)
     {
         $dbcon = DATABASE::connect();
@@ -61,7 +58,6 @@ class DANHMUC
         }
     }
 
-    // Cập nhật danh mục
     public function suadanhmuc($id, $tendanhmuc, $loai)
     {
         $dbcon = DATABASE::connect();
@@ -78,7 +74,6 @@ class DANHMUC
         }
     }
 
-    // Xóa danh mục
     public function xoadanhmuc($id)
     {
         $dbcon = DATABASE::connect();
@@ -93,11 +88,6 @@ class DANHMUC
         }
     }
 
-    // =================================================================
-    // MODULE 3 - DANH MỤC (PHẦN BỔ SUNG)
-    // =================================================================
-
-    // Lấy danh mục theo nhóm lớn: quanao / phukien / tpbs
     public function laydanhmuctheoloai($loai)
     {
         $dbcon = DATABASE::connect();
@@ -113,7 +103,6 @@ class DANHMUC
         }
     }
 
-    // Đếm số sản phẩm đang bán của 1 danh mục (hiển thị "X sản phẩm" trên thẻ danh mục)
     public function laysoluongsanphamtheodanhmuc($danhmuc_id)
     {
         $dbcon = DATABASE::connect();
@@ -130,7 +119,6 @@ class DANHMUC
         }
     }
 
-    // Đếm số sản phẩm đang bán theo nhóm lớn (quanao / phukien / tpbs)
     public function laysoluongsanphamtheoloai($loai, $doituong = '')
     {
         $dbcon = DATABASE::connect();
