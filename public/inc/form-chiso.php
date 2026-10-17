@@ -56,17 +56,11 @@ $hoso = $cohoso ? $gsGoiy : null;
         <div class="col-12 d-flex flex-wrap align-items-center gap-3">
             <button type="submit" class="btn-gs btn-gs--light">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <?php echo ($gsNguoidungId > 0) ? 'Lưu chỉ số & xem gợi ý' : 'Tính chỉ số & gợi ý ngay'; ?>
+                <?php echo ($gsNguoidungId > 0) ? 'Lưu chỉ số thể trạng' : 'Tính chỉ số ngay'; ?>
             </button>
-            <?php if ($gsNguoidungId > 0) : ?>
-                <a class="gs-chiso__link" href="index.php?action=goy">Xem trang gợi ý cá nhân hóa <i class="fa-solid fa-arrow-right-long"></i></a>
-            <?php else : ?>
-                <span class="small text-secondary">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <a class="gs-chiso__link" href="../admin/ktnguoidung/index.php?action=dangnhap">Đăng nhập</a>
-                    để lưu hồ sơ thể trạng và nhận gợi ý cho mọi lần mua sắm sau.
-                </span>
-            <?php endif; ?>
+            <a class="btn btn-outline-secondary text-white-50" href="index.php">
+                <i class="fa-solid fa-xmark me-1"></i> Bỏ qua và về trang chủ
+            </a>
         </div>
     </form>
 </div>

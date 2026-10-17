@@ -1,8 +1,8 @@
 <?php
 class DATABASE{
-    private static $dns = "mysql:host=localhost;dbname=gymshop;port=3306";
+    private static $dns = "mysql:host=127.0.0.1;dbname=gymshop;port=3306";
     private static $username = "root";
-    private static $password = "";
+    private static $password = "123456";
     private static $options = array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, 
                                     PDO::MYSQL_ATTR_INIT_COMMAND=>"SET NAMES utf8");    
     private static $db;

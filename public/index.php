@@ -11,6 +11,7 @@ require_once(__DIR__ . '/../model/voucher.php');
 require_once(__DIR__ . '/../model/donhang.php');
 require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
+require_once(__DIR__ . '/../model/nguoidung.php');
 require_once(__DIR__ . '/inc/module36.php');
 
 $gsModule36 = true;
@@ -25,6 +26,7 @@ $vc   = new VOUCHER();
 $dh   = new DONHANG();
 $dc   = new DIACHI();
 $vnpay = new VNPAY();
+$nd   = new NGUOIDUNG();
 
 $gh->dongbo();
 
@@ -33,6 +35,72 @@ $gsVoucherApdung = isset($_SESSION['gs_voucher']) ? $_SESSION['gs_voucher'] : nu
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
 switch ($action) {
+
+    case 'dangnhap':
+        if ($gsNguoidungId > 0) {
+            gsChuyenTrang('index.php');
+        }
+        include('dangnhap.php');
+        break;
+
+    case 'xldangnhap':
+        if ($gsNguoidungId > 0) {
+            gsChuyenTrang('index.php');
+        }
+        $email    = trim($_POST['txtemail'] ?? '');
+        $matkhau  = $_POST['txtmatkhau'] ?? '';
+        if ($nd->kiemtranguoidunghople($email, $matkhau)) {
+            $user = $nd->laythongtinnguoidung($email);
+            $_SESSION['nguoidung'] = $user;
+            $gh->dongbo();
+            $redirect = $_SESSION['redirect_sau_login'] ?? 'index.php';
+            unset($_SESSION['redirect_sau_login']);
+            gsThongBao('success', 'Đăng nhập thành công! Chào mừng bạn trở lại, ' . $user['hoten'] . '!');
+            gsChuyenTrang($redirect);
+        } else {
+            $thongbao_loi = 'Email hoặc mật khẩu không chính xác!';
+            $loginEmail   = $email;
+            $tabActive    = 'login';
+            include('dangnhap.php');
+        }
+        break;
+
+    case 'xldangky':
+        if ($gsNguoidungId > 0) {
+            gsChuyenTrang('index.php');
+        }
+        $hoten    = trim($_POST['txthoten'] ?? '');
+        $email    = trim($_POST['txtemail'] ?? '');
+        $sodt     = trim($_POST['txtsodt'] ?? '');
+        $matkhau  = $_POST['txtmatkhau'] ?? '';
+        $xacnhan  = $_POST['txtxacnhanmatkhau'] ?? '';
+
+        if ($matkhau !== $xacnhan) {
+            $thongbao_loi = 'Mật khẩu xác nhận không khớp!';
+            $regHoten = $hoten; $regEmail = $email; $regSodt = $sodt;
+            $tabActive = 'register';
+            include('dangnhap.php');
+        } elseif ($nd->kiemtratrung($email, $sodt)) {
+            $thongbao_loi = 'Email hoặc số điện thoại này đã được sử dụng!';
+            $regHoten = $hoten; $regEmail = $email; $regSodt = $sodt;
+            $tabActive = 'register';
+            include('dangnhap.php');
+        } else {
+            $nd->themnguoidung($email, $matkhau, $sodt, $hoten, 3);
+            $thongbao_thanhcong = 'Đăng ký thành công! Hãy đăng nhập để bắt đầu mua sắm.';
+            $tabActive = 'login';
+            $loginEmail = $email;
+            include('dangnhap.php');
+        }
+        break;
+
+    case 'dangxuat':
+        unset($_SESSION['nguoidung']);
+        unset($_SESSION['gs_cart']);
+        unset($_SESSION['gs_voucher']);
+        gsThongBao('success', 'Đã đăng xuất thành công. Hẹn gặp lại bạn!');
+        gsChuyenTrang('index.php');
+        break;
 
     case 'sanpham':
         $loai     = isset($_GET['loai']) ? trim($_GET['loai']) : '';
