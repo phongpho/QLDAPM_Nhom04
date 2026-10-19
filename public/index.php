@@ -102,6 +102,107 @@ switch ($action) {
         gsChuyenTrang('index.php');
         break;
 
+    case 'taikhoan':
+        if ($gsNguoidungId <= 0) {
+            gsThongBao('warning', 'Vui lòng đăng nhập để xem thông tin tài khoản!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        include('taikhoan.php');
+        break;
+
+    case 'capnhatthongtin':
+        if ($gsNguoidungId <= 0) {
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $hoten = trim($_POST['txthoten'] ?? '');
+        $sodt  = trim($_POST['txtsodt'] ?? '');
+        $userHientai = $nd->laythongtinnguoidung($gsND['email']);
+        $hinhanh = $userHientai['hinhanh'] ?? null;
+
+        // Xử lý upload ảnh đại diện mới
+        if (isset($_FILES['fhinh']) && $_FILES['fhinh']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['fhinh']['name'], PATHINFO_EXTENSION));
+            if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                $tenMoi = 'user_' . $gsNguoidungId . '_' . time() . '.' . $ext;
+                $duongdanUpload = '../assets/images/users/' . $tenMoi;
+                if (move_uploaded_file($_FILES['fhinh']['tmp_name'], $duongdanUpload)) {
+                    $hinhanh = $tenMoi;
+                }
+            }
+        }
+
+        $nd->capnhatnguoidung($gsNguoidungId, $gsND['email'], $sodt, $hoten, $hinhanh);
+        $_SESSION['nguoidung'] = $nd->laythongtinnguoidung($gsND['email']);
+        gsThongBao('success', 'Cập nhật thông tin cá nhân thành công!');
+        gsChuyenTrang('index.php?action=taikhoan&tab=profile');
+        break;
+
+    case 'xldoimatkhau':
+        if ($gsNguoidungId <= 0) {
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $mkcu   = $_POST['txtmatkhaucu'] ?? '';
+        $mkmoi  = $_POST['txtmatkhaumoi'] ?? '';
+        $xacnhan = $_POST['txtxacnhanmatkhau'] ?? '';
+
+        if (!$nd->kiemtranguoidunghople($gsND['email'], $mkcu)) {
+            gsThongBao('error', 'Mật khẩu hiện tại không chính xác!');
+            gsChuyenTrang('index.php?action=taikhoan&tab=password');
+        } elseif ($mkmoi !== $xacnhan) {
+            gsThongBao('error', 'Mật khẩu mới và xác nhận mật khẩu không khớp!');
+            gsChuyenTrang('index.php?action=taikhoan&tab=password');
+        } elseif (strlen($mkmoi) < 6) {
+            gsThongBao('error', 'Mật khẩu mới phải có tối thiểu 6 ký tự!');
+            gsChuyenTrang('index.php?action=taikhoan&tab=password');
+        } else {
+            $nd->doimatkhau($gsND['email'], $mkmoi);
+            gsThongBao('success', 'Đổi mật khẩu thành công!');
+            gsChuyenTrang('index.php?action=taikhoan&tab=password');
+        }
+        break;
+
+    case 'themdiachimoi':
+        if ($gsNguoidungId <= 0) {
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $ten     = trim($_POST['tennguoinhan'] ?? '');
+        $sdt     = trim($_POST['sodienthoai'] ?? '');
+        $diachi  = trim($_POST['diachi'] ?? '');
+        $macdinh = isset($_POST['macdinh']) ? 1 : 0;
+
+        if (!empty($ten) && !empty($sdt) && !empty($diachi)) {
+            $dc->themdiachi($gsNguoidungId, $ten, $sdt, $diachi, $macdinh);
+            gsThongBao('success', 'Thêm địa chỉ giao hàng thành công!');
+        } else {
+            gsThongBao('error', 'Vui lòng điền đầy đủ thông tin địa chỉ!');
+        }
+        gsChuyenTrang('index.php?action=taikhoan&tab=address');
+        break;
+
+    case 'datdiachimacdinh':
+        if ($gsNguoidungId <= 0) {
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $id_dc = (int) ($_GET['id'] ?? 0);
+        if ($id_dc > 0) {
+            $dc->datmacdinh($id_dc, $gsNguoidungId);
+            gsThongBao('success', 'Đã đặt làm địa chỉ mặc định!');
+        }
+        gsChuyenTrang('index.php?action=taikhoan&tab=address');
+        break;
+
+    case 'xoadiachi':
+        if ($gsNguoidungId <= 0) {
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $id_dc = (int) ($_GET['id'] ?? 0);
+        if ($id_dc > 0) {
+            $dc->xoadiachi($id_dc, $gsNguoidungId);
+            gsThongBao('success', 'Đã xóa địa chỉ thành công!');
+        }
+        gsChuyenTrang('index.php?action=taikhoan&tab=address');
+        break;
+
     case 'sanpham':
         $loai     = isset($_GET['loai']) ? trim($_GET['loai']) : '';
         $doituong = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
