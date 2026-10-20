@@ -46,7 +46,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             <table class="table gs-table">
                                 <tbody>
                                     <tr>
-                                        <th>Mã đơn hàng (vnp_TxnRef)</th>
+                                        <th>Mã đơn hàng</th>
                                         <td><?php echo htmlspecialchars($donhang['madonhang']); ?></td>
                                     </tr>
                                     <tr>
@@ -58,7 +58,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                                         <td><?php echo gsTien($sotienvnpay > 0 ? $sotienvnpay : $donhang['tongtien']); ?></td>
                                     </tr>
                                     <tr>
-                                        <th>Mã phản hồi (vnp_ResponseCode)</th>
+                                        <th>Mã phản hồi</th>
                                         <td><?php echo isset($_GET['vnp_ResponseCode']) ? htmlspecialchars($_GET['vnp_ResponseCode']) : '—'; ?></td>
                                     </tr>
                                     <tr>

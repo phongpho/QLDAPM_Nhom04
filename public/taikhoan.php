@@ -194,7 +194,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
 
                             <?php 
                             $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
-                            include(__DIR__ . '/inc/form-chiso.php'); 
+                            include(__DIR__ . '/inc/bmi-form.php'); 
                             ?>
                         </div>
 
