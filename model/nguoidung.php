@@ -273,5 +273,93 @@ class NGUOIDUNG
         }
     }
 
-    // kiểm tra đăng nhập
+    public function laynguoidungtheoid($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT id, gmail AS email, sodienthoai, hoten, loai, trangthai, hinhanh
+                    FROM nguoidung
+                    WHERE id = :id
+                    LIMIT 1";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int) $id, PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    public function kiemtratrungkhisua($id, $email, $sodt)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT id
+                    FROM nguoidung
+                    WHERE (gmail = :email OR sodienthoai = :sodt) AND id != :id
+                    LIMIT 1";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":email", $email);
+            $cmd->bindValue(":sodt", $sodt);
+            $cmd->bindValue(":id", (int) $id, PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetch(PDO::FETCH_ASSOC) ? true : false;
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    public function suanhanvien($id, $email, $sodt, $hoten, $trangthai, $hinhanh, $matkhaumoi = null)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            if (!empty($matkhaumoi)) {
+                $sql = "UPDATE nguoidung
+                        SET gmail = :email,
+                            sodienthoai = :sodienthoai,
+                            hoten = :hoten,
+                            trangthai = :trangthai,
+                            hinhanh = :hinhanh,
+                            matkhau = :matkhau
+                        WHERE id = :id";
+                $cmd = $dbcon->prepare($sql);
+                $cmd->bindValue(":matkhau", password_hash($matkhaumoi, PASSWORD_DEFAULT));
+            } else {
+                $sql = "UPDATE nguoidung
+                        SET gmail = :email,
+                            sodienthoai = :sodienthoai,
+                            hoten = :hoten,
+                            trangthai = :trangthai,
+                            hinhanh = :hinhanh
+                        WHERE id = :id";
+                $cmd = $dbcon->prepare($sql);
+            }
+            $cmd->bindValue(":email", $email);
+            $cmd->bindValue(":sodienthoai", $sodt);
+            $cmd->bindValue(":hoten", $hoten);
+            $cmd->bindValue(":trangthai", (int) $trangthai, PDO::PARAM_INT);
+            $cmd->bindValue(":hinhanh", $hinhanh);
+            $cmd->bindValue(":id", (int) $id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    public function xoanguoidung($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "DELETE FROM nguoidung WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int) $id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
 }
