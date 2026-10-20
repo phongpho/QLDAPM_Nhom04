@@ -41,6 +41,53 @@ $gsFlash = gsLayThongBao();
         .gs-empty {
             color: #888888 !important;
         }
+        .gs-tabs .nav-link {
+            color: #9a9a9a !important;
+        }
+        .gs-tabs .nav-link:hover,
+        .gs-tabs .nav-link.active {
+            color: #ffffff !important;
+        }
+        .gs-mau {
+            background: #1c1c1c !important;
+            border-color: #3a3a3a !important;
+            color: #ffffff !important;
+        }
+        .gs-detail__price .gs-price {
+            color: #ffffff !important;
+        }
+        .gs-filter,
+        .gs-cart,
+        .gs-cart-summary,
+        .gs-checkout__box,
+        .gs-result,
+        .gs-vnpay,
+        .gs-order {
+            color: #111111 !important;
+        }
+        .gs-voucher-suggest__item button {
+            color: #111111 !important;
+        }
+        .gs-paymethod input[type="radio"],
+        .gs-address input[type="radio"],
+        .gs-check input[type="checkbox"] {
+            color-scheme: light;
+            accent-color: #111111;
+        }
+        .gs-result .table,
+        .gs-checkout__box .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: #111111;
+            --bs-table-border-color: var(--gs-border);
+        }
+        .gs-cart-summary .badge,
+        .gs-order .badge {
+            color: #ffffff !important;
+        }
+        .gs-cart-summary .badge.text-dark,
+        .gs-order .badge.text-dark {
+            color: #111111 !important;
+        }
     </style>
 
     <script src="../assets/js/main.js"></script>

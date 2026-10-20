@@ -121,14 +121,7 @@ include(__DIR__ . '/inc/head-client.php');
                             <input type="radio" name="phuongthuc_tt" value="vnpay">
                             <span class="gs-paymethod__body">
                                 <strong>Thanh toán VNPay Sandbox</strong>
-                                <small>
-                                    <?php if ($vnpay->dacauhinh()) : ?>
-                                        Chuyển sang cổng thanh toán VNPay Sandbox (tạo URL có chữ ký <code>vnp_SecureHash</code> SHA512).
-                                    <?php else : ?>
-                                        Chưa cấu hình <code>vnp_TmnCode</code>/<code>vnp_HashSecret</code> nên hệ thống dùng cổng VNPay mô phỏng:
-                                        chọn thẻ test NCB <strong><?php echo VNPAY::THE_TEST; ?></strong>, OTP <strong><?php echo VNPAY::OTP_TEST; ?></strong> và bấm xác nhận.
-                                    <?php endif; ?>
-                                </small>
+                                <small>Chuyển sang cổng thanh toán VNPay Sandbox để hoàn tất đơn hàng.</small>
                             </span>
                         </label>
 

@@ -217,7 +217,7 @@ include(__DIR__ . '/inc/head-client.php');
                 $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
                 foreach ($goiyMuakem as $card) :
                     ?>
-                    <?php include(__DIR__ . '/inc/card-sanpham.php'); ?>
+                    <?php include(__DIR__ . '/inc/product-card.php'); ?>
                 <?php endforeach; ?>
             </div>
         </div>

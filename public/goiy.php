@@ -26,7 +26,7 @@ include(__DIR__ . '/inc/head-client.php');
 
 <section class="gs-section">
     <div class="container">
-        <?php include(__DIR__ . '/inc/form-chiso.php'); ?>
+        <?php include(__DIR__ . '/inc/bmi-form.php'); ?>
 
         <?php if (!$gsGoiy) : ?>
             <div class="gs-empty mt-4">
@@ -41,7 +41,7 @@ include(__DIR__ . '/inc/head-client.php');
 <?php
 if ($gsGoiy) {
     $gsGoiyTieude = 'Kết quả gợi ý dành riêng cho bạn';
-    include(__DIR__ . '/inc/khoi-goiy.php');
+    include(__DIR__ . '/inc/recommendation.php');
 }
 ?>
 
