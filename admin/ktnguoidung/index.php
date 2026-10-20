@@ -70,23 +70,31 @@ switch ($action) {
         include("doimatkhau.php");
         break;
     case "xldoimatkhau":
+        if (!isset($_SESSION["nguoidung"])) {
+            header("Location: index.php?action=dangnhap");
+            exit();
+        }
         $email = $_SESSION["nguoidung"]["email"];
-        $matkhaucu = $_POST["txtmatkhaucu"];
-        $matkhaumoi = $_POST["txtmatkhaumoi"];
-        $xacnhanmatkhau = $_POST["txtxacnhanmatkhau"];
+        $matkhaucu = trim($_POST["txtmatkhaucu"] ?? "");
+        $matkhaumoi = trim($_POST["txtmatkhaumoi"] ?? "");
+        $xacnhanmatkhau = trim($_POST["txtxacnhanmatkhau"] ?? "");
 
-        // kiểm tra lại mk cũ
-        if ($nd->kiemtranguoidunghople($email, $matkhaucu) == FALSE) {
+        if (empty($matkhaucu) || empty($matkhaumoi) || empty($xacnhanmatkhau)) {
+            $msg_error = "Vui lòng nhập đầy đủ các thông tin!";
+            include("doimatkhau.php");
+        } elseif ($nd->kiemtranguoidunghople($email, $matkhaucu) == FALSE) {
             $msg_error = "Mật khẩu hiện tại không chính xác!";
             include("doimatkhau.php");
-        }
-        // xác nhận mk mới
-        elseif ($matkhaumoi !== $xacnhanmatkhau) {
+        } elseif (strlen($matkhaumoi) < 6) {
+            $msg_error = "Mật khẩu mới phải có tối thiểu 6 ký tự!";
+            include("doimatkhau.php");
+        } elseif ($matkhaucu === $matkhaumoi) {
+            $msg_error = "Mật khẩu mới không được trùng với mật khẩu hiện tại!";
+            include("doimatkhau.php");
+        } elseif ($matkhaumoi !== $xacnhanmatkhau) {
             $msg_error = "Mật khẩu mới và mật khẩu xác nhận không trùng khớp!";
-            include("changepassword.php");
-        }
-        // 3. Tiến hành đổi mật khẩu
-        else {
+            include("doimatkhau.php");
+        } else {
             $nd->doimatkhau($email, $matkhaumoi);
             $msg_success = "Đổi mật khẩu thành công!";
             include("doimatkhau.php");
