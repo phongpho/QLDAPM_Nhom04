@@ -133,6 +133,18 @@ img {
     white-space: nowrap;
 }
 
+.btn-gs--dark {
+    background: var(--gs-black);
+    color: var(--gs-white);
+    border-color: var(--gs-black);
+}
+
+.btn-gs--dark:hover {
+    background: #2b2b2b;
+    color: var(--gs-white);
+    border-color: #2b2b2b;
+}
+
 .btn-gs--light {
     background: var(--gs-white);
     color: var(--gs-black);
@@ -2220,6 +2232,9 @@ img {
 }
 
 .gs-vnpay__env {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.1em;
@@ -2241,46 +2256,137 @@ img {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.4px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
 }
 
-.gs-vnpay__card {
-    border: 1px solid var(--gs-border);
-    border-radius: 3px;
+.gs-vnpay__amount {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
     padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    border-left: 3px solid #e30613;
     background: var(--gs-grey-bg);
+    border-radius: 3px;
 }
 
-.gs-vnpay__card-title {
-    display: block;
+.gs-vnpay__amount span {
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 0.75rem;
+    color: var(--gs-muted);
 }
 
-.gs-vnpay__card-row {
+.gs-vnpay__amount strong {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #e30613;
+    line-height: 1.2;
+}
+
+.gs-vnpay__rows {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border-top: 1px solid var(--gs-border);
+}
+
+.gs-vnpay__rows li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--gs-border);
+    font-size: 0.85rem;
+}
+
+.gs-vnpay__rows span {
+    color: var(--gs-muted);
+    flex-shrink: 0;
+}
+
+.gs-vnpay__rows strong {
+    text-align: right;
+    word-break: break-word;
+}
+
+.gs-vnpay__bankcard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: 6px;
+    background: linear-gradient(120deg, #003b71 0%, #00599f 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 59, 113, 0.25);
+}
+
+.gs-vnpay__bankcard-brand {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.gs-vnpay__bankcard-number {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.gs-vnpay__bankcard-foot {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    font-size: 0.85rem;
-    padding: 0.25rem 0;
+    font-size: 0.82rem;
+    font-weight: 700;
 }
 
-.gs-vnpay__card-row span {
-    color: var(--gs-muted);
+.gs-vnpay__bankcard-foot small {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
 }
 
 .gs-vnpay__actions {
     align-self: start;
+    padding: 1.25rem;
+    border: 1px solid var(--gs-border);
+    border-radius: 3px;
+    background: var(--gs-grey-bg);
 }
 
-.gs-vnpay__note {
-    font-size: 0.75rem;
+.gs-vnpay__subtitle {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.2px;
+    margin-bottom: 0.35rem;
+}
+
+.gs-vnpay__hint {
+    font-size: 0.78rem;
     color: var(--gs-muted);
-    line-height: 1.6;
-    margin-top: 1rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+}
+
+.gs-vnpay__actions .btn-gs--light {
+    background: transparent;
+    color: var(--gs-black);
+    border-color: var(--gs-border);
+}
+
+.gs-vnpay__actions .btn-gs--light:hover {
+    background: var(--gs-black);
+    color: var(--gs-white);
+    border-color: var(--gs-black);
 }
 
 .gs-order {

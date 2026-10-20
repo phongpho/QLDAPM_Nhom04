@@ -12,7 +12,7 @@ require_once(__DIR__ . '/../model/donhang.php');
 require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/../model/nguoidung.php');
-require_once(__DIR__ . '/inc/module36.php');
+require_once(__DIR__ . '/inc/shop_helper.php');
 
 $gsModule36 = true;
 
@@ -558,6 +558,11 @@ switch ($action) {
         $ketqua = (isset($_POST['ketqua']) && $_POST['ketqua'] === 'huy') ? 'huy' : 'thanhcong';
         $mahoso = ($ketqua === 'thanhcong') ? '00' : '24';
         if ($ketqua === 'thanhcong') {
+            $otp = isset($_POST['otp']) ? trim($_POST['otp']) : '';
+            if ($otp !== VNPAY::OTP_TEST) {
+                gsThongBao('error', 'Mã OTP không đúng! Thẻ test dùng OTP ' . VNPAY::OTP_TEST . '.');
+                gsChuyenTrang('index.php?action=vnpay_demo&madonhang=' . urlencode($madonhang));
+            }
             $dh->capnhatdatt($donhang['id'], 1);
         }
 

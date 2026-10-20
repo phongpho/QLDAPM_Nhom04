@@ -144,7 +144,7 @@ include(__DIR__ . '/inc/head-client.php');
                 <?php else : ?>
                     <div class="row g-4">
                         <?php foreach ($dsSanpham as $card) : ?>
-                            <?php include(__DIR__ . '/inc/card-sanpham.php'); ?>
+                            <?php include(__DIR__ . '/inc/product-card.php'); ?>
                         <?php endforeach; ?>
                     </div>
 

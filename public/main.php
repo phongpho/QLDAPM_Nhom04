@@ -75,7 +75,7 @@ if (!isset($gsModule36)) {
     </section>
 
     <?php
-    include('inc/khoi-goiy.php');
+    include('inc/recommendation.php');
     ?>
 
     <?php
@@ -109,7 +109,7 @@ if (!isset($gsModule36)) {
                 <?php else : ?>
                     <div class="row g-4">
                         <?php foreach ($khoi['ds'] as $card) : ?>
-                            <?php include('inc/card-sanpham.php'); ?>
+                            <?php include('inc/product-card.php'); ?>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>

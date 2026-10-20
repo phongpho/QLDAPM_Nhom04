@@ -52,7 +52,7 @@ class GIOHANG
                 $cmd->execute();
                 return $cmd->fetchAll(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }
@@ -101,7 +101,7 @@ class GIOHANG
                 $row = $cmd->fetch(PDO::FETCH_ASSOC);
                 return $row ? (int) $row['soluong'] : 0;
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }
@@ -116,19 +116,19 @@ class GIOHANG
         $sp = new SANPHAM();
         $sanpham = $sp->laysanphamchitiet($sanpham_id);
         if (!$sanpham || (int) $sanpham['trangthai'] !== 1) {
-            return array('ok' => false, 'message' => 'Sáº£n pháº©m khÃ´ng tá»“n táº¡i hoáº·c Ä‘Ã£ ngá»«ng bÃ¡n!');
+            return array('ok' => false, 'message' => 'Sản phẩm không tồn tại hoặc đã ngừng bán!');
         }
 
         $soluong = max(1, (int) $soluong);
         $size = (string) $size;
         $ton = (int) $sanpham['soluongton'];
         if ($ton <= 0) {
-            return array('ok' => false, 'message' => 'Sáº£n pháº©m "' . $sanpham['tensanpham'] . '" Ä‘Ã£ háº¿t hÃ ng!');
+            return array('ok' => false, 'message' => 'Sản phẩm "' . $sanpham['tensanpham'] . '" đã hết hàng!');
         }
 
         $mangsizes = $sp->tachsizethanhmmang($sanpham['sizes']);
         if (count($mangsizes) > 0 && !in_array($size, $mangsizes, true)) {
-            return array('ok' => false, 'message' => 'Vui lÃ²ng chá»n size cho sáº£n pháº©m "' . $sanpham['tensanpham'] . '"!');
+            return array('ok' => false, 'message' => 'Vui lòng chọn size cho sản phẩm "' . $sanpham['tensanpham'] . '"!');
         }
         if (count($mangsizes) === 0) {
             $size = '';
@@ -136,13 +136,13 @@ class GIOHANG
 
         $cur = $this->laysoluongtronggio($sanpham_id, $size);
         $moi = $cur + $soluong;
-        $thongbao = 'ÄÃ£ thÃªm "' . $sanpham['tensanpham'] . '" vÃ o giá» hÃ ng!';
+        $thongbao = 'Đã thêm "' . $sanpham['tensanpham'] . '" vào giỏ hàng!';
 
         if ($moi > $ton) {
             $moi = $ton;
-            $thongbao = 'Kho chá»‰ cÃ²n ' . $ton . ' sáº£n pháº©m "' . $sanpham['tensanpham'] . '", giá» hÃ ng Ä‘Ã£ Ä‘Æ°á»£c cáº­p nháº­t!';
+            $thongbao = 'Kho chỉ còn ' . $ton . ' sản phẩm "' . $sanpham['tensanpham'] . '", giỏ hàng đã được cập nhật!';
             if ($moi === $cur) {
-                return array('ok' => false, 'message' => 'Báº¡n Ä‘Ã£ cÃ³ tá»‘i Ä‘a ' . $ton . ' sáº£n pháº©m nÃ y trong giá»!');
+                return array('ok' => false, 'message' => 'Bạn đã có tối đa ' . $ton . ' sản phẩm này trong giỏ!');
             }
         }
 
@@ -166,7 +166,7 @@ class GIOHANG
                 $cmd->execute();
                 return array('ok' => true, 'message' => $thongbao, 'soluong' => $moi);
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }
@@ -198,7 +198,7 @@ class GIOHANG
             $ketqua['soluong']++;
         }
         if ($ketqua['ok']) {
-            $ketqua['message'] = 'ÄÃ£ thÃªm cáº£ combo (' . $ketqua['soluong'] . ' sáº£n pháº©m) vÃ o giá» hÃ ng!';
+            $ketqua['message'] = 'Đã thêm cả combo (' . $ketqua['soluong'] . ' sản phẩm) vào giỏ hàng!';
         }
         return $ketqua;
     }
@@ -208,15 +208,15 @@ class GIOHANG
     {
         $sanpham = (new SANPHAM())->laysanphamchitiet($sanpham_id);
         if (!$sanpham) {
-            return array('ok' => false, 'message' => 'Sáº£n pháº©m khÃ´ng tá»“n táº¡i!');
+            return array('ok' => false, 'message' => 'Sản phẩm không tồn tại!');
         }
 
         $soluong = max(1, (int) $soluong);
         $ton = (int) $sanpham['soluongton'];
-        $thongbao = 'ÄÃ£ cáº­p nháº­t sá»‘ lÆ°á»£ng!';
+        $thongbao = 'Đã cập nhật số lượng!';
         if ($soluong > $ton) {
             $soluong = max(1, $ton);
-            $thongbao = 'Kho chá»‰ cÃ²n ' . $ton . ' sáº£n pháº©m, sá»‘ lÆ°á»£ng Ä‘Ã£ Ä‘Æ°á»£c Ä‘iá»u chá»‰nh!';
+            $thongbao = 'Kho chỉ còn ' . $ton . ' sản phẩm, số lượng đã được điều chỉnh!';
         }
 
         if ($this->dadangnhap()) {
@@ -231,7 +231,7 @@ class GIOHANG
                 $cmd->bindValue(":size", (string) $size);
                 $cmd->execute();
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
             return array('ok' => true, 'message' => $thongbao, 'soluong' => $soluong);
@@ -270,7 +270,7 @@ class GIOHANG
                 $cmd->bindValue(":size", (string) $size);
                 return $cmd->execute();
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }
@@ -291,7 +291,7 @@ class GIOHANG
                 $cmd->bindValue(":nguoidung_id", $this->nguoidung_id, PDO::PARAM_INT);
                 return $cmd->execute();
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }
@@ -313,7 +313,7 @@ class GIOHANG
                 $row = $cmd->fetch(PDO::FETCH_ASSOC);
                 return $row ? (int) $row['tong'] : 0;
             } catch (PDOException $e) {
-                echo "<p>Lá»—i truy váº¥n: " . $e->getMessage() . "</p>";
+                echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
                 exit();
             }
         }

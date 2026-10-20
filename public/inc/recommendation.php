@@ -50,7 +50,7 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
                 </div>
             </div>
 
-            <?php include(__DIR__ . '/form-chiso.php'); ?>
+            <?php include(__DIR__ . '/bmi-form.php'); ?>
 
         <?php else : ?>
             <div class="gs-goiy-summary">
@@ -93,7 +93,7 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
             <?php if ($gsGoiyChiTiet && count($gsGoiy['sanpham']) > 0) : ?>
                 <div class="row g-4 mt-2">
                     <?php foreach ($gsGoiy['sanpham'] as $card) : ?>
-                        <?php include(__DIR__ . '/card-sanpham.php'); ?>
+                        <?php include(__DIR__ . '/product-card.php'); ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
