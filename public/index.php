@@ -204,20 +204,21 @@ switch ($action) {
         break;
 
     case 'sanpham':
-        $loai     = isset($_GET['loai']) ? trim($_GET['loai']) : '';
-        $doituong = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
-        $muctieu  = isset($_GET['muctieu']) ? trim($_GET['muctieu']) : '';
-        $tukhoa   = isset($_GET['q']) ? trim($_GET['q']) : '';
-        $sapxep   = isset($_GET['sapxep']) ? trim($_GET['sapxep']) : 'moi';
-        $trang    = isset($_GET['trang']) ? max(1, (int) $_GET['trang']) : 1;
-        $motrang  = 8;
+        $loai          = isset($_GET['loai']) ? trim($_GET['loai']) : '';
+        $doituong      = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
+        $muctieu       = isset($_GET['muctieu']) ? trim($_GET['muctieu']) : '';
+        $thuonghieu_id = isset($_GET['thuonghieu']) ? (int) $_GET['thuonghieu'] : 0;
+        $tukhoa        = isset($_GET['q']) ? trim($_GET['q']) : '';
+        $sapxep        = isset($_GET['sapxep']) ? trim($_GET['sapxep']) : 'moi';
+        $trang         = isset($_GET['trang']) ? max(1, (int) $_GET['trang']) : 1;
+        $motrang       = 8;
 
-        $tongsp = $sp->demtimkiemsanpham($tukhoa, $loai, $doituong, $muctieu);
+        $tongsp = $sp->demtimkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $thuonghieu_id);
         $tongsotrang = (int) ceil($tongsp / $motrang);
         if ($tongsotrang > 0 && $trang > $tongsotrang) {
             $trang = $tongsotrang;
         }
-        $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang);
+        $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang, $thuonghieu_id);
 
         $soluongnhom = array(
             'quanao'  => $dm36->laysoluongsanphamtheoloai('quanao'),
@@ -225,6 +226,7 @@ switch ($action) {
             'tpbs'    => $dm36->laysoluongsanphamtheoloai('tpbs')
         );
 
+        $dsThuonghieu = $sp->laydanhsachthuonghieu();
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('danhmuc.php');
         break;

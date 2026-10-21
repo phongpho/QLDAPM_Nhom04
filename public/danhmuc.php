@@ -6,21 +6,22 @@ if (!isset($gsModule36)) {
 }
 $gsTieude = 'Sản phẩm';
 
-$taourl = function ($thaydoi = array()) use ($loai, $doituong, $muctieu, $tukhoa, $sapxep) {
+$taourl = function ($thaydoi = array()) use ($loai, $doituong, $muctieu, $tukhoa, $sapxep, $thuonghieu_id) {
     $thamso = array(
-        'action'   => 'sanpham',
-        'loai'     => $loai,
-        'doituong' => $doituong,
-        'muctieu'  => $muctieu,
-        'q'        => $tukhoa,
-        'sapxep'   => $sapxep,
-        'trang'    => ''
+        'action'      => 'sanpham',
+        'loai'        => $loai,
+        'doituong'    => $doituong,
+        'muctieu'     => $muctieu,
+        'thuonghieu'  => $thuonghieu_id ? $thuonghieu_id : '',
+        'q'           => $tukhoa,
+        'sapxep'      => $sapxep,
+        'trang'       => ''
     );
     foreach ($thaydoi as $khoa => $giatri) {
         $thamso[$khoa] = $giatri;
     }
     $thamso = array_filter($thamso, function ($v) {
-        return $v !== '' && $v !== null;
+        return $v !== '' && $v !== null && $v !== 0;
     });
     return 'index.php?' . http_build_query($thamso);
 };
@@ -33,6 +34,14 @@ if ($loai !== '') {
 }
 if ($doituong !== '') {
     $tenloc .= ' - ' . (($doituong === 'nam') ? 'Nam' : 'Nữ');
+}
+if ($thuonghieu_id > 0 && !empty($dsThuonghieu)) {
+    foreach ($dsThuonghieu as $th) {
+        if ((int) $th['id'] === $thuonghieu_id) {
+            $tenloc .= ' - ' . $th['tenthuonghieu'];
+            break;
+        }
+    }
 }
 if ($tukhoa !== '') {
     $tenloc .= ' - Từ khóa "' . $tukhoa . '"';
@@ -65,6 +74,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="loai" value="<?php echo htmlspecialchars($loai); ?>">
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
                         <input type="hidden" name="muctieu" value="<?php echo htmlspecialchars($muctieu); ?>">
+                        <input type="hidden" name="thuonghieu" value="<?php echo (int) $thuonghieu_id; ?>">
                         <div class="input-group">
                             <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..."
                                 value="<?php echo htmlspecialchars($tukhoa); ?>">
@@ -91,6 +101,87 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
 
                     <div class="gs-filter__group">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h3 class="gs-filter__title mb-0">Thương hiệu</h3>
+                            <?php if ($thuonghieu_id > 0) : ?>
+                                <a class="gs-brand-clear-link" href="<?php echo htmlspecialchars($taourl(array('thuonghieu' => '', 'trang' => ''))); ?>" title="Bỏ lọc thương hiệu">
+                                    <i class="fa-solid fa-xmark"></i> Bỏ chọn
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <style>
+                            .gs-brand-grid {
+                                display: grid !important;
+                                grid-template-columns: repeat(3, 1fr) !important;
+                                gap: 10px !important;
+                                margin-top: 0.5rem !important;
+                            }
+                            .gs-brand-tile {
+                                display: flex !important;
+                                align-items: center !important;
+                                justify-content: center !important;
+                                width: 100% !important;
+                                aspect-ratio: 1 / 1 !important;
+                                padding: 8px !important;
+                                background: #ffffff !important;
+                                border: 1.5px solid #dcdcdc !important;
+                                border-radius: 50% !important;
+                                text-decoration: none !important;
+                                transition: all 0.22s ease-in-out !important;
+                                box-sizing: border-box !important;
+                                cursor: pointer !important;
+                                overflow: hidden !important;
+                                box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+                            }
+                            .gs-brand-tile:hover {
+                                border-color: #111111 !important;
+                                transform: translateY(-2px) scale(1.05) !important;
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
+                            }
+                            .gs-brand-tile.is-active {
+                                border-color: #e53935 !important;
+                                border-width: 2px !important;
+                                box-shadow: 0 0 0 3px rgba(229,57,53,0.25) !important;
+                                transform: scale(1.04) !important;
+                            }
+                            .gs-brand-tile__logo {
+                                max-height: 70% !important;
+                                max-width: 70% !important;
+                                width: auto !important;
+                                height: auto !important;
+                                object-fit: contain !important;
+                                display: block !important;
+                                filter: none !important;
+                                opacity: 0.95 !important;
+                                transition: transform 0.2s ease !important;
+                            }
+                            .gs-brand-tile:hover .gs-brand-tile__logo,
+                            .gs-brand-tile.is-active .gs-brand-tile__logo {
+                                opacity: 1 !important;
+                                transform: scale(1.08) !important;
+                            }
+                        </style>
+                        <div class="gs-brand-grid">
+                            <?php foreach ($dsThuonghieu as $th) : 
+                                $isChon = ($thuonghieu_id === (int) $th['id']);
+                                $urlThuonghieu = $taourl(array('thuonghieu' => $isChon ? '' : $th['id'], 'trang' => ''));
+                                $logoFile = !empty($th['logo']) ? $th['logo'] : 'logo.png';
+                            ?>
+                                <a class="gs-brand-tile<?php echo $isChon ? ' is-active' : ''; ?>" 
+                                   href="<?php echo htmlspecialchars($urlThuonghieu); ?>"
+                                   title="<?php echo htmlspecialchars($th['tenthuonghieu']); ?><?php echo ((int)$th['soluongsp'] > 0) ? ' (' . (int)$th['soluongsp'] . ' sp)' : ''; ?>"
+                                   aria-label="<?php echo htmlspecialchars($th['tenthuonghieu']); ?>">
+                                    <img class="gs-brand-tile__logo" 
+                                         src="../assets/images/systems/<?php echo htmlspecialchars($logoFile); ?>" 
+                                         alt="<?php echo htmlspecialchars($th['tenthuonghieu']); ?>"
+                                         loading="lazy"
+                                         onerror="this.style.display='none'">
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="gs-filter__group">
                         <h3 class="gs-filter__title">Đối tượng</h3>
                         <a class="gs-filter__link<?php echo ($doituong === '') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('doituong' => '', 'trang' => ''))); ?>">Tất cả</a>
                         <a class="gs-filter__link<?php echo ($doituong === 'nam') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('doituong' => 'nam', 'trang' => ''))); ?>">Nam</a>
@@ -104,7 +195,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <a class="gs-filter__link<?php echo ($muctieu === 'duytri') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('muctieu' => 'duytri', 'trang' => ''))); ?>">Duy trì vóc dáng</a>
                     </div>
 
-                    <?php if ($loai !== '' || $doituong !== '' || $muctieu !== '' || $tukhoa !== '') : ?>
+                    <?php if ($loai !== '' || $doituong !== '' || $muctieu !== '' || $thuonghieu_id > 0 || $tukhoa !== '') : ?>
                         <a class="gs-filter__clear" href="index.php?action=sanpham">
                             <i class="fa-solid fa-xmark"></i> Bỏ tất cả bộ lọc
                         </a>
@@ -122,6 +213,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="loai" value="<?php echo htmlspecialchars($loai); ?>">
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
                         <input type="hidden" name="muctieu" value="<?php echo htmlspecialchars($muctieu); ?>">
+                        <input type="hidden" name="thuonghieu" value="<?php echo (int) $thuonghieu_id; ?>">
                         <input type="hidden" name="q" value="<?php echo htmlspecialchars($tukhoa); ?>">
                         <select class="form-select form-select-sm" name="sapxep" aria-label="Sắp xếp sản phẩm" onchange="this.form.submit()">
                             <option value="moi" <?php echo ($sapxep === 'moi') ? 'selected' : ''; ?>>Mới nhất</option>

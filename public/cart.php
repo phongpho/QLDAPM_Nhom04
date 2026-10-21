@@ -48,7 +48,7 @@ include(__DIR__ . '/inc/head-client.php');
                             ?>
                             <div class="gs-cart__row">
                                 <a class="gs-cart__media" href="index.php?action=chitiet&id=<?php echo (int) $dong['sanpham_id']; ?>">
-                                    <img src="uploads/<?php echo htmlspecialchars($dong['hinhanh']); ?>"
+                                    <img src="../assets/images/systems/<?php echo htmlspecialchars($dong['hinhanh']); ?>"
                                         alt="<?php echo htmlspecialchars($dong['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                 </a>
 

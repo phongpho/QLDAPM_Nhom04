@@ -125,7 +125,7 @@ $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '
                                 <div class="col-12 col-md-4">
                                     <a class="gs-combo__item" href="index.php?action=chitiet&id=<?php echo (int) $motsp['id']; ?>">
                                         <span class="gs-combo__nhom"><?php echo htmlspecialchars($tennhom); ?></span>
-                                        <img class="gs-combo__img" src="uploads/<?php echo htmlspecialchars($motsp['hinhanh']); ?>"
+                                        <img class="gs-combo__img" src="../assets/images/systems/<?php echo htmlspecialchars($motsp['hinhanh']); ?>"
                                             alt="<?php echo htmlspecialchars($motsp['tensanpham']); ?>" loading="lazy" onerror="gsOnErrorImg(this)">
                                         <span class="gs-combo__name"><?php echo htmlspecialchars($motsp['tensanpham']); ?></span>
                                         <span class="gs-combo__price"><?php echo gsTien($motsp['giaban']); ?></span>

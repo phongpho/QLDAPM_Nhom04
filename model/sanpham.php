@@ -206,7 +206,7 @@ class SANPHAM
         return $mang;
     }
 
-    private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params)
+    private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params, $thuonghieu_id = 0)
     {
         $dk = " WHERE s.trangthai = 1 ";
         $tukhoa = trim((string) $tukhoa);
@@ -226,6 +226,10 @@ class SANPHAM
         if ($muctieu === 'giamcan' || $muctieu === 'tangcan' || $muctieu === 'duytri') {
             $dk .= " AND FIND_IN_SET(:muctieu, s.muctieu) > 0 ";
             $params[':muctieu'] = $muctieu;
+        }
+        if ((int) $thuonghieu_id > 0) {
+            $dk .= " AND s.thuonghieu_id = :thuonghieu_id ";
+            $params[':thuonghieu_id'] = (int) $thuonghieu_id;
         }
         return $dk;
     }
@@ -367,12 +371,12 @@ class SANPHAM
         }
     }
 
-    public function timkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $sapxep = 'moi', $limit = 12, $offset = 0)
+    public function timkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $sapxep = 'moi', $limit = 12, $offset = 0, $thuonghieu_id = 0)
     {
         $dbcon = DATABASE::connect();
         try {
             $params = array();
-            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params);
+            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id);
 
             switch ($sapxep) {
                 case 'banchay':
@@ -410,12 +414,12 @@ class SANPHAM
         }
     }
 
-    public function demtimkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '')
+    public function demtimkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $thuonghieu_id = 0)
     {
         $dbcon = DATABASE::connect();
         try {
             $params = array();
-            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params);
+            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id);
             $sql = "SELECT COUNT(*) AS tong
                     FROM sanpham s
                     JOIN danhmuc d ON d.id = s.danhmuc_id" . $dk;
@@ -429,6 +433,24 @@ class SANPHAM
         } catch (PDOException $e) {
             echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
             exit();
+        }
+    }
+
+    public function laydanhsachthuonghieu()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT t.*, COUNT(s.id) AS soluongsp
+                    FROM thuonghieu t
+                    LEFT JOIN sanpham s ON s.thuonghieu_id = t.id AND s.trangthai = 1
+                    WHERE t.logo IS NOT NULL AND t.logo <> ''
+                    GROUP BY t.id, t.tenthuonghieu, t.logo
+                    ORDER BY t.id ASC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return array();
         }
     }
 

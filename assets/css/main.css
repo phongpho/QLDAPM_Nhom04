@@ -924,6 +924,81 @@ img {
     color: #dc3545;
 }
 
+/* --- Brand Filter Grid & Tiles --- */
+.gs-brand-clear-link {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #dc3545;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: var(--gs-transition);
+}
+
+.gs-brand-clear-link:hover {
+    color: #b02a37;
+    text-decoration: underline;
+}
+
+.gs-brand-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    margin-top: 0.5rem;
+}
+
+.gs-brand-tile {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 8px !important;
+    background: #ffffff !important;
+    border: 1.5px solid #dcdcdc !important;
+    border-radius: 50% !important;
+    text-decoration: none;
+    transition: all 0.22s ease-in-out;
+    box-sizing: border-box;
+    cursor: pointer;
+    overflow: hidden !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.gs-brand-tile:hover {
+    border-color: #111111 !important;
+    background: #ffffff !important;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.gs-brand-tile.is-active {
+    border-color: #e53935 !important;
+    border-width: 2px !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.25) !important;
+    transform: scale(1.04);
+}
+
+.gs-brand-tile__logo {
+    max-height: 70% !important;
+    max-width: 70% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    filter: none !important;
+    opacity: 0.95;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.gs-brand-tile:hover .gs-brand-tile__logo,
+.gs-brand-tile.is-active .gs-brand-tile__logo {
+    opacity: 1 !important;
+    transform: scale(1.08);
+}
+
 .gs-toolbar {
     display: flex;
     align-items: center;
