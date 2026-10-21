@@ -23,7 +23,7 @@ $gsFlash = gsLayThongBao();
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
+    <link href="../assets/css/main.css?v=<?php echo file_exists(__DIR__ . '/../../assets/css/main.css') ? filemtime(__DIR__ . '/../../assets/css/main.css') : time(); ?>" rel="stylesheet">
     <style>
         body {
             background-color: #0d0d0d !important;

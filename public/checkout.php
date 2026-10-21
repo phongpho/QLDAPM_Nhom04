@@ -138,7 +138,7 @@ include(__DIR__ . '/inc/head-client.php');
 
                         <?php foreach ($giohang as $dong) : ?>
                             <div class="gs-checkout__item">
-                                <img src="uploads/<?php echo htmlspecialchars($dong['hinhanh']); ?>"
+                                <img src="../assets/images/systems/<?php echo htmlspecialchars($dong['hinhanh']); ?>"
                                     alt="<?php echo htmlspecialchars($dong['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                 <div>
                                     <span class="gs-checkout__item-name"><?php echo htmlspecialchars($dong['tensanpham']); ?></span>
