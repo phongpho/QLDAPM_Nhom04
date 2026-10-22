@@ -1126,16 +1126,35 @@ img {
 }
 
 .gs-pagination .page-link {
-    color: var(--gs-black);
-    border-color: var(--gs-border);
+    color: #e5e5e5;
+    background: #1c1c1c;
+    border-color: #333333;
     font-weight: 700;
     font-size: 0.85rem;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.gs-pagination .page-link:hover,
+.gs-pagination .page-link:focus {
+    color: #ffffff;
+    background: #2a2a2a;
+    border-color: #555555;
+    box-shadow: none;
 }
 
 .gs-pagination .page-item.active .page-link {
-    background: var(--gs-black);
-    border-color: var(--gs-black);
-    color: #ffffff;
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    color: #000000 !important;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+}
+
+.gs-pagination .page-item.disabled .page-link {
+    background: #141414;
+    color: #666666;
+    border-color: #2a2a2a;
 }
 
 .gs-section--goiy {

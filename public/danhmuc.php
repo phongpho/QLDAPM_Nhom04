@@ -160,6 +160,34 @@ include(__DIR__ . '/inc/head-client.php');
                                 opacity: 1 !important;
                                 transform: scale(1.08) !important;
                             }
+                            .gs-pagination .page-link {
+                                color: #e5e5e5 !important;
+                                background: #1c1c1c !important;
+                                border-color: #333333 !important;
+                                font-weight: 700 !important;
+                                font-size: 0.85rem !important;
+                                box-shadow: none !important;
+                                transition: all 0.2s ease !important;
+                            }
+                            .gs-pagination .page-link:hover,
+                            .gs-pagination .page-link:focus {
+                                color: #ffffff !important;
+                                background: #2a2a2a !important;
+                                border-color: #555555 !important;
+                                box-shadow: none !important;
+                            }
+                            .gs-pagination .page-item.active .page-link {
+                                background: #ffffff !important;
+                                border-color: #ffffff !important;
+                                color: #000000 !important;
+                                font-weight: 800 !important;
+                                box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+                            }
+                            .gs-pagination .page-item.disabled .page-link {
+                                background: #141414 !important;
+                                color: #666666 !important;
+                                border-color: #2a2a2a !important;
+                            }
                         </style>
                         <div class="gs-brand-grid">
                             <?php foreach ($dsThuonghieu as $th) : 
