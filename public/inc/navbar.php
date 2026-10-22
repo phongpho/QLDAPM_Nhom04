@@ -1,11 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top shadow-sm py-3">
     <div class="container">
-        <a class="navbar-brand fw-bold fs-3 text-uppercase text-white text-decoration-none d-flex align-items-center gap-2"
-            href="index.php">
-            <img src="../assets/images/logo.png"
-                onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23141414%22 stroke=%22%23dc3545%22 stroke-width=%224%22/><path d=%22M20 35 h8 v30 h-8 z M32 25 h10 v50 h-10 z M58 25 h10 v50 h-10 z M72 35 h8 v30 h-8 z%22 fill=%22%23dc3545%22/><rect x=%2242%22 y=%2245%22 width=%2216%22 height=%2210%22 fill=%22%23ffffff%22/><rect x=%2212%22 y=%2245%22 width=%228%22 height=%2210%22 rx=%222%22 fill=%22%23ffffff%22/><rect x=%2280%22 y=%2245%22 width=%228%22 height=%2210%22 rx=%222%22 fill=%22%23ffffff%22/></svg>';"
-                alt="GymBro" width="42" height="42" class="d-inline-block align-text-top rounded">
-            <span>GYM<span class="text-danger">BRO</span></span>
+        <a class="navbar-brand d-flex align-items-center p-0" href="index.php" title="GYMBRO">
+            <img src="../assets/images/systems/logo.png?v=<?php echo file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="44" class="d-inline-block align-text-top" style="height: 44px; max-height: 44px; width: auto; object-fit: contain; display: block;">
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#gsNavbarNav"
