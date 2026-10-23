@@ -24,7 +24,7 @@
 			</li>
 
 			<!-- danh mục -->
-			<li class="sidebar-item">
+			<li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qldanhmuc') !== false) ? 'active' : '' ?>">
 				<a class="sidebar-link" href="../qldanhmuc/index.php">
 					<i class="align-middle" data-feather="grid"></i> <span class="align-middle">Quản lý danh mục</span>
 				</a>

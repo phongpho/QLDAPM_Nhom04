@@ -208,7 +208,8 @@ class SANPHAM
 
     private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params, $thuonghieu_id = 0)
     {
-        $dk = " WHERE s.trangthai = 1 ";
+        // Sản phẩm chỉ hiển thị khi cả sản phẩm đang bán (s.trangthai = 1) VÀ danh mục đang hiển thị (d.trangthai = 1)
+        $dk = " WHERE s.trangthai = 1 AND d.trangthai = 1 ";
         $tukhoa = trim((string) $tukhoa);
         if ($tukhoa !== '') {
             $dk .= " AND (s.tensanpham LIKE :tukhoa1 OR s.mota LIKE :tukhoa2) ";
@@ -243,7 +244,7 @@ class SANPHAM
                     FROM sanpham s
                     JOIN danhmuc d ON d.id = s.danhmuc_id
                     LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-                    WHERE s.trangthai = 1 AND d.loai = :loai";
+                    WHERE s.trangthai = 1 AND d.trangthai = 1 AND d.loai = :loai";
             if ($doituong === 'nam' || $doituong === 'nu') {
                 $sql .= " AND s.doituong IN (:doituong, 'unisex')";
             }
@@ -271,7 +272,7 @@ class SANPHAM
              FROM sanpham s
              JOIN danhmuc d ON d.id = s.danhmuc_id
              LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-             WHERE s.trangthai = 1
+             WHERE s.trangthai = 1 AND d.trangthai = 1
              ORDER BY s.ngaytao DESC, s.id DESC
              LIMIT " . (int) $limit
         );
@@ -284,7 +285,7 @@ class SANPHAM
              FROM sanpham s
              JOIN danhmuc d ON d.id = s.danhmuc_id
              LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-             WHERE s.trangthai = 1
+             WHERE s.trangthai = 1 AND d.trangthai = 1
              ORDER BY s.luotmua DESC, s.luotxem DESC
              LIMIT " . (int) $limit
         );
@@ -297,7 +298,7 @@ class SANPHAM
              FROM sanpham s
              JOIN danhmuc d ON d.id = s.danhmuc_id
              LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-             WHERE s.trangthai = 1 AND s.noibat = 1
+             WHERE s.trangthai = 1 AND d.trangthai = 1 AND s.noibat = 1
              ORDER BY s.ngaytao DESC, s.id DESC
              LIMIT " . (int) $limit
         );
@@ -310,7 +311,7 @@ class SANPHAM
              FROM sanpham s
              JOIN danhmuc d ON d.id = s.danhmuc_id
              LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-             WHERE s.trangthai = 1 AND s.giagoc > s.giaban
+             WHERE s.trangthai = 1 AND d.trangthai = 1 AND s.giagoc > s.giaban
              ORDER BY (s.giagoc - s.giaban) DESC
              LIMIT " . (int) $limit
         );
