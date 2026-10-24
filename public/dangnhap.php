@@ -60,13 +60,11 @@
         <div class="card border-secondary-subtle shadow-lg" style="width: 420px; max-width: 92%;">
             <div class="card-body p-4">
 
-                <!-- Logo & Tiêu đề -->
+                <!-- logo & tiêu đề -->
                 <div class="text-center mb-3">
-                    <a href="index.php" class="text-decoration-none d-inline-flex align-items-center gap-2 justify-content-center">
-                        <img src="../assets/images/logo.png"
-                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23141414%22 stroke=%22%23dc3545%22 stroke-width=%224%22/><path d=%22M20 35 h8 v30 h-8 z M32 25 h10 v50 h-10 z M58 25 h10 v50 h-10 z M72 35 h8 v30 h-8 z%22 fill=%22%23dc3545%22/><rect x=%2242%22 y=%2245%22 width=%2216%22 height=%2210%22 fill=%22%23ffffff%22/><rect x=%2212%22 y=%2245%22 width=%228%22 height=%2210%22 rx=%222%22 fill=%22%23ffffff%22/><rect x=%2280%22 y=%2245%22 width=%228%22 height=%2210%22 rx=%222%22 fill=%22%23ffffff%22/></svg>';"
-                            alt="GymBro" width="48" height="48" class="rounded">
-                        <h2 class="fs-4 fw-bold text-white mb-0">GYM<span class="text-danger">BRO</span></h2>
+                    <a href="index.php" class="text-decoration-none d-inline-block">
+                        <img src="../assets/images/systems/logo.png?v=<?= file_exists(__DIR__ . '/../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../assets/images/systems/logo.png') : time(); ?>" 
+                             alt="GYMBRO" height="50" style="height: 50px; max-height: 50px; width: auto; object-fit: contain;">
                     </a>
                     <p class="small text-body-secondary mt-2">Đồng hành cùng mục tiêu tập luyện của bạn</p>
                 </div>

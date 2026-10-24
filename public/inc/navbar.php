@@ -3,12 +3,10 @@
         <a class="navbar-brand d-flex align-items-center p-0" href="index.php" title="GYMBRO">
             <img src="../assets/images/systems/logo.png?v=<?php echo file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="44" class="d-inline-block align-text-top" style="height: 44px; max-height: 44px; width: auto; object-fit: contain; display: block;">
         </a>
-
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#gsNavbarNav"
             aria-controls="gsNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="gsNavbarNav">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold text-uppercase gap-lg-1 align-items-lg-center">
                 <li class="nav-item dropdown" id="gsFashionDropdownWrap">
@@ -48,24 +46,23 @@
                     </a>
                 </li>
             </ul>
-
             <div class="d-flex align-items-center gap-3 pt-3 pt-lg-0">
-
-                <!-- Thanh tìm kiếm -->
-                <form action="index.php" method="get" class="m-0">
+                <!-- thanh tim kiem -->
+                <form action="index.php" method="get" class="m-0 d-flex align-items-center gap-1">
                     <input type="hidden" name="action" value="sanpham">
                     <div class="input-group input-group-sm">
                         <input type="text" name="q"
                             class="form-control text-white border-secondary"
                             style="background-color: #1a1a1a; min-width: 200px; color: #fff !important;"
                             placeholder="Tìm sản phẩm..."
-                            value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                            value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
+                            required>
                         <button class="btn btn-danger px-3 d-flex align-items-center justify-content-center" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
+                    <a href="index.php?action=sanpham" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center px-2 py-1" style="height: 31px;" title="Bộ lọc nâng cao"><i class="fa-solid fa-filter"></i></a>
                 </form>
-
                 <!-- Menu dropdown 3 dấu gạch ngang (Bootstrap) -->
                 <div class="dropdown gs-user-dropdown">
                     <button class="btn btn-outline-secondary border-0 text-white p-2" type="button" id="menuNguoiDung" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" title="Menu tài khoản">
@@ -93,23 +90,19 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-
                         <li><hr class="dropdown-divider border-secondary my-1"></li>
-
                         <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="yeuthich.php">
                                 <span><i class="fa-regular fa-heart text-danger me-2"></i> Yêu thích</span>
                                 <span class="badge rounded-pill bg-danger">2</span>
                             </a>
                         </li>
-
                         <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=giohang">
                                 <span><i class="fa-solid fa-bag-shopping text-warning me-2"></i> Giỏ hàng</span>
                                 <span class="badge rounded-pill bg-warning text-dark fw-bold">3</span>
                             </a>
                         </li>
-
                         <?php if (isset($_SESSION['nguoidung'])): ?>
                             <li><hr class="dropdown-divider border-secondary my-1"></li>
                             <li>
@@ -120,12 +113,10 @@
                         <?php endif; ?>
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
 </nav>
-
 <style>
     /* Hỗ trợ rê chuột (hover) trên màn hình máy tính cho menu 3 gạch */
     @media (min-width: 992px) {
@@ -135,7 +126,6 @@
         }
     }
 </style>
-
 <div class="modal fade" id="gsSearchModal" tabindex="-1" aria-labelledby="gsSearchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content bg-dark text-white border-secondary">
@@ -168,19 +158,16 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const dropdownWrap = document.getElementById('gsFashionDropdownWrap');
         const dropdownBtn = document.getElementById('fashionDropdown');
-
         if (dropdownWrap && dropdownBtn) {
             dropdownBtn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 dropdownWrap.classList.toggle('show');
             });
-
             document.addEventListener('click', function (e) {
                 if (!dropdownWrap.contains(e.target)) {
                     dropdownWrap.classList.remove('show');
