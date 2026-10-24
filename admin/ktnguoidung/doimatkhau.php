@@ -3,11 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra nếu chưa đăng nhập thì bắt quay về trang login
 if (!isset($_SESSION["nguoidung"])) {
     header("Location: index.php?action=dangnhap");
     exit();
 }
+
+$currentUser = $_SESSION["nguoidung"];
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -18,15 +19,20 @@ if (!isset($_SESSION["nguoidung"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Đổi mật khẩu - GymBro Admin</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- AdminKit base -->
     <link href="../inc/css/app.css" rel="stylesheet">
     <script src="../inc/js/app.js"></script>
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap 5 & FontAwesome 6 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <!-- Unified Admin Design System -->
+    <link href="../inc/css/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,27 +44,53 @@ if (!isset($_SESSION["nguoidung"])) {
 
             <main class="content">
                 <div class="container-fluid p-0">
+
+                    <!-- Breadcrumbs & Tiêu đề -->
+                    <div class="gb-breadcrumb">
+                        <a href="index.php"><i class="fa fa-sliders me-1"></i>Bảng điều khiển</a>
+                        <i class="fa fa-chevron-right" style="font-size: 0.65rem;"></i>
+                        <span class="text-dark fw-semibold">Đổi mật khẩu</span>
+                    </div>
+
                     <div class="row justify-content-center">
-                        <div class="col-12 col-md-8 col-lg-6">
-                            <div class="card shadow-sm border-0">
-                                <div class="card-header bg-white border-bottom py-3">
-                                    <h4 class="card-title text-primary mb-0 fw-bold">
-                                        <i class="fa fa-key me-2"></i>ĐỔI MẬT KHẨU
-                                    </h4>
-                                    <small class="text-muted">Tài khoản: <?= htmlspecialchars($_SESSION["nguoidung"]["hoten"] ?? "") ?> (<?= htmlspecialchars($_SESSION["nguoidung"]["email"] ?? "") ?>)</small>
+                        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                            <div class="gb-edit-card shadow-sm">
+                                <div class="gb-edit-header">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="gb-icon-badge" style="background-color: #fffbeb; color: #d97706;">
+                                            <i class="fa fa-key"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="gb-edit-title mb-0">Đổi mật khẩu tài khoản</h5>
+                                            <small class="text-muted">Cập nhật mật khẩu bảo vệ tài khoản định kỳ</small>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body p-4">
+
+                                    <div class="gb-summary-box mb-4">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="fa fa-user-circle text-primary fs-5"></i>
+                                            <div>
+                                                <div class="fw-bold text-dark small"><?= htmlspecialchars($currentUser["hoten"]) ?></div>
+                                                <div class="text-muted small"><?= htmlspecialchars($currentUser["email"]) ?></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <?php if (isset($msg_error)): ?>
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <i class="fa fa-exclamation-triangle me-2"></i><?= $msg_error ?>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <div class="alert alert-danger alert-dismissible fade show border-0 d-flex align-items-center gap-2 mb-3" role="alert" style="background-color: #fef2f2; color: #991b1b; border-left: 4px solid #ef4444 !important;">
+                                            <i class="fa fa-circle-exclamation fs-5"></i>
+                                            <div><?= htmlspecialchars($msg_error) ?></div>
+                                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php if (isset($msg_success)): ?>
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <i class="fa fa-check-circle me-2"></i><?= $msg_success ?>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <div class="alert alert-success alert-dismissible fade show border-0 d-flex align-items-center gap-2 mb-3" role="alert" style="background-color: #ecfdf5; color: #065f46; border-left: 4px solid #10b981 !important;">
+                                            <i class="fa fa-circle-check fs-5"></i>
+                                            <div><?= htmlspecialchars($msg_success) ?></div>
+                                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
                                     <?php endif; ?>
 
@@ -67,11 +99,11 @@ if (!isset($_SESSION["nguoidung"])) {
 
                                         <!-- Mật khẩu hiện tại -->
                                         <div class="mb-3">
-                                            <label class="form-label fw-semibold">Mật khẩu hiện tại <span class="text-danger">*</span></label>
+                                            <label class="form-label">Mật khẩu hiện tại <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                                                <input class="form-control" type="password" id="txtmatkhaucu" name="txtmatkhaucu" placeholder="Nhập mật khẩu hiện tại" required>
-                                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('txtmatkhaucu', 'eyeOld')">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="fa fa-lock"></i></span>
+                                                <input class="form-control border-start-0 border-end-0" type="password" id="txtmatkhaucu" name="txtmatkhaucu" placeholder="Nhập mật khẩu đang sử dụng" required>
+                                                <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePassword('txtmatkhaucu', 'eyeOld')">
                                                     <i class="fa fa-eye" id="eyeOld"></i>
                                                 </button>
                                             </div>
@@ -79,35 +111,35 @@ if (!isset($_SESSION["nguoidung"])) {
 
                                         <!-- Mật khẩu mới -->
                                         <div class="mb-3">
-                                            <label class="form-label fw-semibold">Mật khẩu mới <span class="text-danger">*</span></label>
+                                            <label class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="fa fa-key"></i></span>
-                                                <input class="form-control" type="password" id="txtmatkhaumoi" name="txtmatkhaumoi" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" required minlength="6">
-                                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('txtmatkhaumoi', 'eyeNew')">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="fa fa-key"></i></span>
+                                                <input class="form-control border-start-0 border-end-0" type="password" id="txtmatkhaumoi" name="txtmatkhaumoi" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" required minlength="6">
+                                                <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePassword('txtmatkhaumoi', 'eyeNew')">
                                                     <i class="fa fa-eye" id="eyeNew"></i>
                                                 </button>
                                             </div>
-                                            <div class="form-text">Mật khẩu nên chứa ít nhất 6 ký tự.</div>
+                                            <div class="form-text">Mật khẩu mới phải có tối thiểu 6 ký tự và khác mật khẩu hiện tại.</div>
                                         </div>
 
                                         <!-- Xác nhận mật khẩu mới -->
                                         <div class="mb-4">
-                                            <label class="form-label fw-semibold">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
+                                            <label class="form-label">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="fa fa-shield-alt"></i></span>
-                                                <input class="form-control" type="password" id="txtxacnhanmatkhau" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu mới" required>
-                                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('txtxacnhanmatkhau', 'eyeConfirm')">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="fa fa-shield-halved"></i></span>
+                                                <input class="form-control border-start-0 border-end-0" type="password" id="txtxacnhanmatkhau" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu mới vừa đặt" required>
+                                                <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePassword('txtxacnhanmatkhau', 'eyeConfirm')">
                                                     <i class="fa fa-eye" id="eyeConfirm"></i>
                                                 </button>
                                             </div>
                                             <div id="matchError" class="text-danger small mt-1 d-none">Mật khẩu xác nhận không trùng khớp!</div>
                                         </div>
 
-                                        <div class="d-flex justify-content-between pt-2">
-                                            <a href="index.php" class="btn btn-secondary px-3">
+                                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                                            <a href="index.php" class="btn btn-light px-3">
                                                 <i class="fa fa-arrow-left me-1"></i> Quay lại
                                             </a>
-                                            <button type="submit" class="btn btn-primary px-4">
+                                            <button type="submit" class="btn btn-primary px-4 fw-semibold">
                                                 <i class="fa fa-save me-1"></i> Cập nhật mật khẩu
                                             </button>
                                         </div>
@@ -116,6 +148,7 @@ if (!isset($_SESSION["nguoidung"])) {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </main>
 

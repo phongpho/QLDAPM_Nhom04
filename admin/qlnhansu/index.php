@@ -8,50 +8,84 @@ if (!isset($_SESSION["nguoidung"])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
 } elseif ($_SESSION["nguoidung"]["loai"] != 1) {
-    // Không phải admin thì chặn truy cập
     echo "<script>alert('Bạn không có quyền truy cập vào chức năng Quản lý nhân sự!'); window.location.href='../ktnguoidung/index.php';</script>";
     exit();
 }
 
-require("../../model/database.php");
-require("../../model/nguoidung.php");
+require_once("../../model/database.php");
+require_once("../../model/nguoidung.php");
 
 $nd = new NGUOIDUNG();
 
 // 2. Xác định action
-if (isset($_REQUEST["action"])) {
-    $action = $_REQUEST["action"];
-} else {
-    $action = "macdinh";
-}
+$action = $_REQUEST["action"] ?? "macdinh";
 
 // 3. Điều hướng xử lý theo action
 switch ($action) {
     case "macdinh":
-        // Lấy danh sách tất cả người dùng (Admin, Nhân viên, Khách)
         $nguoidung = $nd->laydanhsachnguoidung();
+
+        // Thong ke nhan vien van hanh (loai == 2) va Admin (loai == 1)
+        $tongNhanvien = 0;
+        $demAdmin = 0;
+        $demHoatdong = 0;
+        $demKhoa = 0;
+
+        foreach ($nguoidung as $u) {
+            if ((int)$u["loai"] === 2) {
+                $tongNhanvien++;
+                if ((int)$u["trangthai"] === 1) $demHoatdong++;
+                else $demKhoa++;
+            } elseif ((int)$u["loai"] === 1) {
+                $demAdmin++;
+            }
+        }
+        $tongNhansu = $tongNhanvien;
+
+        // Bộ lọc trạng thái và từ khóa cho danh sách nhân viên (loai == 2)
+        $filter_trangthai = $_GET["trangthai"] ?? "";
+        $filter_tukhoa = trim($_GET["tukhoa"] ?? "");
+
+        $danhsachHienThi = array_filter($nguoidung, function ($item) use ($filter_trangthai, $filter_tukhoa) {
+            // KHÔNG liệt kê admin (loai == 1), chỉ liệt kê nhân viên (loai == 2)
+            if ((int)$item["loai"] !== 2) {
+                return false;
+            }
+
+            if ($filter_trangthai !== "" && (string)$item["trangthai"] !== (string)$filter_trangthai) {
+                return false;
+            }
+
+            if (!empty($filter_tukhoa)) {
+                $tukhoa = mb_strtolower($filter_tukhoa, 'UTF-8');
+                $hoten = mb_strtolower($item["hoten"] ?? "", 'UTF-8');
+                $email = mb_strtolower($item["email"] ?? "", 'UTF-8');
+                $sodt = mb_strtolower($item["sodienthoai"] ?? "", 'UTF-8');
+                if (strpos($hoten, $tukhoa) === false && strpos($email, $tukhoa) === false && strpos($sodt, $tukhoa) === false) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
         include("main.php");
         break;
 
-    case "them":
-        include("them.php");
-        break;
-
     case "xlthem":
-        $email = trim($_POST["txtemail"]);
-        $matkhau = $_POST["txtmatkhau"];
+        $email = trim($_POST["txtemail"] ?? "");
+        $matkhau = $_POST["txtmatkhau"] ?? "";
         $sodt = trim($_POST["txtsodt"] ?? $_POST["txtdienthoai"] ?? "");
-        $hoten = trim($_POST["txthoten"]);
-        $loai = (int)$_POST["optloai"]; // 1: Admin, 2: Nhân viên, 3: Khách
+        $hoten = trim($_POST["txthoten"] ?? "");
+        $loai = (int)($_POST["optloai"] ?? 2); // 1: Admin, 2: Nhân viên, 3: Khách
 
-        // Xử lý upload hình ảnh nhân viên với tên file duy nhất (không trùng)
+        // Xử lý upload hình ảnh nhân viên với tên file duy nhất
         $hinhanh = null;
         $fileUpload = $_FILES["hinhanh"] ?? $_FILES["fhinh"] ?? null;
         if ($fileUpload && $fileUpload["error"] === UPLOAD_ERR_OK) {
             $ext = strtolower(pathinfo($fileUpload["name"], PATHINFO_EXTENSION));
             $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             if (in_array($ext, $allowed)) {
-                // Đặt tên file duy nhất kết hợp tiền tố, thời gian và uniqid
                 $hinhanh = "nv_" . time() . "_" . uniqid() . "." . $ext;
                 $uploadDir = "../../assets/images/users/";
                 if (!file_exists($uploadDir)) {
@@ -63,15 +97,13 @@ switch ($action) {
 
         // Kiểm tra trùng email hoặc số điện thoại
         if ($nd->kiemtratrung($email, $sodt)) {
-            $msg_error = "Email hoặc Số điện thoại đã tồn tại trong hệ thống!";
-            $nguoidung = $nd->laydanhsachnguoidung();
-            include("main.php");
+            $_SESSION["loi"] = "Email hoặc Số điện thoại đã tồn tại trong hệ thống!";
         } else {
             $nd->themnguoidung($email, $matkhau, $sodt, $hoten, $loai, $hinhanh);
-            header("Location: index.php");
-            exit();
+            $_SESSION["thongbao"] = "Khởi tạo tài khoản nhân sự mới thành công!";
         }
-        break;
+        header("Location: index.php");
+        exit();
 
     case "sua":
         if (isset($_GET["id"])) {
@@ -82,6 +114,7 @@ switch ($action) {
                 break;
             }
         }
+        $_SESSION["loi"] = "Không tìm thấy thông tin nhân viên yêu cầu!";
         header("Location: index.php");
         exit();
 
@@ -97,7 +130,7 @@ switch ($action) {
 
         // Kiểm tra trùng email hoặc sđt với tài khoản khác
         if ($nd->kiemtratrungkhisua($id, $email, $sodt)) {
-            $msg_error = "Email hoặc Số điện thoại đã tồn tại ở tài khoản khác!";
+            $_SESSION["loi"] = "Email hoặc Số điện thoại đã tồn tại ở tài khoản khác!";
             $nhanvien = $nd->laynguoidungtheoid($id);
             include("sua.php");
             break;
@@ -127,6 +160,7 @@ switch ($action) {
         }
 
         $nd->suanhanvien($id, $email, $sodt, $hoten, $trangthai, $hinhanh, $matkhaumoi);
+        $_SESSION["thongbao"] = "Cập nhật thông tin nhân sự thành công!";
         header("Location: index.php");
         exit();
 
@@ -134,10 +168,11 @@ switch ($action) {
         if (isset($_GET["id"])) {
             $id = (int)$_GET["id"];
             // Không được tự xóa tài khoản chính mình
-            if ($id != $_SESSION["nguoidung"]["id"]) {
+            if ($id == $_SESSION["nguoidung"]["id"]) {
+                $_SESSION["loi"] = "Không thể tự xóa tài khoản của chính mình đang đăng nhập!";
+            } else {
                 $nv = $nd->laynguoidungtheoid($id);
                 if ($nv) {
-                    // Xóa file ảnh riêng nếu có
                     $hinh = $nv["hinhanh"] ?? "";
                     if (!empty($hinh) && !in_array($hinh, ['user.png', 'image.png', 'admin.png'])) {
                         $fileHinh = "../../assets/images/users/" . $hinh;
@@ -146,6 +181,9 @@ switch ($action) {
                         }
                     }
                     $nd->xoanguoidung($id);
+                    $_SESSION["thongbao"] = "Đã xóa tài khoản nhân sự thành công!";
+                } else {
+                    $_SESSION["loi"] = "Tài khoản nhân sự không tồn tại!";
                 }
             }
         }
@@ -159,8 +197,15 @@ switch ($action) {
             $trangthai = (int)$_GET["trangthai"]; // 1: Kích hoạt, 0: Khóa
 
             // Không cho phép tự khóa chính tài khoản admin đang đăng nhập
-            if ($id != $_SESSION["nguoidung"]["id"]) {
+            if ($id == $_SESSION["nguoidung"]["id"]) {
+                $_SESSION["loi"] = "Không thể tự khóa tài khoản của chính mình đang đăng nhập!";
+            } else {
                 $nd->doitrangthai($id, $trangthai);
+                if ($trangthai === 1) {
+                    $_SESSION["thongbao"] = "Đã mở khóa tài khoản nhân sự thành công!";
+                } else {
+                    $_SESSION["thongbao"] = "Đã khóa tài khoản nhân sự thành công!";
+                }
             }
         }
         header("Location: index.php");
@@ -172,13 +217,14 @@ switch ($action) {
             $email = $_POST["email"];
             $loai = (int)$_POST["loai"];
             $nd->doiloainguoidung($email, $loai);
+            $_SESSION["thongbao"] = "Đã cập nhật phân quyền tài khoản thành công!";
         }
         header("Location: index.php");
         exit();
 
     default:
-        $nguoidung = $nd->laydanhsachnguoidung();
-        include("main.php");
-        break;
+        header("Location: index.php?action=macdinh");
+        exit();
 }
 ?>
+
