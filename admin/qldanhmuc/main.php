@@ -49,9 +49,6 @@
                                     </span>
                                 <?php endif; ?>
                             </div>
-                            <p class="dm-subtitle mb-0">
-                                Điều phối phân nhóm Quần áo, Phụ kiện và Thực phẩm bổ sung trên toàn hệ thống GymBro.
-                            </p>
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <button class="btn btn-dm-primary shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#formThemDanhMuc" aria-expanded="false" aria-controls="formThemDanhMuc">
@@ -289,7 +286,7 @@
                                                         </span>
                                                     <?php elseif ($d["loai"] === "phukien"): ?>
                                                         <span class="dm-badge dm-badge-phukien">
-                                                            <i class="fa fa-dumbbell"></i> Phụ kiện tập
+                                                            <i class="fa fa-dumbbell"></i> Phụ kiện tập luyện
                                                         </span>
                                                     <?php elseif ($d["loai"] === "tpbs"): ?>
                                                         <span class="dm-badge dm-badge-tpbs">
@@ -319,14 +316,14 @@
                                                     <!-- Nút Toggle Ẩn/Hiện: Cả Nhân viên và Admin đều thao tác được -->
                                                     <?php if ((int)$d["trangthai"] === 1): ?>
                                                         <a href="index.php?action=doitrangthai&id=<?= $d["id"] ?>&trangthai=0"
-                                                           class="btn-toggle-status status-active"
-                                                           title="Bấm để ẨN danh mục khỏi website người dùng">
+                                                            class="btn-toggle-status status-active"
+                                                            title="Bấm để ẨN danh mục khỏi website người dùng">
                                                             <i class="fa fa-eye"></i> Hiển thị
                                                         </a>
                                                     <?php else: ?>
                                                         <a href="index.php?action=doitrangthai&id=<?= $d["id"] ?>&trangthai=1"
-                                                           class="btn-toggle-status status-inactive"
-                                                           title="Bấm để HIỂN THỊ lại danh mục trên website">
+                                                            class="btn-toggle-status status-inactive"
+                                                            title="Bấm để HIỂN THỊ lại danh mục trên website">
                                                             <i class="fa fa-eye-slash"></i> Đang ẩn
                                                         </a>
                                                     <?php endif; ?>
@@ -336,8 +333,8 @@
                                                     <div class="d-inline-flex align-items-center gap-1">
                                                         <!-- Nút Sửa: Cả Admin và Nhân viên đều thấy -->
                                                         <a href="index.php?action=sua&id=<?= $d["id"] ?>"
-                                                           class="btn-action-icon btn-action-edit"
-                                                           title="Chỉnh sửa thông tin danh mục">
+                                                            class="btn-action-icon btn-action-edit"
+                                                            title="Chỉnh sửa thông tin danh mục">
                                                             <i class="fa fa-pen"></i>
                                                         </a>
 
@@ -345,22 +342,22 @@
                                                         <?php if (isset($_SESSION["nguoidung"]) && $_SESSION["nguoidung"]["loai"] == 1): ?>
                                                             <?php if ($soSP > 0): ?>
                                                                 <button type="button"
-                                                                        class="btn-action-icon btn-action-delete opacity-75"
-                                                                        title="Danh mục đang có <?= $soSP ?> sản phẩm. Nhấn để xem hướng dẫn"
-                                                                        onclick="alert('Không thể xóa! Danh mục này đang chứa <?= $soSP ?> sản phẩm. Để bảo vệ dữ liệu đơn hàng và lịch sử kinh doanh, vui lòng chọn chuyển trạng thái sang ẨN.');">
+                                                                    class="btn-action-icon btn-action-delete opacity-75"
+                                                                    title="Danh mục đang có <?= $soSP ?> sản phẩm. Nhấn để xem hướng dẫn"
+                                                                    onclick="alert('Không thể xóa! Danh mục này đang chứa <?= $soSP ?> sản phẩm. Để bảo vệ dữ liệu đơn hàng và lịch sử kinh doanh, vui lòng chọn chuyển trạng thái sang ẨN.');">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             <?php else: ?>
                                                                 <a href="index.php?action=xoa&id=<?= $d["id"] ?>"
-                                                                   class="btn-action-icon btn-action-delete"
-                                                                   title="Xóa danh mục trống khỏi hệ thống"
-                                                                   onclick="return confirm('Bạn có chắc chắn muốn XÓA danh mục <?= htmlspecialchars($d['tendanhmuc']) ?> khỏi hệ thống? Thao tác này không thể hoàn tác.');">
+                                                                    class="btn-action-icon btn-action-delete"
+                                                                    title="Xóa danh mục trống khỏi hệ thống"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn XÓA danh mục <?= htmlspecialchars($d['tendanhmuc']) ?> khỏi hệ thống? Thao tác này không thể hoàn tác.');">
                                                                     <i class="fa fa-trash"></i>
                                                                 </a>
                                                             <?php endif; ?>
                                                         <?php else: ?>
                                                             <span class="btn-action-icon btn-action-disabled"
-                                                                  title="Nhân viên không có quyền xóa. Bạn có thể sử dụng nút Ẩn danh mục">
+                                                                title="Nhân viên không có quyền xóa. Bạn có thể sử dụng nút Ẩn danh mục">
                                                                 <i class="fa fa-lock"></i>
                                                             </span>
                                                         <?php endif; ?>
