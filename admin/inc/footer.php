@@ -1,15 +1,21 @@
 <footer class="footer">
     <div class="container-fluid">
-        <div class="row text-muted">
-            <div class="col-6 text-start">
-                <p class="mb-0 mx-auto">
-                    <a class="text-muted" href=""><strong>GymBro</strong></a>
+        <div class="row text-muted align-items-center">
+            <div class="col-12 col-sm-6 text-center text-sm-start mb-2 mb-sm-0">
+                <p class="mb-0">
+                    <strong class="text-dark">GymBro Admin</strong> &copy; <?= date('Y') ?>. Hệ thống quản trị nội bộ.
                 </p>
             </div>
-            <div class="col-6 text-end">
-                <ul class="list-inline">
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item me-3">
+                        <span class="text-success small d-inline-flex align-items-center gap-1">
+                            <span class="d-inline-block rounded-circle bg-success" style="width: 7px; height: 7px;"></span>
+                            Máy chủ vận hành ổn định
+                        </span>
+                    </li>
                     <li class="list-inline-item">
-                        <a class="text-muted" href="">Hỗ trợ</a>
+                        <a class="text-muted small text-decoration-none" href="../ktnguoidung/index.php?action=hoso">Trợ giúp & Hướng dẫn</a>
                     </li>
                 </ul>
             </div>
