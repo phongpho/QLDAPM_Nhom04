@@ -677,22 +677,178 @@ class SANPHAM
     }
 
     
-    public function trusoluongvatangluotmua($sanpham_id, $soluong)
+    public function laysanphamquantri()
     {
         $dbcon = DATABASE::connect();
         try {
-            $sql = "UPDATE sanpham
-                    SET soluongton = soluongton - :soluong,
-                        luotmua = luotmua + :soluong
-                    WHERE id = :id AND soluongton >= :soluong";
+            $sql = "SELECT s.*, d.tendanhmuc, d.loai AS loai_danhmuc, t.tenthuonghieu
+                    FROM sanpham s
+                    LEFT JOIN danhmuc d ON d.id = s.danhmuc_id
+                    LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
+                    ORDER BY s.id DESC";
             $cmd = $dbcon->prepare($sql);
-            $cmd->bindValue(":soluong", (int) $soluong, PDO::PARAM_INT);
-            $cmd->bindValue(":id", (int) $sanpham_id, PDO::PARAM_INT);
             $cmd->execute();
-            return $cmd->rowCount() > 0;
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
-            exit();
+            return [];
+        }
+    }
+
+    public function laytatcathuonghieu()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT * FROM thuonghieu ORDER BY tenthuonghieu ASC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function themsanpham($tensanpham, $mota, $giagoc, $giaban, $soluongton, $hinhanh, $danhmuc_id, $thuonghieu_id, $doituong, $sizes, $mausac, $chatlieu, $thanhphan, $muctieu, $hansudung, $noibat, $trangthai)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "INSERT INTO sanpham (tensanpham, mota, giagoc, giaban, soluongton, hinhanh, danhmuc_id, thuonghieu_id, doituong, sizes, mausac, chatlieu, thanhphan, muctieu, hansudung, noibat, trangthai)
+                    VALUES (:tensanpham, :mota, :giagoc, :giaban, :soluongton, :hinhanh, :danhmuc_id, :thuonghieu_id, :doituong, :sizes, :mausac, :chatlieu, :thanhphan, :muctieu, :hansudung, :noibat, :trangthai)";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":tensanpham", $tensanpham);
+            $cmd->bindValue(":mota", $mota);
+            $cmd->bindValue(":giagoc", $giagoc);
+            $cmd->bindValue(":giaban", $giaban);
+            $cmd->bindValue(":soluongton", (int)$soluongton, PDO::PARAM_INT);
+            $cmd->bindValue(":hinhanh", $hinhanh);
+            $cmd->bindValue(":danhmuc_id", (int)$danhmuc_id, PDO::PARAM_INT);
+            $cmd->bindValue(":thuonghieu_id", !empty($thuonghieu_id) ? (int)$thuonghieu_id : null, !empty($thuonghieu_id) ? PDO::PARAM_INT : PDO::PARAM_NULL);
+            $cmd->bindValue(":doituong", $doituong);
+            $cmd->bindValue(":sizes", !empty($sizes) ? $sizes : null);
+            $cmd->bindValue(":mausac", !empty($mausac) ? $mausac : null);
+            $cmd->bindValue(":chatlieu", !empty($chatlieu) ? $chatlieu : null);
+            $cmd->bindValue(":thanhphan", !empty($thanhphan) ? $thanhphan : null);
+            $cmd->bindValue(":muctieu", !empty($muctieu) ? $muctieu : 'giamcan,tangcan,duytri');
+            $cmd->bindValue(":hansudung", !empty($hansudung) ? $hansudung : null);
+            $cmd->bindValue(":noibat", (int)$noibat, PDO::PARAM_INT);
+            $cmd->bindValue(":trangthai", (int)$trangthai, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            echo "<p>Lỗi thêm sản phẩm: " . $e->getMessage() . "</p>";
+            return false;
+        }
+    }
+
+    public function capnhatsanpham($id, $tensanpham, $mota, $giagoc, $giaban, $soluongton, $hinhanh, $danhmuc_id, $thuonghieu_id, $doituong, $sizes, $mausac, $chatlieu, $thanhphan, $muctieu, $hansudung, $noibat, $trangthai)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "UPDATE sanpham SET
+                        tensanpham = :tensanpham,
+                        mota = :mota,
+                        giagoc = :giagoc,
+                        giaban = :giaban,
+                        soluongton = :soluongton,
+                        hinhanh = :hinhanh,
+                        danhmuc_id = :danhmuc_id,
+                        thuonghieu_id = :thuonghieu_id,
+                        doituong = :doituong,
+                        sizes = :sizes,
+                        mausac = :mausac,
+                        chatlieu = :chatlieu,
+                        thanhphan = :thanhphan,
+                        muctieu = :muctieu,
+                        hansudung = :hansudung,
+                        noibat = :noibat,
+                        trangthai = :trangthai
+                    WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd->bindValue(":tensanpham", $tensanpham);
+            $cmd->bindValue(":mota", $mota);
+            $cmd->bindValue(":giagoc", $giagoc);
+            $cmd->bindValue(":giaban", $giaban);
+            $cmd->bindValue(":soluongton", (int)$soluongton, PDO::PARAM_INT);
+            $cmd->bindValue(":hinhanh", $hinhanh);
+            $cmd->bindValue(":danhmuc_id", (int)$danhmuc_id, PDO::PARAM_INT);
+            $cmd->bindValue(":thuonghieu_id", !empty($thuonghieu_id) ? (int)$thuonghieu_id : null, !empty($thuonghieu_id) ? PDO::PARAM_INT : PDO::PARAM_NULL);
+            $cmd->bindValue(":doituong", $doituong);
+            $cmd->bindValue(":sizes", !empty($sizes) ? $sizes : null);
+            $cmd->bindValue(":mausac", !empty($mausac) ? $mausac : null);
+            $cmd->bindValue(":chatlieu", !empty($chatlieu) ? $chatlieu : null);
+            $cmd->bindValue(":thanhphan", !empty($thanhphan) ? $thanhphan : null);
+            $cmd->bindValue(":muctieu", !empty($muctieu) ? $muctieu : 'giamcan,tangcan,duytri');
+            $cmd->bindValue(":hansudung", !empty($hansudung) ? $hansudung : null);
+            $cmd->bindValue(":noibat", (int)$noibat, PDO::PARAM_INT);
+            $cmd->bindValue(":trangthai", (int)$trangthai, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            echo "<p>Lỗi cập nhật sản phẩm: " . $e->getMessage() . "</p>";
+            return false;
+        }
+    }
+
+    public function doitrangthaisanpham($id, $trangthai)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "UPDATE sanpham SET trangthai = :trangthai WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":trangthai", (int)$trangthai, PDO::PARAM_INT);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function doinoibatsanpham($id, $noibat)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "UPDATE sanpham SET noibat = :noibat WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":noibat", (int)$noibat, PDO::PARAM_INT);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function kiemtratudonhang($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) AS total FROM donhangct WHERE sanpham_id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+            return ($row && (int)$row["total"] > 0);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function xoasanpham($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $cmd1 = $dbcon->prepare("DELETE FROM yeuthich WHERE sanpham_id = :id");
+            $cmd1->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd1->execute();
+
+            $cmd2 = $dbcon->prepare("DELETE FROM giohang WHERE sanpham_id = :id");
+            $cmd2->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd2->execute();
+
+            $sql = "DELETE FROM sanpham WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            return false;
         }
     }
 }

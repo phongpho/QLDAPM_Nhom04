@@ -1015,4 +1015,54 @@ body, .main, .content {
     flex-shrink: 0;
 }
 
+/* ==========================================================================
+   7. Product Helpers (qlsanpham)
+   ========================================================================== */
+
+.gb-product-thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--gb-radius-md);
+    object-fit: cover;
+    border: 1px solid var(--gb-slate-200);
+    background-color: var(--gb-slate-50);
+    flex-shrink: 0;
+}
+
+.btn-toggle-featured {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--gb-radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    transition: var(--gb-transition);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-toggle-featured.featured-active {
+    background-color: #fffbeb;
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.btn-toggle-featured.featured-active:hover {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.btn-toggle-featured.featured-inactive {
+    background-color: var(--gb-slate-50);
+    color: var(--gb-slate-400);
+    border-color: var(--gb-slate-200);
+}
+
+.btn-toggle-featured.featured-inactive:hover {
+    background-color: var(--gb-slate-100);
+    color: var(--gb-slate-600);
+}
+
+
 
