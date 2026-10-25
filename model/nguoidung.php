@@ -362,4 +362,112 @@ class NGUOIDUNG
             exit();
         }
     }
+
+    public function laydanhsachkhachhangquantri()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT u.id, u.gmail AS email, u.sodienthoai, u.hoten, u.loai, u.trangthai, u.hinhanh, u.ngaytao,
+                           COUNT(d.id) AS tong_donhang,
+                           IFNULL(SUM(CASE WHEN d.trangthai <> 0 THEN d.tongtien ELSE 0 END), 0) AS tong_chitieu
+                    FROM nguoidung u
+                    LEFT JOIN donhang d ON d.nguoidung_id = u.id
+                    WHERE u.loai = 3
+                    GROUP BY u.id, u.gmail, u.sodienthoai, u.hoten, u.loai, u.trangthai, u.hinhanh, u.ngaytao
+                    ORDER BY u.id DESC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            return [];
+        }
+    }
+
+    public function laychitietkhachhang($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sqlUser = "SELECT id, gmail AS email, sodienthoai, hoten, loai, trangthai, hinhanh, ngaytao
+                        FROM nguoidung
+                        WHERE id = :id AND loai = 3
+                        LIMIT 1";
+            $cmdUser = $dbcon->prepare($sqlUser);
+            $cmdUser->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmdUser->execute();
+            $user = $cmdUser->fetch(PDO::FETCH_ASSOC);
+            if (!$user) return null;
+
+            $sqlDc = "SELECT * FROM diachi WHERE nguoidung_id = :id ORDER BY macdinh DESC, id DESC";
+            $cmdDc = $dbcon->prepare($sqlDc);
+            $cmdDc->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmdDc->execute();
+            $user["diachi_list"] = $cmdDc->fetchAll(PDO::FETCH_ASSOC);
+
+            $sqlTt = "SELECT * FROM hosothetrang WHERE nguoidung_id = :id LIMIT 1";
+            $cmdTt = $dbcon->prepare($sqlTt);
+            $cmdTt->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmdTt->execute();
+            $user["thetrang"] = $cmdTt->fetch(PDO::FETCH_ASSOC);
+
+            $sqlDh = "SELECT id, ngaytao, tongtien, trangthai, phuongthuctt
+                      FROM donhang
+                      WHERE nguoidung_id = :id
+                      ORDER BY id DESC LIMIT 10";
+            $cmdDh = $dbcon->prepare($sqlDh);
+            $cmdDh->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmdDh->execute();
+            $user["donhang_list"] = $cmdDh->fetchAll(PDO::FETCH_ASSOC);
+
+            return $user;
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            return null;
+        }
+    }
+
+    public function kiemtradonhangkhachhang($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) AS total FROM donhang WHERE nguoidung_id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+            return ($row && (int)$row["total"] > 0);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function xoakhachhang($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $cmd1 = $dbcon->prepare("DELETE FROM diachi WHERE nguoidung_id = :id");
+            $cmd1->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd1->execute();
+
+            $cmd2 = $dbcon->prepare("DELETE FROM giohang WHERE nguoidung_id = :id");
+            $cmd2->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd2->execute();
+
+            $cmd3 = $dbcon->prepare("DELETE FROM yeuthich WHERE nguoidung_id = :id");
+            $cmd3->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd3->execute();
+
+            $cmd4 = $dbcon->prepare("DELETE FROM hosothetrang WHERE nguoidung_id = :id");
+            $cmd4->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            $cmd4->execute();
+
+            $sql = "DELETE FROM nguoidung WHERE id = :id AND loai = 3";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
+?>
