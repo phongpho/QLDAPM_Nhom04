@@ -18,7 +18,7 @@ $mangsizes = $sp->tachsizethanhmmang($card['sizes']);
 $conhang = ((int) $card['soluongton'] > 0);
 $tendanhmuc = isset($card['tendanhmuc']) ? $card['tendanhmuc'] : (isset($card['loai']) ? gsTenLoai($card['loai']) : '');
 $hinhanh = isset($card['hinhanh']) ? trim((string) $card['hinhanh']) : '';
-$duongdananh = ($hinhanh !== '') ? '../assets/images/systems/' . $hinhanh : '';
+$duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
 ?>
 <div class="col-6 col-md-4 col-lg-3">
     <div class="gs-product-card" data-id="<?php echo (int) $card['id']; ?>"
