@@ -22,3 +22,31 @@
         </div>
     </div>
 </footer>
+
+<!-- Tự động ẩn thông báo thành công hoặc thất bại sau 10 giây -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const flashAlerts = document.querySelectorAll(".alert");
+        if (flashAlerts.length > 0) {
+            setTimeout(function () {
+                flashAlerts.forEach(function (alertElem) {
+                    alertElem.style.transition = "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.6s ease, margin 0.6s ease, padding 0.6s ease";
+                    alertElem.style.opacity = "0";
+                    alertElem.style.transform = "translateY(-6px)";
+                    setTimeout(function () {
+                        if (window.bootstrap && bootstrap.Alert) {
+                            try {
+                                const bsInst = bootstrap.Alert.getOrCreateInstance(alertElem);
+                                if (bsInst) {
+                                    bsInst.close();
+                                    return;
+                                }
+                            } catch (err) {}
+                        }
+                        alertElem.remove();
+                    }, 600);
+                });
+            }, 10000); // 10 giay
+        }
+    });
+</script>

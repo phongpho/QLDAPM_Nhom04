@@ -100,6 +100,85 @@
 }
 
 /* ==========================================================================
+   Global Anti-Underline Reset (Zero Hover Underlines Across Admin)
+   ========================================================================== */
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited,
+a *,
+a:hover *,
+a:focus *,
+a:active *,
+.sidebar a,
+.sidebar a:hover,
+.sidebar a *,
+.sidebar a:hover *,
+.sidebar-brand,
+.sidebar-brand:hover,
+.sidebar-brand:focus,
+.sidebar-brand:active,
+.sidebar-brand *,
+.sidebar-brand:hover *,
+.sidebar-brand:focus *,
+.sidebar-link,
+.sidebar-link:hover,
+.sidebar-link:focus,
+.sidebar-link:active,
+.sidebar-link *,
+.sidebar-link:hover *,
+.sidebar-item a,
+.sidebar-item a:hover,
+.sidebar-item a *,
+.sidebar-item a:hover *,
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn *,
+.btn:hover *,
+.dropdown-item,
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item *,
+.dropdown-item:hover *,
+.nav-link,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link *,
+.nav-link:hover *,
+.navbar-nav a,
+.navbar-nav a:hover,
+.navbar-user-pill,
+.navbar-user-pill:hover,
+.navbar-user-pill *,
+.navbar-user-pill:hover *,
+.gb-breadcrumb a,
+.gb-breadcrumb a:hover,
+.dm-breadcrumb a,
+.dm-breadcrumb a:hover,
+.ns-breadcrumb a,
+.ns-breadcrumb a:hover,
+.gb-table a,
+.gb-table a:hover,
+.gb-quick-card,
+.gb-quick-card:hover,
+.gb-quick-card *,
+.gb-quick-card:hover *,
+.gb-summary-box a,
+.gb-summary-box a:hover,
+.page-link,
+.page-link:hover {
+    text-decoration: none !important;
+}
+
+/* Flash Alert Transitions for Auto-Dismiss */
+.alert {
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.6s ease, margin 0.6s ease, padding 0.6s ease;
+}
+
+/* ==========================================================================
    Base & Global Typography
    ========================================================================== */
 body, .main, .content {
