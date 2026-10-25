@@ -206,7 +206,8 @@ class SANPHAM
         return $mang;
     }
 
-    private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params, $thuonghieu_id = 0)
+    // chuoi loc san pham
+    private function chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, &$params, $thuonghieu_id = 0, $khoanggia = '', $size = '')
     {
         // Sản phẩm chỉ hiển thị khi cả sản phẩm đang bán (s.trangthai = 1) VÀ danh mục đang hiển thị (d.trangthai = 1)
         $dk = " WHERE s.trangthai = 1 AND d.trangthai = 1 ";
@@ -231,6 +232,22 @@ class SANPHAM
         if ((int) $thuonghieu_id > 0) {
             $dk .= " AND s.thuonghieu_id = :thuonghieu_id ";
             $params[':thuonghieu_id'] = (int) $thuonghieu_id;
+        }
+        if ($khoanggia !== '') {
+            if ($khoanggia === 'duoi-300') {
+                $dk .= " AND s.giaban < 300000 ";
+            } elseif ($khoanggia === '300-600') {
+                $dk .= " AND (s.giaban >= 300000 AND s.giaban <= 600000) ";
+            } elseif ($khoanggia === '600-1200') {
+                $dk .= " AND (s.giaban >= 600000 AND s.giaban <= 1200000) ";
+            } elseif ($khoanggia === 'tren-1200') {
+                $dk .= " AND s.giaban > 1200000 ";
+            }
+        }
+        $size = trim((string) $size);
+        if ($size !== '') {
+            $dk .= " AND FIND_IN_SET(:size, s.sizes) > 0 ";
+            $params[':size'] = $size;
         }
         return $dk;
     }
@@ -372,12 +389,13 @@ class SANPHAM
         }
     }
 
-    public function timkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $sapxep = 'moi', $limit = 12, $offset = 0, $thuonghieu_id = 0)
+    // tim kiem san pham
+    public function timkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $sapxep = 'moi', $limit = 12, $offset = 0, $thuonghieu_id = 0, $khoanggia = '', $size = '')
     {
         $dbcon = DATABASE::connect();
         try {
             $params = array();
-            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id);
+            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id, $khoanggia, $size);
 
             switch ($sapxep) {
                 case 'banchay':
@@ -415,12 +433,13 @@ class SANPHAM
         }
     }
 
-    public function demtimkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $thuonghieu_id = 0)
+    // dem so luong tim kiem san pham
+    public function demtimkiemsanpham($tukhoa = '', $loai = '', $doituong = '', $muctieu = '', $thuonghieu_id = 0, $khoanggia = '', $size = '')
     {
         $dbcon = DATABASE::connect();
         try {
             $params = array();
-            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id);
+            $dk = $this->chuoilocsanpham($tukhoa, $loai, $doituong, $muctieu, $params, $thuonghieu_id, $khoanggia, $size);
             $sql = "SELECT COUNT(*) AS tong
                     FROM sanpham s
                     JOIN danhmuc d ON d.id = s.danhmuc_id" . $dk;

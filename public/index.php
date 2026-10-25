@@ -208,17 +208,19 @@ switch ($action) {
         $doituong      = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
         $muctieu       = isset($_GET['muctieu']) ? trim($_GET['muctieu']) : '';
         $thuonghieu_id = isset($_GET['thuonghieu']) ? (int) $_GET['thuonghieu'] : 0;
+        $khoanggia     = isset($_GET['gia']) ? trim($_GET['gia']) : '';
+        $size          = isset($_GET['size']) ? trim($_GET['size']) : '';
         $tukhoa        = isset($_GET['q']) ? trim($_GET['q']) : '';
         $sapxep        = isset($_GET['sapxep']) ? trim($_GET['sapxep']) : 'moi';
         $trang         = isset($_GET['trang']) ? max(1, (int) $_GET['trang']) : 1;
         $motrang       = 8;
 
-        $tongsp = $sp->demtimkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $thuonghieu_id);
+        $tongsp = $sp->demtimkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $thuonghieu_id, $khoanggia, $size);
         $tongsotrang = (int) ceil($tongsp / $motrang);
         if ($tongsotrang > 0 && $trang > $tongsotrang) {
             $trang = $tongsotrang;
         }
-        $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang, $thuonghieu_id);
+        $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang, $thuonghieu_id, $khoanggia, $size);
 
         $soluongnhom = array(
             'quanao'  => $dm36->laysoluongsanphamtheoloai('quanao'),

@@ -6,13 +6,15 @@ if (!isset($gsModule36)) {
 }
 $gsTieude = 'Sản phẩm';
 
-$taourl = function ($thaydoi = array()) use ($loai, $doituong, $muctieu, $tukhoa, $sapxep, $thuonghieu_id) {
+$taourl = function ($thaydoi = array()) use ($loai, $doituong, $muctieu, $tukhoa, $sapxep, $thuonghieu_id, $khoanggia, $size) {
     $thamso = array(
         'action'      => 'sanpham',
         'loai'        => $loai,
         'doituong'    => $doituong,
         'muctieu'     => $muctieu,
         'thuonghieu'  => $thuonghieu_id ? $thuonghieu_id : '',
+        'gia'         => $khoanggia,
+        'size'        => $size,
         'q'           => $tukhoa,
         'sapxep'      => $sapxep,
         'trang'       => ''
@@ -46,6 +48,20 @@ if ($thuonghieu_id > 0 && !empty($dsThuonghieu)) {
 if ($tukhoa !== '') {
     $tenloc .= ' - Từ khóa "' . $tukhoa . '"';
 }
+if ($khoanggia !== '') {
+    $bangtengia = array(
+        'duoi-300'  => 'Dưới 300.000đ',
+        '300-600'   => '300.000đ - 600.000đ',
+        '600-1200'  => '600.000đ - 1.200.000đ',
+        'tren-1200' => 'Trên 1.200.000đ'
+    );
+    if (isset($bangtengia[$khoanggia])) {
+        $tenloc .= ' - ' . $bangtengia[$khoanggia];
+    }
+}
+if ($size !== '') {
+    $tenloc .= ' - Size ' . $size;
+}
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
@@ -75,6 +91,8 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
                         <input type="hidden" name="muctieu" value="<?php echo htmlspecialchars($muctieu); ?>">
                         <input type="hidden" name="thuonghieu" value="<?php echo (int) $thuonghieu_id; ?>">
+                        <input type="hidden" name="gia" value="<?php echo htmlspecialchars($khoanggia); ?>">
+                        <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
                         <div class="input-group">
                             <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..."
                                 value="<?php echo htmlspecialchars($tukhoa); ?>">
@@ -98,6 +116,61 @@ include(__DIR__ . '/inc/head-client.php');
                         <a class="gs-filter__link<?php echo ($loai === 'tpbs') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('loai' => 'tpbs', 'trang' => ''))); ?>">
                             Thực phẩm bổ sung <span><?php echo (int) $soluongnhom['tpbs']; ?></span>
                         </a>
+                    </div>
+
+                    <!-- bo loc khoang gia -->
+                    <div class="gs-filter__group">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h3 class="gs-filter__title mb-0">Khoảng giá</h3>
+                            <?php if ($khoanggia !== '') : ?>
+                                <a class="gs-brand-clear-link" href="<?php echo htmlspecialchars($taourl(array('gia' => '', 'trang' => ''))); ?>" title="Bỏ lọc giá">
+                                    <i class="fa-solid fa-xmark"></i> Bỏ chọn
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <a class="gs-filter__link<?php echo ($khoanggia === '') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('gia' => '', 'trang' => ''))); ?>">
+                            Tất cả mức giá
+                        </a>
+                        <a class="gs-filter__link<?php echo ($khoanggia === 'duoi-300') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('gia' => 'duoi-300', 'trang' => ''))); ?>">
+                            Dưới 300.000đ
+                        </a>
+                        <a class="gs-filter__link<?php echo ($khoanggia === '300-600') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('gia' => '300-600', 'trang' => ''))); ?>">
+                            300.000đ - 600.000đ
+                        </a>
+                        <a class="gs-filter__link<?php echo ($khoanggia === '600-1200') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('gia' => '600-1200', 'trang' => ''))); ?>">
+                            600.000đ - 1.200.000đ
+                        </a>
+                        <a class="gs-filter__link<?php echo ($khoanggia === 'tren-1200') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('gia' => 'tren-1200', 'trang' => ''))); ?>">
+                            Trên 1.200.000đ
+                        </a>
+                    </div>
+
+                    <!-- bo loc kich co size -->
+                    <div class="gs-filter__group">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h3 class="gs-filter__title mb-0">Kích cỡ (Size)</h3>
+                            <?php if ($size !== '') : ?>
+                                <a class="gs-brand-clear-link" href="<?php echo htmlspecialchars($taourl(array('size' => '', 'trang' => ''))); ?>" title="Bỏ lọc size">
+                                    <i class="fa-solid fa-xmark"></i> Bỏ chọn
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 pt-1">
+                            <?php foreach (array('S', 'M', 'L', 'XL') as $sItem) : 
+                                $isSizeChon = ($size === $sItem);
+                                $urlSize = $taourl(array('size' => $isSizeChon ? '' : $sItem, 'trang' => ''));
+                                $laSizeGoiy = ($gsSizeGoiy !== '' && $gsSizeGoiy === $sItem);
+                            ?>
+                                <a href="<?php echo htmlspecialchars($urlSize); ?>"
+                                   class="gs-size-btn position-relative<?php echo $isSizeChon ? ' is-active' : ''; ?>">
+
+                                    <?php echo $sItem; ?>
+                                    <?php if ($laSizeGoiy) : ?>
+                                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-dark rounded-circle" title="Size gợi ý theo vóc dáng của bạn"></span>
+                                    <?php endif; ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
 
                     <div class="gs-filter__group">
@@ -188,6 +261,32 @@ include(__DIR__ . '/inc/head-client.php');
                                 color: #666666 !important;
                                 border-color: #2a2a2a !important;
                             }
+                            .gs-size-btn {
+                                display: inline-flex !important;
+                                align-items: center !important;
+                                justify-content: center !important;
+                                min-width: 44px !important;
+                                padding: 5px 12px !important;
+                                font-size: 0.875rem !important;
+                                font-weight: 700 !important;
+                                color: #111111 !important;
+                                background-color: #ffffff !important;
+                                border: 1.5px solid #d1d5db !important;
+                                border-radius: 6px !important;
+                                text-decoration: none !important;
+                                transition: all 0.2s ease-in-out !important;
+                            }
+                            .gs-size-btn:hover {
+                                color: #111111 !important;
+                                background-color: #f3f4f6 !important;
+                                border-color: #9ca3af !important;
+                            }
+                            .gs-size-btn.is-active {
+                                color: #ffffff !important;
+                                background-color: #dc3545 !important;
+                                border-color: #dc3545 !important;
+                                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important;
+                            }
                         </style>
                         <div class="gs-brand-grid">
                             <?php foreach ($dsThuonghieu as $th) : 
@@ -230,7 +329,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <a class="gs-filter__link<?php echo ($muctieu === 'duytri') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('muctieu' => 'duytri', 'trang' => ''))); ?>">Duy trì vóc dáng</a>
                     </div>
 
-                    <?php if ($loai !== '' || $doituong !== '' || $muctieu !== '' || $thuonghieu_id > 0 || $tukhoa !== '') : ?>
+                    <?php if ($loai !== '' || $doituong !== '' || $muctieu !== '' || $thuonghieu_id > 0 || $tukhoa !== '' || $khoanggia !== '' || $size !== '') : ?>
                         <a class="gs-filter__clear" href="index.php?action=sanpham">
                             <i class="fa-solid fa-xmark"></i> Bỏ tất cả bộ lọc
                         </a>
@@ -249,6 +348,8 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
                         <input type="hidden" name="muctieu" value="<?php echo htmlspecialchars($muctieu); ?>">
                         <input type="hidden" name="thuonghieu" value="<?php echo (int) $thuonghieu_id; ?>">
+                        <input type="hidden" name="gia" value="<?php echo htmlspecialchars($khoanggia); ?>">
+                        <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
                         <input type="hidden" name="q" value="<?php echo htmlspecialchars($tukhoa); ?>">
                         <select class="form-select form-select-sm" name="sapxep" aria-label="Sắp xếp sản phẩm" onchange="this.form.submit()">
                             <option value="moi" <?php echo ($sapxep === 'moi') ? 'selected' : ''; ?>>Mới nhất</option>
