@@ -32,7 +32,7 @@ include(__DIR__ . '/inc/head-client.php');
                             <h3 class="gs-checkout__title"><i class="fa-solid fa-box"></i> Sản phẩm trong đơn</h3>
                             <?php foreach ($chitiet as $ct) : ?>
                                 <div class="gs-checkout__item">
-                                    <img src="../assets/images/systems/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
+                                    <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
                                         alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                     <div>
                                         <span class="gs-checkout__item-name"><?php echo htmlspecialchars($ct['tensanpham']); ?></span>

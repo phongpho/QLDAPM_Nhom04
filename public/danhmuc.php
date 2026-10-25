@@ -193,14 +193,21 @@ include(__DIR__ . '/inc/head-client.php');
                             <?php foreach ($dsThuonghieu as $th) : 
                                 $isChon = ($thuonghieu_id === (int) $th['id']);
                                 $urlThuonghieu = $taourl(array('thuonghieu' => $isChon ? '' : $th['id'], 'trang' => ''));
-                                $logoFile = !empty($th['logo']) ? $th['logo'] : 'logo.png';
+                                $logoFile = !empty($th['logo']) ? $th['logo'] : '';
+                                if ($logoFile !== '' && file_exists(__DIR__ . '/../assets/images/products/' . $logoFile)) {
+                                    $logoSrc = '../assets/images/products/' . $logoFile;
+                                } elseif ($logoFile !== '' && file_exists(__DIR__ . '/../assets/images/systems/' . $logoFile)) {
+                                    $logoSrc = '../assets/images/systems/' . $logoFile;
+                                } else {
+                                    $logoSrc = '../assets/images/systems/logo.png';
+                                }
                             ?>
                                 <a class="gs-brand-tile<?php echo $isChon ? ' is-active' : ''; ?>" 
                                    href="<?php echo htmlspecialchars($urlThuonghieu); ?>"
                                    title="<?php echo htmlspecialchars($th['tenthuonghieu']); ?><?php echo ((int)$th['soluongsp'] > 0) ? ' (' . (int)$th['soluongsp'] . ' sp)' : ''; ?>"
                                    aria-label="<?php echo htmlspecialchars($th['tenthuonghieu']); ?>">
                                     <img class="gs-brand-tile__logo" 
-                                         src="../assets/images/systems/<?php echo htmlspecialchars($logoFile); ?>" 
+                                         src="<?php echo htmlspecialchars($logoSrc); ?>" 
                                          alt="<?php echo htmlspecialchars($th['tenthuonghieu']); ?>"
                                          loading="lazy"
                                          onerror="this.style.display='none'">

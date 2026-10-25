@@ -58,7 +58,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="gs-order__items">
                             <?php foreach ($chitietdon as $ct) : ?>
                                 <div class="gs-order__item">
-                                    <img src="../assets/images/systems/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
+                                    <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
                                         alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                                     <div>
                                         <a class="gs-order__name" href="index.php?action=chitiet&id=<?php echo (int) $ct['sanpham_id']; ?>">

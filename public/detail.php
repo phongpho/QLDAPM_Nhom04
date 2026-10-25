@@ -41,7 +41,7 @@ include(__DIR__ . '/inc/head-client.php');
 
             <div class="col-12 col-lg-5">
                 <div class="gs-detail__media">
-                    <img class="gs-detail__img" src="../assets/images/systems/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>"
+                    <img class="gs-detail__img" src="../assets/images/products/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>"
                         alt="<?php echo htmlspecialchars($sanpham['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                     <?php if ($phantramgiam > 0) : ?>
                         <span class="badge-gs badge-gs--sale gs-detail__sale">-<?php echo $phantramgiam; ?>%</span>
