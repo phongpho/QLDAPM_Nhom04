@@ -40,6 +40,15 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
                 </span>
             </a>
 
+            <?php $daThichCard = in_array((int)$card['id'], $dsIdYeuthich ?? array(), true); ?>
+            <button type="button" class="btn btn-sm gs-btn-wishlist position-absolute top-0 end-0 m-2 rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
+                    style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); z-index: 5;"
+                    data-id="<?php echo (int) $card['id']; ?>" 
+                    onclick="event.preventDefault(); event.stopPropagation(); gsToggleYeuThich(this, <?php echo (int) $card['id']; ?>);"
+                    title="<?php echo $daThichCard ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
+                <i class="<?php echo $daThichCard ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart text-white'; ?>"></i>
+            </button>
+
             <div class="gs-product-card__actions">
                 <?php if (!$conhang) : ?>
                     <button type="button" class="gs-add-btn" disabled>Hết hàng</button>

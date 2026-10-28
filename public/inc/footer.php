@@ -71,5 +71,71 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../assets/js/main.js"></script>
+<script>
+// xu ly yeu thich san pham
+function gsToggleYeuThich(btn, sanphamId) {
+    if (!sanphamId) return;
+    fetch('index.php?action=xlyeuthich&sanpham_id=' + sanphamId, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.ok) {
+            if (data.dangnhap === false) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Đăng nhập',
+                        text: 'Vui lòng đăng nhập để lưu sản phẩm vào danh sách yêu thích!',
+                        confirmButtonText: 'Đăng nhập ngay',
+                        confirmButtonColor: '#dc3545',
+                        showCancelButton: true,
+                        cancelButtonText: 'Để sau'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.php?action=dangnhap';
+                        }
+                    });
+                } else {
+                    window.location.href = 'index.php?action=dangnhap';
+                }
+            } else {
+                alert(data.message || 'Có lỗi xảy ra!');
+            }
+            return;
+        }
+        const icon = btn.querySelector('i');
+        if (icon) {
+            if (data.thich) {
+                icon.className = 'fa-solid fa-heart text-danger';
+                btn.setAttribute('title', 'Bỏ yêu thích');
+            } else {
+                icon.className = 'fa-regular fa-heart text-white';
+                btn.setAttribute('title', 'Thêm vào yêu thích');
+            }
+        }
+        const badges = document.querySelectorAll('#badgeYeuthichNavbar, .gs-badge-yeuthich');
+        badges.forEach(b => {
+            b.textContent = data.tong;
+        });
+        if (typeof Swal !== 'undefined') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1800,
+                timerProgressBar: true
+            });
+            Toast.fire({
+                icon: data.thich ? 'success' : 'info',
+                title: data.thich ? 'Đã thêm vào yêu thích' : 'Đã bỏ khỏi yêu thích'
+            });
+        }
+    })
+    .catch(() => {
+        window.location.href = 'index.php?action=xlyeuthich&sanpham_id=' + sanphamId;
+    });
+}
+</script>
 </body>
 </html>

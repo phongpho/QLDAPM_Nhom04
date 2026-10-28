@@ -12,6 +12,7 @@ require_once(__DIR__ . '/../model/donhang.php');
 require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/../model/nguoidung.php');
+require_once(__DIR__ . '/../model/yeuthich.php');
 require_once(__DIR__ . '/inc/shop_helper.php');
 
 $gsModule36 = true;
@@ -27,8 +28,13 @@ $dh   = new DONHANG();
 $dc   = new DIACHI();
 $vnpay = new VNPAY();
 $nd   = new NGUOIDUNG();
+$yt   = new YEUTHICH();
 
 $gh->dongbo();
+$gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
+$dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId) : array();
+
+
 
 $gsVoucherApdung = isset($_SESSION['gs_voucher']) ? $_SESSION['gs_voucher'] : null;
 
@@ -53,6 +59,10 @@ switch ($action) {
             $user = $nd->laythongtinnguoidung($email);
             $_SESSION['nguoidung'] = $user;
             $gh->dongbo();
+$gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
+$dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId) : array();
+
+
             $redirect = $_SESSION['redirect_sau_login'] ?? 'index.php';
             unset($_SESSION['redirect_sau_login']);
             gsThongBao('success', 'Đăng nhập thành công! Chào mừng bạn trở lại, ' . $user['hoten'] . '!');
@@ -611,6 +621,50 @@ switch ($action) {
 
         $chitiet = $donhang ? $dh->laychitietdonhang($donhang['id']) : array();
         include('vnpay_return.php');
+        break;
+
+    case 'yeuthich':
+        if ($gsNguoidungId <= 0) {
+            gsThongBao('warning', 'Vui lòng đăng nhập để xem danh sách yêu thích!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $dsYeuthich = $yt->laydanhsachyeuthich($gsNguoidungId);
+        include('yeuthich.php');
+        break;
+
+    case 'xlyeuthich':
+        if ($gsNguoidungId <= 0) {
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                header('Content-Type: application/json');
+                echo json_encode(array('ok' => false, 'dangnhap' => false, 'message' => 'Vui lòng đăng nhập để lưu sản phẩm yêu thích!'));
+                exit();
+            }
+            gsThongBao('warning', 'Vui lòng đăng nhập để lưu sản phẩm yêu thích!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $sanpham_id = isset($_REQUEST['sanpham_id']) ? (int) $_REQUEST['sanpham_id'] : 0;
+        $kq = $yt->thaydoithich($gsNguoidungId, $sanpham_id);
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode($kq);
+            exit();
+        }
+        if ($kq['thich']) {
+            gsThongBao('success', 'Đã thêm vào danh sách yêu thích!');
+        } else {
+            gsThongBao('info', 'Đã bỏ khỏi danh sách yêu thích!');
+        }
+        $quaylai = $_SERVER['HTTP_REFERER'] ?? 'index.php?action=yeuthich';
+        header('Location: ' . $quaylai);
+        exit();
+
+    case 'xoayeuthich':
+        if ($gsNguoidungId > 0) {
+            $sanpham_id = isset($_GET['sanpham_id']) ? (int) $_GET['sanpham_id'] : 0;
+            $yt->xoayeuthich($gsNguoidungId, $sanpham_id);
+            gsThongBao('success', 'Đã xóa sản phẩm khỏi danh sách yêu thích!');
+        }
+        gsChuyenTrang('index.php?action=yeuthich');
         break;
 
     case 'donhang':

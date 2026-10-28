@@ -132,6 +132,13 @@ include(__DIR__ . '/inc/head-client.php');
                         <button type="submit" class="btn-gs btn-gs--dark gs-detail__addbtn" <?php echo $conhang ? '' : 'disabled'; ?>>
                             <i class="fa-solid fa-bag-shopping"></i> <?php echo $conhang ? 'Thêm vào giỏ hàng' : 'Tạm hết hàng'; ?>
                         </button>
+                        <?php $daThichDetail = in_array((int)$sanpham['id'], $dsIdYeuthich ?? array(), true); ?>
+                        <button type="button" class="btn btn-outline-danger d-flex align-items-center justify-content-center px-3"
+                                style="border-radius: 8px; min-height: 48px;"
+                                onclick="gsToggleYeuThich(this, <?php echo (int) $sanpham['id']; ?>)"
+                                title="<?php echo $daThichDetail ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
+                            <i class="<?php echo $daThichDetail ? 'fa-solid fa-heart text-danger fs-5' : 'fa-regular fa-heart text-danger fs-5'; ?>"></i>
+                        </button>
                     </div>
                 </form>
 
