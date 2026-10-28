@@ -92,9 +92,9 @@
                         <?php endif; ?>
                         <li><hr class="dropdown-divider border-secondary my-1"></li>
                         <li>
-                            <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="yeuthich.php">
+                            <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=yeuthich">
                                 <span><i class="fa-regular fa-heart text-danger me-2"></i> Yêu thích</span>
-                                <span class="badge rounded-pill bg-danger">2</span>
+                                <span class="badge rounded-pill bg-danger" id="badgeYeuthichNavbar"><?php echo isset($gsSoluongYeuthich) ? (int) $gsSoluongYeuthich : 0; ?></span>
                             </a>
                         </li>
                         <li>

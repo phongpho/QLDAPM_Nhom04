@@ -696,6 +696,29 @@ class SANPHAM
     }
 
     
+    // tru so luong ton va tang luot mua
+    public function trusoluongvatangluotmua($sanpham_id, $soluong)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $soluong = (int) $soluong;
+            if ($soluong <= 0) {
+                return false;
+            }
+            $sql = "UPDATE sanpham 
+                    SET soluongton = soluongton - :soluong,
+                        luotmua = luotmua + :soluong
+                    WHERE id = :id AND soluongton >= :soluong";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":soluong", $soluong, PDO::PARAM_INT);
+            $cmd->bindValue(":id", (int) $sanpham_id, PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function laysanphamquantri()
     {
         $dbcon = DATABASE::connect();
