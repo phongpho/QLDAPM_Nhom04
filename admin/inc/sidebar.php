@@ -41,6 +41,13 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                         <span class="align-middle">Quản lý nhân sự</span>
                     </a>
                 </li>
+
+                <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlchisoBMI') !== false) ? 'active' : '' ?>">
+                    <a class="sidebar-link" href="../qlchisoBMI/index.php">
+                        <i class="align-middle" data-feather="heart"></i>
+                        <span class="align-middle">Cấu hình chỉ số BMI</span>
+                    </a>
+                </li>
             <?php endif; ?>
 
             <li class="sidebar-header">
