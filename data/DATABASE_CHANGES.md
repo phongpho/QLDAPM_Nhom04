@@ -42,6 +42,24 @@ CREATE TABLE thuonghieu (
 * Đã có cột `trangthai TINYINT NOT NULL DEFAULT 1 COMMENT '1 đang bán, 0 ẩn'`.
 * Có khóa ngoại `CONSTRAINT fk_sanpham_danhmuc FOREIGN KEY (danhmuc_id) REFERENCES danhmuc (id)`.
 
+### 1.4. Bảng `cauhinh_bmi` & Gợi ý đồ dùng `cauhinh_bmi_sanpham` (Đã cập nhật)
+* Bảng `cauhinh_bmi` bổ sung các cột:
+  * `muctieu_khuyendung ENUM('giamcan','tangcan','duytri') NOT NULL DEFAULT 'duytri'`: Mục tiêu tập luyện khuyến nghị.
+  * `trangthai TINYINT NOT NULL DEFAULT 1`: Trạng thái Bật/Tắt mốc BMI.
+  * `thutu TINYINT NOT NULL DEFAULT 1`: Thứ tự sắp xếp theo dải chỉ số BMI.
+* Bảng liên kết `cauhinh_bmi_sanpham`:
+  ```sql
+  CREATE TABLE cauhinh_bmi_sanpham (
+    cauhinh_bmi_id INT NOT NULL,
+    sanpham_id     INT NOT NULL,
+    uutien         TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (cauhinh_bmi_id, sanpham_id),
+    CONSTRAINT fk_bmisp_cauhinh FOREIGN KEY (cauhinh_bmi_id) REFERENCES cauhinh_bmi (id) ON DELETE CASCADE,
+    CONSTRAINT fk_bmisp_sanpham FOREIGN KEY (sanpham_id) REFERENCES sanpham (id) ON DELETE CASCADE
+  ) ENGINE=InnoDB;
+  ```
+* **Ý nghĩa nghiệp vụ**: Lưu trữ danh sách đồ dùng/sản phẩm tập luyện do Admin chọn riêng cho từng thể trạng BMI. Phía người dùng khi tính toán BMI sẽ ưu tiên hiển thị các sản phẩm này cùng combo phù hợp. Module `qlchisoBMI` chỉ **Admin (loại 1)** mới được phép truy cập và chỉnh sửa.
+
 ---
 
 ## 2. QUY TẮC NGHIỆP VỤ BẮT BUỘC (CRITICAL BUSINESS RULES)
@@ -93,3 +111,11 @@ Khi tiếp tục triển khai các module quản trị khác (như `qlsanpham`, 
    * Dùng `$_SESSION['thongbao']` cho thông báo thành công và `$_SESSION['loi']` cho cảnh báo / thất bại, sau khi render thì gọi `unset()`.
 6. **Bảo toàn Logic của Admin**:
    * **Tuyệt đối không được sửa đổi logic của Admin** (bao gồm: cơ chế phân quyền Nhân viên chỉ được Ẩn/Hiện chứ không được Xóa, Admin chỉ được Xóa danh mục trống, quy tắc kế thừa ẩn sản phẩm, và cấu trúc điều hướng chuẩn đã thiết lập).
+
+---
+
+## 4. HƯỚNG DẪN HIỂN THỊ SẢN PHẨM GỢI Ý THEO CHỈ SỐ BMI (CLIENT)
+
+Xem tài liệu chi tiết đầy đủ tại: **[HUONG_DAN_HIEN_THI_SAN_PHAM_BMI.md](file:///d:/xampp/htdocs/QLDAPM_Nhom04/data/HUONG_DAN_HIEN_THI_SAN_PHAM_BMI.md)**.
+* **Quy tắc cốt lõi**: Khách hàng chỉ được nhìn thấy section **"Một số sản phẩm phù hợp với bạn"** khi **ĐÃ ĐĂNG NHẬP** và **ĐÃ NHẬP FORM CHỈ SỐ CƠ THỂ** (bảng `hosothetrang`). Nếu chưa đăng nhập hoặc chưa nhập chỉ số thể trạng, **tuyệt đối không hiển thị** section này trên trang chủ.
+

@@ -20,7 +20,6 @@ if (!empty($currentUser["hinhanh"])) {
 
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align align-items-center">
-            <!-- Thông báo -->
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Thông báo hệ thống">
                     <div class="position-relative">

@@ -250,8 +250,20 @@ CREATE TABLE cauhinh_bmi (
   phanloai VARCHAR(50) NOT NULL COMMENT 'Gầy, Chuẩn, Thừa cân, Béo phì',
   bmi_min DECIMAL(4,1) NOT NULL,
   bmi_max DECIMAL(4,1) NOT NULL,
+  muctieu_khuyendung ENUM('giamcan','tangcan','duytri') NOT NULL DEFAULT 'duytri' COMMENT 'Mục tiêu khuyến nghị',
   khuyenghe TEXT DEFAULT NULL,
+  trangthai TINYINT NOT NULL DEFAULT 1 COMMENT '1 hoạt động, 0 tắt',
+  thutu TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+CREATE TABLE cauhinh_bmi_sanpham (
+  cauhinh_bmi_id INT NOT NULL,
+  sanpham_id     INT NOT NULL,
+  uutien         TINYINT NOT NULL DEFAULT 0 COMMENT '1: Sản phẩm tiêu biểu, 0: Bổ trợ',
+  PRIMARY KEY (cauhinh_bmi_id, sanpham_id),
+  CONSTRAINT fk_bmisp_cauhinh FOREIGN KEY (cauhinh_bmi_id) REFERENCES cauhinh_bmi (id) ON DELETE CASCADE,
+  CONSTRAINT fk_bmisp_sanpham FOREIGN KEY (sanpham_id) REFERENCES sanpham (id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -262,7 +274,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- Mật khẩu mặc định: "password"
 INSERT INTO nguoidung (gmail, sodienthoai, matkhau, hoten, loai, trangthai) VALUES
-('admin@gymshop.vn', '0900000001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Quản trị viên', 1, 1),
+('pbphong@gmail.com', '0900000001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Phó Bảo Phong', 1, 1),
 ('nhanvien@gymshop.vn', '0900000002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Nhân viên bán hàng', 2, 1),
 ('an.nguyen@gmail.com', '0900000003', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Nguyễn Văn An', 3, 1);
 
@@ -289,11 +301,11 @@ INSERT INTO thuonghieu (tenthuonghieu, logo, trangthai) VALUES
 ('MuscleTech', 'muscletech.png', 1),
 ('Now Foods', 'nowfoods.png', 1);
 
-INSERT INTO cauhinh_bmi (phanloai, bmi_min, bmi_max, khuyenghe) VALUES
-('Thiếu cân (Gầy)', 0.0, 18.4, 'Bạn nên ưu tiên mục tiêu Tăng cân - Tăng cơ, kết hợp tập tạ và bổ sung Whey Protein, Mass Gainer cùng Creatine.'),
-('Bình thường (Chuẩn)', 18.5, 22.9, 'Thể trạng của bạn rất tốt! Hãy duy trì lịch tập đều đặn kết hợp trang phục thoáng khí và BCAA/Whey để giữ nét cơ.'),
-('Thừa cân', 23.0, 24.9, 'Bạn nên hướng tới mục tiêu Giảm mỡ - Giữ cơ, tăng cường Cardio/HIIT với đồ tập thấm hút mồ hôi và TPBS đốt mỡ an toàn.'),
-('Béo phì', 25.0, 99.9, 'Hãy ưu tiên chế độ Giảm cân, tập luyện cường độ vừa phải kết hợp bảo vệ khớp (đai lưng, băng gối) và kiểm soát calo.');
+INSERT INTO cauhinh_bmi (phanloai, bmi_min, bmi_max, muctieu_khuyendung, khuyenghe, trangthai, thutu) VALUES
+('Thiếu cân (Gầy)', 0.0, 18.4, 'tangcan', 'Bạn nên ưu tiên mục tiêu Tăng cân - Tăng cơ, kết hợp tập tạ và bổ sung Whey Protein, Mass Gainer cùng Creatine.', 1, 1),
+('Bình thường (Chuẩn)', 18.5, 22.9, 'duytri', 'Thể trạng của bạn rất tốt! Hãy duy trì lịch tập đều đặn kết hợp trang phục thoáng khí và BCAA/Whey để giữ nét cơ.', 1, 2),
+('Thừa cân', 23.0, 24.9, 'giamcan', 'Bạn nên hướng tới mục tiêu Giảm mỡ - Giữ cơ, tăng cường Cardio/HIIT với đồ tập thấm hút mồ hôi và TPBS đốt mỡ an toàn.', 1, 3),
+('Béo phì', 25.0, 99.9, 'giamcan', 'Hãy ưu tiên chế độ Giảm cân, tập luyện cường độ vừa phải kết hợp bảo vệ khớp (đai lưng, băng gối) và kiểm soát calo.', 1, 4);
 
 INSERT INTO bangsize (gioitinh, size, thutu, chieucao_min, chieucao_max, cannang_min, cannang_max) VALUES
 ('nam', 'S',  1, 150.0, 165.0, 45.0, 58.0),
@@ -356,3 +368,10 @@ INSERT INTO voucher (ma, mota, loai, giatri, donhang_toithieu, giamtoida, ngayhe
 ('GYM10', 'Giảm 10% tối đa 100.000đ cho đơn từ 300.000đ', 'phantram', 10, 300000, 100000, '2027-12-31 23:59:59', 100, 0, 1),
 ('GIAM50K', 'Giảm trực tiếp 50.000đ cho đơn từ 500.000đ', 'sotien', 50000, 500000, NULL, '2027-12-31 23:59:59', 50, 0, 1),
 ('TANBINH', 'Ưu đãi 20% tối đa 150.000đ cho hội viên mới', 'phantram', 20, 200000, 150000, '2027-12-31 23:59:59', 200, 0, 1);
+
+-- Gợi ý đồ dùng / sản phẩm mẫu theo từng mốc BMI
+INSERT INTO cauhinh_bmi_sanpham (cauhinh_bmi_id, sanpham_id, uutien) VALUES
+(1, 1, 1), (1, 6, 1), (1, 30, 1), (1, 5, 0),
+(2, 1, 1), (2, 2, 1), (2, 6, 1), (2, 4, 0),
+(3, 2, 1), (3, 7, 1), (3, 20, 1), (3, 22, 0),
+(4, 7, 1), (4, 20, 1), (4, 22, 1), (4, 4, 0);
