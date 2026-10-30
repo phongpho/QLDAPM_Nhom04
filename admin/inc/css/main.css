@@ -1143,5 +1143,94 @@ body, .main, .content {
     color: var(--gb-slate-600);
 }
 
+/* ==========================================================================
+   8. Admin Sidebar & Header Elevated Polish
+   ========================================================================== */
+.sidebar {
+    background: #0f172a !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-brand {
+    padding: 1.4rem 1.6rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-brand-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--gb-radius-pill);
+    background: rgba(37, 99, 235, 0.18);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.sidebar-header {
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: #64748b !important;
+    padding: 1.25rem 1.6rem 0.5rem !important;
+}
+
+.sidebar-link {
+    color: #94a3b8 !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    padding: 0.65rem 1.6rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    border-left: 3px solid transparent;
+    transition: var(--gb-transition) !important;
+}
+
+.sidebar-link i,
+.sidebar-link svg {
+    color: #64748b;
+    transition: var(--gb-transition);
+}
+
+.sidebar-link:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.sidebar-link:hover i,
+.sidebar-link:hover svg {
+    color: #60a5fa;
+}
+
+.sidebar-item.active .sidebar-link {
+    color: #ffffff !important;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.16) 0%, transparent 100%) !important;
+    border-left-color: #3b82f6 !important;
+}
+
+.sidebar-item.active .sidebar-link i,
+.sidebar-item.active .sidebar-link svg {
+    color: #60a5fa !important;
+}
+
+.navbar-bg {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--gb-slate-200) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+.navbar-user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--gb-radius-pill);
+    object-fit: cover;
+    border: 2px solid var(--gb-slate-200);
+}
+
 
 

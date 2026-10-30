@@ -85,7 +85,7 @@ include(__DIR__ . '/inc/head-client.php');
 
             <div class="col-12 col-lg-3">
                 <div class="gs-filter">
-                    <form method="get" action="index.php" class="gs-filter__search">
+                    <form method="get" action="index.php" class="gs-filter__search mb-4">
                         <input type="hidden" name="action" value="sanpham">
                         <input type="hidden" name="loai" value="<?php echo htmlspecialchars($loai); ?>">
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
@@ -102,7 +102,7 @@ include(__DIR__ . '/inc/head-client.php');
                         </div>
                     </form>
 
-                    <div class="gs-filter__group">
+                    <div class="gs-filter__group mt-3 pt-2">
                         <h3 class="gs-filter__title">Nhóm sản phẩm</h3>
                         <a class="gs-filter__link<?php echo ($loai === '') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('loai' => '', 'trang' => ''))); ?>">
                             Tất cả <span><?php echo (int) $tongsp; ?></span>

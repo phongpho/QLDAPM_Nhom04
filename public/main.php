@@ -4,29 +4,10 @@ if (!isset($gsModule36)) {
     require __DIR__ . '/index.php';
     return;
 }
+$gsTieude = 'Trang chủ - Đồ tập Gym & Dinh dưỡng thể thao';
+include(__DIR__ . '/inc/head-client.php');
+include(__DIR__ . '/inc/carousel.php');
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GymBro - Trang chủ</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-
-    <script src="../assets/js/main.js"></script>
-</head>
-
-<body>
-    <?php include('inc/navbar.php'); ?>
-    <?php include('inc/carousel.php') ?>
 
     <section class="gs-section">
         <div class="container">
@@ -116,7 +97,4 @@ if (!isset($gsModule36)) {
             </div>
         </section>
     <?php endforeach; ?>
-    <?php include('inc/footer.php'); ?>
-</body>
-
-</html>
+    <?php include(__DIR__ . '/inc/footer.php'); ?>
