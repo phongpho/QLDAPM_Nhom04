@@ -85,7 +85,7 @@
                             </li>
                         <?php else: ?>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=dangnhap">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=dangnhap" data-bs-toggle="modal" data-bs-target="#gsAuthModal">
                                     <i class="fa-solid fa-right-to-bracket text-danger"></i> Đăng nhập / Đăng ký
                                 </a>
                             </li>
@@ -100,7 +100,7 @@
                         <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=giohang">
                                 <span><i class="fa-solid fa-bag-shopping text-warning me-2"></i> Giỏ hàng</span>
-                                <span class="badge rounded-pill bg-warning text-dark fw-bold">3</span>
+                                <span class="badge rounded-pill bg-warning text-dark fw-bold" id="badgeGiohangNavbar"><?php echo isset($gh) ? (int) $gh->dem() : 0; ?></span>
                             </a>
                         </li>
                         <?php if (isset($_SESSION['nguoidung'])): ?>
@@ -117,6 +117,90 @@
         </div>
     </div>
 </nav>
+
+<?php if (!isset($_SESSION['nguoidung'])): ?>
+<div class="modal fade" id="gsAuthModal" tabindex="-1" aria-labelledby="gsAuthModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+        <div class="modal-content border-secondary shadow-lg" style="background: #141c2b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px;">
+            <div class="modal-header border-secondary pb-2">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="../assets/images/systems/logo.png?v=<?= file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="36" style="height: 36px; width: auto; object-fit: contain;">
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body p-4">
+                <ul class="nav nav-pills nav-fill mb-3 gb-auth-nav" id="modalAuthTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active py-2" id="modal-login-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-login" type="button" role="tab">
+                            Đăng nhập
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-2" id="modal-register-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-register" type="button" role="tab">
+                            Đăng ký
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="modalAuthTabContent">
+                    <div class="tab-pane fade show active" id="modal-tab-login" role="tabpanel">
+                        <form action="index.php" method="post">
+                            <input type="hidden" name="action" value="xldangnhap">
+                            <div class="mb-3">
+                                <label class="form-label small fw-medium text-light">Địa chỉ Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
+                                    <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-medium text-light">Mật khẩu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="password" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" required>
+                                </div>
+                            </div>
+                            <button class="btn btn-auth-submit w-100 fw-semibold py-2 mt-2" type="submit">
+                                <i class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="modal-tab-register" role="tabpanel">
+                        <form action="index.php" method="post">
+                            <input type="hidden" name="action" value="xldangky">
+                            <div class="mb-2">
+                                <label class="form-label small fw-medium text-light">Họ và tên</label>
+                                <input type="text" class="form-control" name="txthoten" placeholder="Nguyễn Văn A" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small fw-medium text-light">Địa chỉ Email</label>
+                                <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small fw-medium text-light">Số điện thoại</label>
+                                <input type="tel" class="form-control" name="txtsodt" placeholder="0901234567" pattern="[0-9]{10}" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small fw-medium text-light">Mật khẩu</label>
+                                <input type="password" class="form-control" name="txtmatkhau" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-medium text-light">Xác nhận mật khẩu</label>
+                                <input type="password" class="form-control" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu" required>
+                            </div>
+                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
+                                <i class="fa-solid fa-user-plus me-1"></i> Đăng ký tài khoản
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <style>
     /* Hỗ trợ rê chuột (hover) trên màn hình máy tính cho menu 3 gạch */
     @media (min-width: 992px) {
