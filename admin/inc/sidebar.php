@@ -6,6 +6,7 @@ $isNhanSu = (strpos($currentScript, 'qlnhansu') !== false || strpos($currentUri,
 $isDanhMuc = (strpos($currentScript, 'qldanhmuc') !== false || strpos($currentUri, 'qldanhmuc') !== false);
 $isSanPham = (strpos($currentScript, 'qlsanpham') !== false || strpos($currentUri, 'qlsanpham') !== false);
 $isKhachHang = (strpos($currentScript, 'qlkhachhang') !== false || strpos($currentUri, 'qlkhachhang') !== false);
+$isDonHang = (strpos($currentScript, 'qldonhang') !== false || strpos($currentUri, 'qldonhang') !== false);
 $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] === 1;
 ?>
 <nav id="sidebar" class="sidebar js-sidebar">
@@ -72,6 +73,13 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                 <a class="sidebar-link" href="../qlkhachhang/index.php">
                     <i class="align-middle" data-feather="user-check"></i>
                     <span class="align-middle">Quản lý khách hàng</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item <?= $isDonHang ? 'active' : '' ?>">
+                <a class="sidebar-link" href="../qldonhang/index.php">
+                    <i class="align-middle" data-feather="truck"></i>
+                    <span class="align-middle">Quản lý đơn hàng</span>
                 </a>
             </li>
 
