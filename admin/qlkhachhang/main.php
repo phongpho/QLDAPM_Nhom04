@@ -43,7 +43,7 @@
                                         <i class="fa fa-shield-halved me-1"></i> Quản trị viên
                                     </span>
                                 <?php else: ?>
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle" title="Nhân viên có quyền xem, tạo và hỗ trợ khách hàng">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle" title="Nhân viên có quyền xem và hỗ trợ khách hàng">
                                         <i class="fa fa-user-check me-1"></i> Nhân viên
                                     </span>
                                 <?php endif; ?>
@@ -51,11 +51,6 @@
                             <p class="gb-subtitle mb-0">
                                 Quản lý danh sách thành viên, theo dõi lịch sử mua sắm và hỗ trợ tài khoản khách hàng GymBro.
                             </p>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-gb-primary shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#formThemKhachHang" aria-expanded="false" aria-controls="formThemKhachHang">
-                                <i class="fa fa-user-plus me-1"></i> Thêm khách hàng mới
-                            </button>
                         </div>
                     </div>
 
@@ -144,107 +139,6 @@
                         </div>
                         <?php unset($_SESSION["loi"]); ?>
                     <?php endif; ?>
-
-                    <!-- Form Thêm mới khách hàng (Dạng Collapse) -->
-                    <div id="formThemKhachHang" class="collapse gb-form-card mb-4">
-                        <div class="gb-form-header d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="gb-icon-box" style="width: 32px; height: 32px; font-size: 0.95rem; background-color: #eff6ff; color: #2563eb;">
-                                    <i class="fa fa-user-plus"></i>
-                                </div>
-                                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">Khởi tạo tài khoản khách hàng mới</h5>
-                            </div>
-                            <button type="button" class="btn btn-sm btn-light border" data-bs-toggle="collapse" data-bs-target="#formThemKhachHang" aria-label="Đóng form">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="p-4">
-                            <form action="index.php" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="action" value="xlthem">
-
-                                <div class="row g-4">
-                                    <!-- Cột trái: Thông tin tài khoản -->
-                                    <div class="col-12 col-lg-7">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fw-semibold small text-secondary">
-                                                    Họ và tên khách hàng <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" name="txthoten" class="form-control" placeholder="Ví dụ: Nguyễn Văn An" required>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label class="form-label fw-semibold small text-secondary">
-                                                    Số điện thoại <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" name="txtsodt" class="form-control" placeholder="Ví dụ: 0912345678" required>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label class="form-label fw-semibold small text-secondary">
-                                                    Địa chỉ email <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="email" name="txtemail" class="form-control" placeholder="name@example.com" required>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label class="form-label fw-semibold small text-secondary">
-                                                    Mật khẩu khởi tạo <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="password" name="txtmatkhau" class="form-control" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label class="form-label fw-semibold small text-secondary">
-                                                    Trạng thái kích hoạt ban đầu
-                                                </label>
-                                                <select name="opttrangthai" class="form-select">
-                                                    <option value="1" selected>Đang hoạt động (Cho phép đăng nhập ngay)</option>
-                                                    <option value="0">Tạm khóa tài khoản</option>
-                                                </select>
-                                                <div class="form-text small text-muted">Có thể bật/tắt nhanh trạng thái này bất kỳ lúc nào tại bảng danh sách.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Cột phải: Ảnh đại diện & Hướng dẫn -->
-                                    <div class="col-12 col-lg-5">
-                                        <div class="p-3 bg-light rounded-3 border">
-                                            <div class="text-center mb-3">
-                                                <label class="form-label fw-semibold small text-secondary d-block text-start">
-                                                    Ảnh đại diện khách hàng
-                                                </label>
-                                                <div class="d-inline-block position-relative mb-2">
-                                                    <img id="newAvatarThumb" src="../../assets/images/users/user.png" 
-                                                         alt="Xem trước ảnh" 
-                                                         class="rounded-circle border shadow-sm"
-                                                         style="width: 110px; height: 110px; object-fit: cover; background: #ffffff;">
-                                                </div>
-                                                <input type="file" name="fhinh" id="inputAvatarImg" class="form-control form-control-sm" accept="image/*" onchange="previewUserAvatar(event)">
-                                                <div class="form-text small text-muted text-start mt-1">Định dạng hỗ trợ: JPG, PNG, WEBP. Để trống nếu sử dụng ảnh mặc định.</div>
-                                            </div>
-
-                                            <div class="border-top pt-2">
-                                                <div class="small text-muted">
-                                                    <i class="fa fa-circle-info text-primary me-1"></i>
-                                                    Tài khoản được tạo với vai trò mặc định là <strong>Khách hàng (3)</strong>. Khách hàng có thể đăng nhập trên trang công khai để đặt hàng và cập nhật hồ sơ thể trạng.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-                                    <button type="button" class="btn btn-light px-3" data-bs-toggle="collapse" data-bs-target="#formThemKhachHang">
-                                        Đóng lại
-                                    </button>
-                                    <button type="submit" class="btn btn-gb-primary px-4">
-                                        <i class="fa fa-save me-1"></i> Lưu khách hàng
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
                     <!-- Card Bảng Danh sách & Bộ lọc -->
                     <div class="gb-table-card">
@@ -450,19 +344,6 @@
         </div>
     </div>
 
-    <script>
-        function previewUserAvatar(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('newAvatarThumb');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
 </body>
 
 </html>

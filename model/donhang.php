@@ -84,6 +84,54 @@ class DONHANG
         return isset($mang[(int) $trangthai]) ? $mang[(int) $trangthai] : 'Không xác định';
     }
 
+    public function laybadgetrangthai($trangthai)
+    {
+        switch ((int) $trangthai) {
+            case 1:
+                return array(
+                    'ten' => 'Mới',
+                    'class' => 'bg-secondary-subtle text-secondary border border-secondary-subtle',
+                    'icon' => 'fa-bell'
+                );
+            case 2:
+                return array(
+                    'ten' => 'Đã xác nhận',
+                    'class' => 'bg-info-subtle text-info border border-info-subtle',
+                    'icon' => 'fa-check'
+                );
+            case 3:
+                return array(
+                    'ten' => 'Đang đóng gói',
+                    'class' => 'bg-primary-subtle text-primary border border-primary-subtle',
+                    'icon' => 'fa-box'
+                );
+            case 4:
+                return array(
+                    'ten' => 'Đang giao hàng',
+                    'class' => 'bg-warning-subtle text-warning border border-warning-subtle',
+                    'icon' => 'fa-truck-fast'
+                );
+            case 5:
+                return array(
+                    'ten' => 'Hoàn thành',
+                    'class' => 'bg-success-subtle text-success border border-success-subtle',
+                    'icon' => 'fa-circle-check'
+                );
+            case 6:
+                return array(
+                    'ten' => 'Đã hủy',
+                    'class' => 'bg-danger-subtle text-danger border border-danger-subtle',
+                    'icon' => 'fa-circle-xmark'
+                );
+            default:
+                return array(
+                    'ten' => 'Không rõ',
+                    'class' => 'bg-light text-muted border',
+                    'icon' => 'fa-question'
+                );
+        }
+    }
+
     public function laymautrangthai($trangthai)
     {
         $mang = array(
@@ -314,5 +362,163 @@ class DONHANG
             exit();
         }
     }
+
+    // --- CÁC PHƯƠNG THỨC QUẢN TRỊ ADMIN (qldonhang) ---
+
+    // Lấy toàn bộ danh sách đơn hàng cho Admin kèm số lượng mặt hàng và thông tin khách
+    public function laydanhsachdonhangquantri($tukhoa = '', $trangthai = '', $phuongthuc = '', $datt = '', $sapxep = 'moinhat')
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT dh.*,
+                           nd.hoten AS ten_taikhoan,
+                           nd.gmail AS email_taikhoan,
+                           (SELECT COUNT(*) FROM donhangct ct WHERE ct.donhang_id = dh.id) AS sosanpham,
+                           (SELECT SUM(soluong) FROM donhangct ct WHERE ct.donhang_id = dh.id) AS tongsoluong
+                    FROM donhang dh
+                    LEFT JOIN nguoidung nd ON nd.id = dh.nguoidung_id
+                    WHERE 1=1";
+
+            $params = array();
+
+            if (!empty($tukhoa)) {
+                $sql .= " AND (dh.madonhang LIKE :kw OR dh.tennguoinhan LIKE :kw OR dh.sdtnhan LIKE :kw OR nd.hoten LIKE :kw OR nd.gmail LIKE :kw)";
+                $params[':kw'] = '%' . trim($tukhoa) . '%';
+            }
+
+            if ($trangthai !== '' && is_numeric($trangthai)) {
+                $sql .= " AND dh.trangthai = :trangthai";
+                $params[':trangthai'] = (int) $trangthai;
+            }
+
+            if (!empty($phuongthuc)) {
+                $sql .= " AND dh.phuongthuc_tt = :phuongthuc";
+                $params[':phuongthuc'] = $phuongthuc;
+            }
+
+            if ($datt !== '' && is_numeric($datt)) {
+                $sql .= " AND dh.datt = :datt";
+                $params[':datt'] = (int) $datt;
+            }
+
+            switch ($sapxep) {
+                case 'cuNhat':
+                    $sql .= " ORDER BY dh.id ASC";
+                    break;
+                case 'giacao':
+                    $sql .= " ORDER BY dh.tongtien DESC, dh.id DESC";
+                    break;
+                case 'giathap':
+                    $sql .= " ORDER BY dh.tongtien ASC, dh.id DESC";
+                    break;
+                case 'moinhat':
+                default:
+                    $sql .= " ORDER BY dh.id DESC";
+                    break;
+            }
+
+            $cmd = $dbcon->prepare($sql);
+            foreach ($params as $key => $val) {
+                $cmd->bindValue($key, $val);
+            }
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // Thống kê nhanh đơn hàng phục vụ 4 thẻ KPI Metrics
+    public function thongkedonhangquantri()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT 
+                        COUNT(*) AS tong_don,
+                        SUM(CASE WHEN trangthai = 1 THEN 1 ELSE 0 END) AS don_moi,
+                        SUM(CASE WHEN trangthai = 2 THEN 1 ELSE 0 END) AS don_xacnhan,
+                        SUM(CASE WHEN trangthai IN (3, 4) THEN 1 ELSE 0 END) AS don_vanchuyen,
+                        SUM(CASE WHEN trangthai = 5 THEN 1 ELSE 0 END) AS don_hoanthanh,
+                        SUM(CASE WHEN trangthai = 6 THEN 1 ELSE 0 END) AS don_huy,
+                        SUM(CASE WHEN trangthai = 5 THEN tongtien ELSE 0 END) AS doanhthu_hoanthanh,
+                        SUM(CASE WHEN trangthai != 6 THEN tongtien ELSE 0 END) AS tong_doanhso
+                    FROM donhang";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+
+            return array(
+                'tong_don' => (int) ($row['tong_don'] ?? 0),
+                'don_moi' => (int) ($row['don_moi'] ?? 0),
+                'don_xacnhan' => (int) ($row['don_xacnhan'] ?? 0),
+                'don_vanchuyen' => (int) ($row['don_vanchuyen'] ?? 0),
+                'don_hoanthanh' => (int) ($row['don_hoanthanh'] ?? 0),
+                'don_huy' => (int) ($row['don_huy'] ?? 0),
+                'doanhthu_hoanthanh' => (float) ($row['doanhthu_hoanthanh'] ?? 0),
+                'tong_doanhso' => (float) ($row['tong_doanhso'] ?? 0)
+            );
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // Cập nhật thông tin vận chuyển & ghi chú nội bộ
+    public function capnhatvanchuyen($donhang_id, $doitacgiaohang, $ghichu)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "UPDATE donhang SET doitacgiaohang = :doitac, ghichu = :ghichu WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":doitac", trim($doitacgiaohang));
+            $cmd->bindValue(":ghichu", trim($ghichu));
+            $cmd->bindValue(":id", (int) $donhang_id, PDO::PARAM_INT);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // Xóa đơn hàng (Chỉ cho phép Admin xóa khi đơn đã Hủy - trangthai = 6)
+    public function xoadonhang($donhang_id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sqlKiemtra = "SELECT trangthai FROM donhang WHERE id = :id";
+            $cmdKiemtra = $dbcon->prepare($sqlKiemtra);
+            $cmdKiemtra->bindValue(":id", (int) $donhang_id, PDO::PARAM_INT);
+            $cmdKiemtra->execute();
+            $dh = $cmdKiemtra->fetch(PDO::FETCH_ASSOC);
+
+            if (!$dh) {
+                return array('ok' => false, 'message' => 'Đơn hàng không tồn tại!');
+            }
+
+            if ((int) $dh['trangthai'] !== 6) {
+                return array('ok' => false, 'message' => 'Chỉ được phép xóa đơn hàng đã ở trạng thái ĐÃ HỦY để bảo toàn số liệu kế toán!');
+            }
+
+            $dbcon->beginTransaction();
+
+            $sqlCt = "DELETE FROM donhangct WHERE donhang_id = :id";
+            $cmdCt = $dbcon->prepare($sqlCt);
+            $cmdCt->bindValue(":id", (int) $donhang_id, PDO::PARAM_INT);
+            $cmdCt->execute();
+
+            $sqlDh = "DELETE FROM donhang WHERE id = :id";
+            $cmdDh = $dbcon->prepare($sqlDh);
+            $cmdDh->bindValue(":id", (int) $donhang_id, PDO::PARAM_INT);
+            $cmdDh->execute();
+
+            $dbcon->commit();
+            return array('ok' => true, 'message' => 'Đã xóa đơn hàng thành công!');
+        } catch (Exception $e) {
+            if ($dbcon->inTransaction()) {
+                $dbcon->rollBack();
+            }
+            return array('ok' => false, 'message' => 'Lỗi khi xóa đơn hàng: ' . $e->getMessage());
+        }
+    }
 }
-?>
