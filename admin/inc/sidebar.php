@@ -43,7 +43,7 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                     </a>
                 </li>
 
-                <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlchisoBMI') !== false) ? 'active' : '' ?>">
+                <li class="sidebar-item <?= (strpos($currentScript, 'qlchisoBMI') !== false || strpos($currentUri, 'qlchisoBMI') !== false) ? 'active' : '' ?>">
                     <a class="sidebar-link" href="../qlchisoBMI/index.php">
                         <i class="align-middle" data-feather="heart"></i>
                         <span class="align-middle">Cấu hình chỉ số BMI</span>
@@ -83,17 +83,14 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
-                    <i class="align-middle" data-feather="bar-chart-2"></i>
-                    <span class="align-middle">Báo cáo doanh thu</span>
-                </a>
+            <li class="sidebar-header">
+                CỬA HÀNG TRỰC TUYẾN
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
-                    <i class="align-middle" data-feather="tag"></i>
-                    <span class="align-middle">Chương trình ưu đãi</span>
+                <a class="sidebar-link" href="../../public/index.php" target="_blank">
+                    <i class="align-middle text-success" data-feather="external-link"></i>
+                    <span class="align-middle">Xem Website Khách</span>
                 </a>
             </li>
         </ul>

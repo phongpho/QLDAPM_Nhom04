@@ -4,61 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập & Đăng ký - GYMBRO</title>
+    <title>Đăng nhập &amp; Đăng ký - GYMBRO</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="../assets/css/main.css?v=<?= file_exists(__DIR__ . '/../assets/css/main.css') ? filemtime(__DIR__ . '/../assets/css/main.css') : time(); ?>" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0d0d0d;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 10%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(239, 68, 68, 0.08) 0%, transparent 40%),
+                        #070a0f !important;
+            min-height: 100vh;
         }
-        .card {
-            background-color: #141414 !important;
-            border-color: #2a2a2a !important;
+        .gb-auth-card {
+            background: #141c2b !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(249, 115, 22, 0.1) !important;
+            width: 440px;
+            max-width: 94%;
         }
-        .form-control, .input-group-text {
-            background-color: #1e1e1e !important;
-            border-color: #333 !important;
-            color: #e0e0e0 !important;
+        .gb-auth-nav {
+            background: #101622;
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .form-control::placeholder {
-            color: #555 !important;
-        }
-        .form-control:focus {
-            background-color: #242424 !important;
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 0 0.2rem rgba(220,53,69,.15) !important;
-        }
-        .bg-body-tertiary {
-            background-color: #1e1e1e !important;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
+        .gb-auth-nav .nav-link {
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            color: #94a3b8 !important;
             transition: all 0.2s ease;
         }
-        .btn-danger:hover {
-            background-color: #bb2d3b;
-            border-color: #b02a37;
+        .gb-auth-nav .nav-link.active {
+            background-color: var(--gs-primary) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
         }
-        .nav-pills .nav-link {
-            color: #adb5bd;
-            font-weight: 500;
+        .form-control, .input-group-text {
+            background-color: #101622 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
         }
-        .nav-pills .nav-link.active {
-            background-color: #dc3545;
-            color: #fff;
+        .form-control:focus {
+            border-color: var(--gs-primary) !important;
+            box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.2) !important;
+            background-color: #141c2b !important;
+        }
+        .btn-auth-submit {
+            background-color: var(--gs-primary);
+            border-color: var(--gs-primary);
+            color: #ffffff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+        }
+        .btn-auth-submit:hover {
+            background-color: #ea580c;
+            border-color: #ea580c;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.5);
         }
     </style>
 </head>
 
 <body>
     <main class="d-flex align-items-center justify-content-center min-vh-100 py-5">
-        <div class="card border-secondary-subtle shadow-lg" style="width: 420px; max-width: 92%;">
-            <div class="card-body p-4">
+        <div class="card gb-auth-card">
+            <div class="card-body p-4 p-sm-5">
 
                 <!-- logo & tiêu đề -->
                 <div class="text-center mb-3">
@@ -82,7 +106,7 @@
                 <?php endif; ?>
 
                 <!-- Tab Đăng nhập / Đăng ký -->
-                <ul class="nav nav-pills nav-fill mb-4 bg-body-tertiary p-1 rounded-3" id="authTab" role="tablist">
+                <ul class="nav nav-pills nav-fill mb-4 gb-auth-nav" id="authTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link <?= (!isset($tabActive) || $tabActive === 'login') ? 'active' : '' ?> py-2"
                             id="login-tab" data-bs-toggle="pill" data-bs-target="#tab-login" type="button" role="tab">
@@ -106,9 +130,9 @@
                             <input type="hidden" name="action" value="xldangnhap">
 
                             <div class="mb-3">
-                                <label for="login-email" class="form-label small fw-medium">Địa chỉ Email</label>
+                                <label for="login-email" class="form-label small fw-medium text-light">Địa chỉ Email</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-body-tertiary text-body-secondary">
+                                    <span class="input-group-text">
                                         <i class="fa-regular fa-envelope"></i>
                                     </span>
                                     <input type="email" class="form-control" id="login-email" name="txtemail"
@@ -119,11 +143,11 @@
 
                             <div class="mb-4">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <label for="login-pass" class="form-label small fw-medium mb-0">Mật khẩu</label>
+                                    <label for="login-pass" class="form-label small fw-medium mb-0 text-light">Mật khẩu</label>
                                     <a href="#" class="link-secondary small text-decoration-none">Quên mật khẩu?</a>
                                 </div>
                                 <div class="input-group mt-1">
-                                    <span class="input-group-text bg-body-tertiary text-body-secondary">
+                                    <span class="input-group-text">
                                         <i class="fa-solid fa-lock"></i>
                                     </span>
                                     <input type="password" class="form-control" id="login-pass" name="txtmatkhau"
@@ -131,7 +155,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-danger w-100 fw-semibold py-2" type="submit">
+                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
                                 <i class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập
                             </button>
                         </form>
@@ -176,7 +200,7 @@
                                     placeholder="Nhập lại mật khẩu" required>
                             </div>
 
-                            <button class="btn btn-danger w-100 fw-semibold py-2" type="submit">
+                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
                                 <i class="fa-solid fa-user-plus me-1"></i> Đăng ký tài khoản
                             </button>
                         </form>
