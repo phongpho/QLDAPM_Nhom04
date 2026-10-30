@@ -5,8 +5,8 @@
     --gs-text: #000000;
     --gs-muted: #767676;
     --gs-border: #e5e5e5;
-    --gs-radius: 4px;
-    --gs-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    --gs-radius: 8px;
+    --gs-font: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --gs-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -26,6 +26,8 @@ body {
     background: var(--gs-white);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.011em;
     overflow-x: hidden;
 }
 
@@ -120,14 +122,14 @@ img {
     justify-content: center;
     gap: 0.5rem;
     font-family: var(--gs-font);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.01em;
     border-radius: var(--gs-radius);
     border: 1px solid transparent;
-    padding: 0.8rem 1.75rem;
-    font-size: 0.82rem;
-    line-height: 1;
+    padding: 0.75rem 1.6rem;
+    font-size: 0.92rem;
+    line-height: 1.25;
     cursor: pointer;
     transition: var(--gs-transition);
     white-space: nowrap;
@@ -191,36 +193,37 @@ img {
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.3em;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #ffffff;
-    margin-bottom: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.1rem;
 }
 
 .gs-hero__kicker::before {
     content: "";
-    width: 42px;
+    width: 32px;
     height: 2px;
     background: #ffffff;
 }
 
 .gs-hero__title {
-    font-size: clamp(2.4rem, 6vw, 4.6rem);
-    font-weight: 900;
-    letter-spacing: -1px;
-    line-height: 0.98;
-    text-transform: uppercase;
+    font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.18;
+    text-transform: none;
     margin: 0 0 1.25rem;
 }
 
 .gs-hero__sub {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.85);
-    max-width: 520px;
-    line-height: 1.65;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 540px;
+    line-height: 1.6;
     margin-bottom: 2rem;
+    font-weight: 400;
 }
 
 .gs-hero__cta {
@@ -246,30 +249,31 @@ img {
     align-items: flex-end;
     justify-content: space-between;
     gap: 1.5rem;
-    margin-bottom: 2.25rem;
+    margin-bottom: 2rem;
 }
 
 .gs-section__title {
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    text-transform: uppercase;
-    font-size: 1.7rem;
-    line-height: 1.1;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+    text-transform: none;
+    font-size: 1.75rem;
+    line-height: 1.25;
     margin: 0;
 }
 
 .gs-section__sub {
     color: var(--gs-muted);
-    font-size: 0.9rem;
-    max-width: 480px;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    max-width: 540px;
+    line-height: 1.55;
+    font-weight: 400;
 }
 
 .gs-section__link {
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-transform: none;
     color: var(--gs-black);
     white-space: nowrap;
     display: inline-flex;
@@ -327,17 +331,18 @@ img {
 }
 
 .gs-cat-card__title {
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.3px;
-    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.015em;
+    font-size: 1.18rem;
     margin: 0;
 }
 
 .gs-cat-card__count {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.88);
     margin-top: 0.25rem;
+    font-weight: 500;
 }
 
 /* ============================================================
@@ -386,13 +391,13 @@ img {
 }
 
 .badge-gs {
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    padding: 0.28rem 0.55rem;
-    border-radius: 2px;
-    line-height: 1;
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+    line-height: 1.2;
     display: inline-block;
 }
 
@@ -487,24 +492,26 @@ img {
 }
 
 .gs-product-card__cat {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     color: var(--gs-muted);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
+    font-weight: 600;
     margin-bottom: 0.25rem;
 }
 
 .gs-product-card__name {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--gs-black);
-    line-height: 1.35;
+    line-height: 1.4;
     margin-bottom: 0.45rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 2.5rem;
+    min-height: 2.65rem;
 }
 
 .gs-product-card__name:hover {
@@ -1202,15 +1209,17 @@ img {
 }
 
 .gs-goiy-summary__item span {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 600;
 }
 
 .gs-goiy-summary__item strong {
     font-size: 1.05rem;
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .gs-goiy-summary__item small {
