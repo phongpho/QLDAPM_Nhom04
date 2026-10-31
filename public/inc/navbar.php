@@ -48,66 +48,87 @@
             </ul>
             <div class="d-flex align-items-center gap-3 pt-3 pt-lg-0">
                 <!-- thanh tim kiem -->
-                <form action="index.php" method="get" class="m-0 d-flex align-items-center gap-1">
+                <form action="index.php" method="get" class="m-0 d-flex align-items-center gap-1 gs-nav-search-form position-relative">
                     <input type="hidden" name="action" value="sanpham">
                     <div class="input-group input-group-sm">
-                        <input type="text" name="q"
+                        <input type="text" name="q" id="gsNavSearchInput"
                             class="form-control text-white border-secondary"
                             style="background-color: #1a1a1a; min-width: 200px; color: #fff !important;"
                             placeholder="Tìm sản phẩm..."
                             value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
+                            autocomplete="off"
                             required>
                         <button class="btn btn-danger px-3 d-flex align-items-center justify-content-center" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
                     <a href="index.php?action=sanpham" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center px-2 py-1" style="height: 31px;" title="Bộ lọc nâng cao"><i class="fa-solid fa-filter"></i></a>
+                    <!-- hop goi y live search -->
+                    <div class="gs-live-search-dropdown shadow-lg" id="gsLiveSearchDropdown" style="display: none;"></div>
                 </form>
                 <!-- Menu dropdown 3 dấu gạch ngang (Bootstrap) -->
                 <div class="dropdown gs-user-dropdown">
                     <button class="btn btn-outline-secondary border-0 text-white p-2" type="button" id="menuNguoiDung" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false" title="Menu tài khoản">
                         <i class="fa-solid fa-bars fs-4"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary p-2" aria-labelledby="menuNguoiDung" style="min-width: 230px;">
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary p-2 gs-user-menu-dropdown" aria-labelledby="menuNguoiDung">
                         <?php if (isset($_SESSION['nguoidung'])): ?>
                             <li class="px-3 py-2 text-white-50 small border-bottom border-secondary mb-1">
                                 Xin chào, <strong class="text-white d-block text-truncate"><?= htmlspecialchars($_SESSION['nguoidung']['hoten']) ?></strong>
                             </li>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="taikhoan.php">
-                                    <i class="fa-solid fa-id-card text-info"></i> Hồ sơ cá nhân
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="taikhoan.php">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="gs-menu-icon-box"><i class="fa-solid fa-id-card"></i></span>
+                                        <span>Hồ sơ cá nhân</span>
+                                    </span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=donhang">
-                                    <i class="fa-solid fa-box text-success"></i> Đơn hàng của tôi
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=donhang">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="gs-menu-icon-box"><i class="fa-solid fa-box"></i></span>
+                                        <span>Đơn hàng của tôi</span>
+                                    </span>
                                 </a>
                             </li>
                         <?php else: ?>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="index.php?action=dangnhap" data-bs-toggle="modal" data-bs-target="#gsAuthModal">
-                                    <i class="fa-solid fa-right-to-bracket text-danger"></i> Đăng nhập / Đăng ký
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=dangnhap" data-bs-toggle="modal" data-bs-target="#gsAuthModal">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="gs-menu-icon-box"><i class="fa-solid fa-right-to-bracket"></i></span>
+                                        <span>Đăng nhập / Đăng ký</span>
+                                    </span>
                                 </a>
                             </li>
                         <?php endif; ?>
                         <li><hr class="dropdown-divider border-secondary my-1"></li>
                         <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=yeuthich">
-                                <span><i class="fa-regular fa-heart text-danger me-2"></i> Yêu thích</span>
+                                <span class="d-flex align-items-center gap-2">
+                                    <span class="gs-menu-icon-box"><i class="fa-regular fa-heart"></i></span>
+                                    <span>Yêu thích</span>
+                                </span>
                                 <span class="badge rounded-pill bg-danger" id="badgeYeuthichNavbar"><?php echo isset($gsSoluongYeuthich) ? (int) $gsSoluongYeuthich : 0; ?></span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=giohang">
-                                <span><i class="fa-solid fa-bag-shopping text-warning me-2"></i> Giỏ hàng</span>
+                                <span class="d-flex align-items-center gap-2">
+                                    <span class="gs-menu-icon-box"><i class="fa-solid fa-bag-shopping"></i></span>
+                                    <span>Giỏ hàng</span>
+                                </span>
                                 <span class="badge rounded-pill bg-warning text-dark fw-bold" id="badgeGiohangNavbar"><?php echo isset($gh) ? (int) $gh->dem() : 0; ?></span>
                             </a>
                         </li>
                         <?php if (isset($_SESSION['nguoidung'])): ?>
                             <li><hr class="dropdown-divider border-secondary my-1"></li>
                             <li>
-                                <a class="dropdown-item py-2 text-danger d-flex align-items-center gap-2" href="index.php?action=dangxuat">
-                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=dangxuat">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="gs-menu-icon-box gs-menu-icon-box--danger"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                                        <span class="text-danger">Đăng xuất</span>
+                                    </span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -202,11 +223,87 @@
 <?php endif; ?>
 
 <style>
-    /* Hỗ trợ rê chuột (hover) trên màn hình máy tính cho menu 3 gạch */
+    /* tuy chinh dropdown menu 3 gach dong bo theme gymbro */
+    .gs-user-dropdown .gs-user-menu-dropdown {
+        min-width: 260px !important;
+        background: #0b0f17 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+        padding: 8px !important;
+    }
+
+    .gs-user-dropdown .dropdown-item {
+        color: #94a3b8 !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        padding: 9px 12px !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .gs-user-dropdown .dropdown-item:hover {
+        background: rgba(249, 115, 22, 0.12) !important;
+        color: #ffffff !important;
+        transform: translateX(3px);
+    }
+
+    /* o chua icon kieu khung vuong mau vang cam giong nut tim kiem va loc */
+    .gs-menu-icon-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: rgba(249, 115, 22, 0.15);
+        border: 1.5px solid #f97316;
+        color: #f97316;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+    }
+
+    .gs-user-dropdown .dropdown-item:hover .gs-menu-icon-box {
+        background: #f97316;
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(249, 115, 22, 0.45);
+    }
+
+    .gs-menu-icon-box--danger {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+
+    .gs-user-dropdown .dropdown-item:hover .gs-menu-icon-box--danger {
+        background: #ef4444;
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.45);
+    }
+
+    .gs-user-dropdown .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        margin: 6px 0 !important;
+    }
+
+    /* ho tro re chuot tren desktop */
     @media (min-width: 992px) {
         .gs-user-dropdown:hover .dropdown-menu {
             display: block;
             margin-top: 0;
+            animation: gsFadeDown 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    }
+
+    @keyframes gsFadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 </style>
@@ -258,5 +355,177 @@
                 }
             });
         }
+    });
+</script>
+<style>
+    /* live search dropdown tren navbar */
+    .gs-live-search-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 100%;
+        min-width: 330px;
+        background: #0b0f17;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        z-index: 1080;
+        overflow: hidden;
+        animation: gsFadeDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gs-live-search-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 12px;
+        color: #f8fafc;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        transition: all 0.18s ease;
+    }
+
+    .gs-live-search-item:last-child {
+        border-bottom: none;
+    }
+
+    .gs-live-search-item:hover {
+        background: rgba(249, 115, 22, 0.12);
+        color: #ffffff;
+    }
+
+    .gs-live-search-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 6px;
+        object-fit: cover;
+        background: #161616;
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gs-live-search-info {
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .gs-live-search-title {
+        font-size: 0.86rem;
+        font-weight: 600;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-truncate: ellipsis;
+        display: block;
+        color: #f1f5f9;
+    }
+
+    .gs-live-search-meta {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .gs-live-search-price {
+        color: #f97316;
+        font-weight: 700;
+    }
+
+    .gs-live-search-footer {
+        padding: 8px 12px;
+        background: #070a0f;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gs-live-search-footer a {
+        color: #f97316;
+        text-decoration: none;
+    }
+
+    .gs-live-search-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+<script>
+    // xu ly live search ajax tren navbar
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('gsNavSearchInput');
+        const dropdown = document.getElementById('gsLiveSearchDropdown');
+        let timer = null;
+
+        if (!input || !dropdown) return;
+
+        input.addEventListener('input', function () {
+            const query = input.value.trim();
+            clearTimeout(timer);
+
+            if (query.length < 2) {
+                dropdown.innerHTML = '';
+                dropdown.style.display = 'none';
+                return;
+            }
+
+            timer = setTimeout(function () {
+                fetch('index.php?action=ajax_timkiem&q=' + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok || !res.data || res.data.length === 0) {
+                            dropdown.innerHTML = '<div class="p-3 text-center text-secondary small"><i class="fa-solid fa-magnifying-glass me-1 text-warning"></i> Không tìm thấy sản phẩm phù hợp</div>';
+                            dropdown.style.display = 'block';
+                            return;
+                        }
+
+                        let html = '';
+                        res.data.forEach(item => {
+                            html += `
+                                <a href="index.php?action=chitiet&id=${item.id}" class="gs-live-search-item">
+                                    <img src="${item.hinhanh}" alt="" class="gs-live-search-img" onerror="this.src='../assets/images/systems/logo.png'">
+                                    <div class="gs-live-search-info">
+                                        <span class="gs-live-search-title">${item.tensanpham}</span>
+                                        <div class="gs-live-search-meta">
+                                            <span class="gs-live-search-price">${item.giaban_format}</span>
+                                            ${item.tenthuonghieu ? '<span class="badge bg-dark border border-secondary text-secondary">' + item.tenthuonghieu + '</span>' : ''}
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-secondary small"></i>
+                                </a>
+                            `;
+                        });
+
+                        html += `
+                            <div class="gs-live-search-footer">
+                                <a href="index.php?action=sanpham&q=${encodeURIComponent(query)}">
+                                    Xem tất cả kết quả cho "${query}" <i class="fa-solid fa-arrow-right-long ms-1"></i>
+                                </a>
+                            </div>
+                        `;
+
+                        dropdown.innerHTML = html;
+                        dropdown.style.display = 'block';
+                    })
+                    .catch(() => {
+                        dropdown.style.display = 'none';
+                    });
+            }, 250);
+        });
+
+        // an dropdown khi click ra ngoai
+        document.addEventListener('click', function (e) {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // hien lai dropdown neu input van co chu khi click vao
+        input.addEventListener('focus', function () {
+            if (input.value.trim().length >= 2 && dropdown.innerHTML.trim() !== '') {
+                dropdown.style.display = 'block';
+            }
+        });
     });
 </script>
