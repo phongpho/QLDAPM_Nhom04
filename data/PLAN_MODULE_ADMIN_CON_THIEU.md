@@ -1,6 +1,6 @@
 # PHÂN TÍCH DATABASE & KẾ HOẠCH BỔ SUNG CÁC MODULE QUẢN LÝ CÒN THIẾU
-> **Tài liệu bàn giao & định hướng phát triển dành cho Developer và AI Agent tiếp quản dự án GymBro**  
-> *Được biên soạn dựa trên cơ sở dữ liệu `data/gymshop.sql` và cấu trúc các module Admin hiện tại*
+> **Tài liệu theo dõi tiến độ & hiện trạng các module Quản trị dự án GymBro**  
+> *Được biên soạn dựa trên cơ sở dữ liệu `data/gymshop.sql` và cấu trúc các module Admin*
 
 ---
 
@@ -17,66 +17,54 @@
 | 7 | `cauhinh_bmi` & `cauhinh_bmi_sanpham` | ✅ Có | `admin/qlchisoBMI` | Cấu hình dải đo BMI & Gán sản phẩm gợi ý |
 | 8 | `donhang` & `donhangct` | ✅ Có | `admin/qldonhang` | Quản lý đơn hàng, điều phối vận chuyển & doanh số |
 | 9 | `giohang` & `yeuthich` | ℹ️ Bảng động | Xử lý tự động qua Client | Dữ liệu phiên tạm thời & danh sách yêu thích của khách |
-| 10 | **`thuonghieu`** | ❌ **CHƯA CÓ** | *(Chưa có `admin/qlthuonghieu`)* | **RẤT CẦN THIẾT (Ưu tiên 1)** |
-| 11 | **`voucher`** | ❌ **CHƯA CÓ** | *(Chưa có `admin/qlvoucher`)* | **RẤT CẦN THIẾT (Ưu tiên 2)** |
-| 12 | **`danhgia`** | ❌ **CHƯA CÓ** | *(Chưa có `admin/qldanhgia`)* | **NÊN CÓ (Ưu tiên 3 - Duyệt bình luận)** |
-| 13 | **`tintuc`** | ❌ **CHƯA CÓ** | *(Chưa có `admin/qltintuc`)* | **TÙY CHỌN (Ưu tiên 4 - Tin bài/Sự kiện)** |
+| 10 | **`thuonghieu`** | ✅ **HOÀN THÀNH** | `admin/qlthuonghieu` | Quản lý thương hiệu, đếm sản phẩm, logo, ẩn/hiện, chống xóa ràng buộc |
+| 11 | **`voucher`** | ✅ **HOÀN THÀNH** | `admin/qlvoucher` | Quản lý mã giảm giá (%, tiền mặt), KPI, progress bar dùng, đơn tối thiểu |
+| 12 | **`danhgia`** | ✅ **HOÀN THÀNH** | `admin/qldanhgia` | Kiểm duyệt đánh giá khách hàng, xếp hạng sao, ẩn/hiển thị ngoài website |
+| 13 | **`tintuc`** | ✅ **HOÀN THÀNH** | `admin/qltintuc` | Đăng & quản lý cẩm nang dinh dưỡng, sự kiện, thông báo khuyến mãi |
 
 ---
 
-## 2. CHI TIẾT 4 MỤC QUẢN LÝ CÒN THIẾU CẦN BỔ SUNG
+## 2. CHI TIẾT 4 MỤC QUẢN LÝ ĐÃ HOÀN THÀNH
 
-### 🔴 Mục 1: Quản lý Thương hiệu (`admin/qlthuonghieu`) — *ƯU TIÊN CAO NHẤT*
-- **Thực trạng**: Bảng `thuonghieu` đã có sẵn trong CSDL (`id`, `tenthuonghieu`, `logo`, `trangthai`), bảng `sanpham` có khóa ngoại `thuonghieu_id`, nhưng trong Admin chưa có trang CRUD thương hiệu. Khi thêm/sửa sản phẩm, Admin chỉ chọn được các thương hiệu có sẵn trong dữ liệu mẫu.
-- **Tính năng cần xây dựng**:
-  - Xem danh sách thương hiệu (logo, tên hãng, số lượng sản phẩm đang liên kết, trạng thái ẩn/hiện).
-  - Thêm thương hiệu mới kèm upload logo.
-  - Sửa thương hiệu & Đổi nhanh trạng thái `trangthai` (1 $\leftrightarrow$ 0).
-  - Ràng buộc toàn vẹn: Thương hiệu đã có sản phẩm thì chỉ được Ẩn, không được xóa cứng (chuẩn quy tắc Admin).
-
----
-
-### 🔴 Mục 2: Quản lý Khuyến mãi & Mã giảm giá (`admin/qlvoucher`) — *ƯU TIÊN CAO*
-- **Thực trạng**: Bảng `voucher` đã có sẵn đầy đủ thuộc tính trong CSDL:
-  - `ma`: Mã voucher (VD: `GYMNEW`, `FREESHIP50`, `WHEY10`).
-  - `loai`: Giảm theo phần trăm (`phantram`) hoặc tiền mặt (`sotien`).
-  - `giatri`, `donhang_toithieu`, `giamtoida`, `ngayhethan`, `soluong`, `dasudung`, `trangthai`.
-  - Model `model/voucher.php` đã có sẵn các hàm cơ bản, đơn hàng `qldonhang` cũng đang đọc mã voucher, nhưng Admin **chưa có giao diện tạo và quản lý mã voucher**.
-- **Tính năng cần xây dựng**:
-  - Thống kê voucher: Đang hiệu lực, Hết hạn, Hết lượt sử dụng.
-  - Tạo mới mã voucher: Thiết lập % hoặc số tiền giảm, đơn tối thiểu, hạn sử dụng, giới hạn lượt dùng.
-  - Khóa/Tạm dừng phát hành voucher (Toggle `trangthai`).
+### ✅ Mục 1: Quản lý Thương hiệu (`admin/qlthuonghieu`)
+- **Tập tin**: `model/thuonghieu.php`, `admin/qlthuonghieu/index.php`, `admin/qlthuonghieu/main.php`.
+- **Tính năng**:
+  - Xem danh sách thương hiệu, logo trực quan, đếm sản phẩm đang liên kết.
+  - Thêm thương hiệu mới kèm tải lên logo (JPG, PNG, WEBP, SVG) vào thư mục ảnh chuẩn.
+  - Sửa thương hiệu & Đổi nhanh trạng thái `trangthai` (1 ↔ 0).
+  - Ràng buộc an toàn: Không cho phép xóa thương hiệu đã có sản phẩm (bảo toàn toàn vẹn dữ liệu).
 
 ---
 
-### 🟡 Mục 3: Quản lý Đánh giá & Phản hồi (`admin/qldanhgia`) — *ƯU TIÊN TRUNG BÌNH*
-- **Thực trạng**: Bảng `danhgia` lưu đánh giá sản phẩm của khách (`nguoidung_id`, `sanpham_id`, `sao` 1-5 sao, `noidung`, `trangthai` 1 hiện / 0 ẩn, `ngay`).
-- **Tính năng cần xây dựng**:
-  - Kiểm duyệt phản hồi của khách hàng: Cho phép ẩn/xóa các đánh giá vi phạm, spam hoặc khiếm nhã trước khi hiển thị ngoài website.
-  - Thống kê tỷ lệ đánh giá sao trung bình theo từng sản phẩm.
+### ✅ Mục 2: Quản lý Khuyến mãi & Mã giảm giá (`admin/qlvoucher`)
+- **Tập tin**: `model/voucher.php`, `admin/qlvoucher/index.php`, `admin/qlvoucher/main.php`.
+- **Tính năng**:
+  - Thống kê 4 thẻ KPI: Tổng voucher, Đang áp dụng, Đã hết hạn, Đã hết lượt dùng.
+  - Tạo mới voucher: Giảm theo % (có trần giảm tối đa) hoặc giảm tiền mặt trực tiếp.
+  - Quản lý hạn sử dụng, điều kiện đơn hàng tối thiểu, tiến độ sử dụng (`dasudung / soluong`).
+  - Bảo toàn kế toán: Voucher đã có lượt dùng sẽ tự động chuyển sang tạm dừng/khóa thay vì xóa cứng.
 
 ---
 
-### ⚪ Mục 4: Quản lý Bài viết & Tin tức (`admin/qltintuc`) — *TÙY CHỌN*
-- **Thực trạng**: Bảng `tintuc` (`tieude`, `noidung`, `hinhanh`, `loai` tintuc/sukien/khuyenmai, `trangthai`, `ngaydang`).
-- **Tính năng**: Quản lý các bài viết cẩm nang tập gym, kiến thức dinh dưỡng, thông báo sự kiện khuyến mãi cho website.
+### ✅ Mục 3: Quản lý Đánh giá & Phản hồi (`admin/qldanhgia`)
+- **Tập tin**: `model/danhgia.php`, `admin/qldanhgia/index.php`, `admin/qldanhgia/main.php`.
+- **Tính năng**:
+  - Kiểm duyệt phản hồi của khách hàng: Cho phép ẩn/duyệt hiển thị đánh giá lên trang sản phẩm.
+  - Thống kê điểm sao trung bình, lượng đánh giá 5 sao, đánh giá chờ duyệt.
+  - Lọc theo số sao (1-5 sao), trạng thái, tìm kiếm từ khóa.
 
 ---
 
-## 3. QUY ƯỚC LẬP TRÌNH & BẢO TOÀN HỆ THỐNG KHI TRIỂN KHAI
+### ✅ Mục 4: Quản lý Bài viết & Tin tức (`admin/qltintuc`)
+- **Tập tin**: `model/tintuc.php`, `admin/qltintuc/index.php`, `admin/qltintuc/main.php`.
+- **Tính năng**:
+  - Quản lý các bài viết cẩm nang tập gym, kiến thức dinh dưỡng, thông báo sự kiện khuyến mãi cho website.
+  - Phân loại chuyên mục: Cẩm nang, Sự kiện, Khuyến mãi.
+  - Hỗ trợ tải lên ảnh bìa đại diện và chuyển đổi nhanh giữa Hiển thị / Bản nháp.
 
-Khi Agent hoặc Developer tiếp theo thực hiện phát triển các module này, **BẮT BUỘC** tuân thủ các quy tắc sau:
-1. **Bảo toàn Logic của Admin**:
-   - Tuyệt đối không được sửa đổi logic của các module Admin đã hoàn thiện.
-   - Nhân viên (`loai == 2`) chỉ được thêm, sửa, ẩn/hiện, không được xóa các thực thể có ràng buộc dữ liệu.
-2. **Không nạp trùng lặp Bootstrap Bundle**:
-   - File `../inc/js/app.js` của giao diện Admin đã chứa sẵn Bootstrap 5. Không chèn thêm thẻ `<script src="...bootstrap.bundle.min.js"></script>`.
-3. **Sidebar Navigation**:
-   - Khi thêm module mới vào menu sidebar (`admin/inc/sidebar.php`), luôn sử dụng cú pháp kiểm tra trực tiếp:
-     ```php
-     <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlthuonghieu') !== false) ? 'active' : '' ?>">
-     <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlvoucher') !== false) ? 'active' : '' ?>">
-     ```
-4. **Không phơi bày Mã ID database thô trên UI**:
-   - Luôn sử dụng cột số thứ tự tăng dần (**STT**) trên bảng dữ liệu.
+---
 
+## 3. TÍCH HỢP HỆ THỐNG
+1. **Menu Sidebar (`admin/inc/sidebar.php`)**: Đã cập nhật đầy đủ cả 4 module mới với Feather Icons chuẩn và cú pháp `(strpos($_SERVER['SCRIPT_NAME'], '<module>') !== false) ? 'active' : ''`.
+2. **Tìm kiếm toàn cục Spotlight (`Ctrl + K`)**: Đã tích hợp tìm kiếm nhanh trực tiếp Thương hiệu & Mã Voucher ngay trên thanh tìm kiếm thông minh.
+3. **Quy tắc an toàn giao diện**: Không hiển thị mã ID database thô trên bảng (sử dụng cột số thứ tự tăng dần STT).
