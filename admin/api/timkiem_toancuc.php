@@ -28,7 +28,9 @@ $ketqua = [
     'donhang'   => [],
     'sanpham'   => [],
     'khachhang' => [],
-    'danhmuc'   => []
+    'danhmuc'   => [],
+    'thuonghieu'=> [],
+    'voucher'   => []
 ];
 $total = 0;
 
@@ -64,7 +66,7 @@ try {
     $cmdSp->bindValue(':exactId', is_numeric($query) ? (int)$query : 0, PDO::PARAM_INT);
     $cmdSp->execute();
     while ($row = $cmdSp->fetch(PDO::FETCH_ASSOC)) {
-        $img = !empty($row['hinhanh']) ? '../../assets/images/products/' . $row['hinhanh'] : '../../assets/images/products/no-image.png';
+        $img = !empty($row['hinhanh']) ? '../../assets/images/products/' . $row['hinhanh'] : '../../assets/images/products/product.png';
         $ketqua['sanpham'][] = [
             'id'       => $row['id'],
             'title'    => $row['tensanpham'],
@@ -113,6 +115,47 @@ try {
             'subtitle' => 'Nhóm: ' . $loaiTen,
             'url'      => '../qldanhmuc/index.php?action=sua&id=' . $row['id'],
             'badge'    => 'Danh mục'
+        ];
+        $total++;
+    }
+
+    // 5. Tìm thương hiệu
+    $sqlTh = "SELECT id, tenthuonghieu, logo 
+              FROM thuonghieu 
+              WHERE tenthuonghieu LIKE :kw 
+              ORDER BY id DESC LIMIT 4";
+    $cmdTh = $dbcon->prepare($sqlTh);
+    $cmdTh->bindValue(':kw', $kw);
+    $cmdTh->execute();
+    while ($row = $cmdTh->fetch(PDO::FETCH_ASSOC)) {
+        $img = !empty($row['logo']) ? '../../assets/images/products/' . $row['logo'] : null;
+        $ketqua['thuonghieu'][] = [
+            'id'       => $row['id'],
+            'title'    => $row['tenthuonghieu'],
+            'subtitle' => 'Nhãn hàng / Thương hiệu',
+            'image'    => $img,
+            'url'      => '../qlthuonghieu/index.php?tukhoa=' . urlencode($row['tenthuonghieu']),
+            'badge'    => 'Thương hiệu'
+        ];
+        $total++;
+    }
+
+    // 6. Tìm voucher khuyến mãi
+    $sqlVc = "SELECT id, ma, mota, loai, giatri 
+              FROM voucher 
+              WHERE ma LIKE :kw OR mota LIKE :kw 
+              ORDER BY id DESC LIMIT 4";
+    $cmdVc = $dbcon->prepare($sqlVc);
+    $cmdVc->bindValue(':kw', $kw);
+    $cmdVc->execute();
+    while ($row = $cmdVc->fetch(PDO::FETCH_ASSOC)) {
+        $giam = ($row['loai'] === 'phantram') ? ('Giảm ' . (float)$row['giatri'] . '%') : ('Giảm ' . number_format((float)$row['giatri'], 0, ',', '.') . 'đ');
+        $ketqua['voucher'][] = [
+            'id'       => $row['id'],
+            'title'    => $row['ma'],
+            'subtitle' => $giam . ' · ' . ($row['mota'] ?? 'Mã ưu đãi'),
+            'url'      => '../qlvoucher/index.php?tukhoa=' . urlencode($row['ma']),
+            'badge'    => 'Voucher'
         ];
         $total++;
     }

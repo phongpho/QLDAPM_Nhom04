@@ -197,6 +197,49 @@ function renderGlobalResults(data, query, total) {
         });
     }
 
+    // Nhóm 5: Thương hiệu
+    if (data.thuonghieu && data.thuonghieu.length > 0) {
+        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-award me-1"></i> Thương hiệu (${data.thuonghieu.length})</div>`;
+        data.thuonghieu.forEach(item => {
+            const logoHtml = item.image 
+                ? `<img src="${item.image}" alt="" style="width: 34px; height: 34px; object-fit: contain; padding: 2px; border-radius: 6px; border: 1px solid #e2e8f0; background: #fff;">`
+                : `<div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #f0fdf4; color: #16a34a;"><i class="fa fa-award"></i></div>`;
+            html += `
+                <a href="${item.url}" class="gb-search-item">
+                    <div class="d-flex align-items-center gap-2.5">
+                        ${logoHtml}
+                        <div>
+                            <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
+                            <div class="gb-search-item-sub">${item.subtitle}</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle">${item.badge}</span>
+                </a>
+            `;
+        });
+    }
+
+    // Nhóm 6: Voucher
+    if (data.voucher && data.voucher.length > 0) {
+        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-tag me-1"></i> Mã giảm giá & Voucher (${data.voucher.length})</div>`;
+        data.voucher.forEach(item => {
+            html += `
+                <a href="${item.url}" class="gb-search-item">
+                    <div class="d-flex align-items-center gap-2.5">
+                        <div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #fdf2f8; color: #db2777;">
+                            <i class="fa fa-tag"></i>
+                        </div>
+                        <div>
+                            <div class="gb-search-item-title font-monospace">${highlightKeyword(item.title, query)}</div>
+                            <div class="gb-search-item-sub">${highlightKeyword(item.subtitle, query)}</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-pink-subtle text-pink border border-pink-subtle">${item.badge}</span>
+                </a>
+            `;
+        });
+    }
+
     container.innerHTML = html;
 }
 

@@ -61,6 +61,20 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                 </a>
             </li>
 
+            <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlthuonghieu') !== false) ? 'active' : '' ?>">
+                <a class="sidebar-link" href="../qlthuonghieu/index.php">
+                    <i class="align-middle" data-feather="award"></i>
+                    <span class="align-middle">Quản lý thương hiệu</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlvoucher') !== false) ? 'active' : '' ?>">
+                <a class="sidebar-link" href="../qlvoucher/index.php">
+                    <i class="align-middle" data-feather="tag"></i>
+                    <span class="align-middle">Mã giảm giá & Voucher</span>
+                </a>
+            </li>
+
             <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qlkhachhang') !== false) ? 'active' : '' ?>">
                 <a class="sidebar-link" href="../qlkhachhang/index.php">
                     <i class="align-middle" data-feather="user-check"></i>
@@ -72,6 +86,24 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                 <a class="sidebar-link" href="../qldonhang/index.php">
                     <i class="align-middle" data-feather="truck"></i>
                     <span class="align-middle">Quản lý đơn hàng</span>
+                </a>
+            </li>
+
+            <li class="sidebar-header">
+                NỘI DUNG & TƯƠNG TÁC
+            </li>
+
+            <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qldanhgia') !== false) ? 'active' : '' ?>">
+                <a class="sidebar-link" href="../qldanhgia/index.php">
+                    <i class="align-middle" data-feather="message-square"></i>
+                    <span class="align-middle">Đánh giá & Phản hồi</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item <?= (strpos($_SERVER['SCRIPT_NAME'], 'qltintuc') !== false) ? 'active' : '' ?>">
+                <a class="sidebar-link" href="../qltintuc/index.php">
+                    <i class="align-middle" data-feather="file-text"></i>
+                    <span class="align-middle">Bài viết & Tin tức</span>
                 </a>
             </li>
         </ul>
