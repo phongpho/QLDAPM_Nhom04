@@ -23,23 +23,41 @@ $action = $_REQUEST["action"] ?? "macdinh";
 // 3. Điều hướng xử lý
 switch ($action) {
     case "macdinh":
-        $danhsach = $bmiModel->laydanhsachcauhinh();
+        $danhsachAll = $bmiModel->laydanhsachcauhinh();
 
         // Thống kê nhanh
-        $tongMoc = count($danhsach);
+        $tongMoc = count($danhsachAll);
         $demKichHoat = 0;
         $demTat = 0;
         $tongDoDungGoiy = 0;
 
-        // Lấy trước sản phẩm gợi ý mẫu cho từng mốc để preview
-        $sanphamPreview = [];
-        foreach ($danhsach as $m) {
+        foreach ($danhsachAll as $m) {
             if ((int)$m["trangthai"] === 1) {
                 $demKichHoat++;
             } else {
                 $demTat++;
             }
             $tongDoDungGoiy += (int)$m["soluong_sanpham"];
+        }
+
+        // Lọc từ khóa tìm kiếm nếu có
+        $filter_tukhoa = trim($_GET["tukhoa"] ?? "");
+        $danhsach = array_filter($danhsachAll, function($item) use ($filter_tukhoa) {
+            if (!empty($filter_tukhoa)) {
+                $kw = mb_strtolower($filter_tukhoa, 'UTF-8');
+                $phanloai = mb_strtolower($item["phanloai"] ?? "", 'UTF-8');
+                $khuyenghe = mb_strtolower($item["khuyenghe"] ?? "", 'UTF-8');
+                $muctieu = mb_strtolower($item["muctieu_khuyendung"] ?? "", 'UTF-8');
+                if (strpos($phanloai, $kw) === false && strpos($khuyenghe, $kw) === false && strpos($muctieu, $kw) === false) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        // Lấy trước sản phẩm gợi ý mẫu cho từng mốc để preview
+        $sanphamPreview = [];
+        foreach ($danhsach as $m) {
             $sanphamPreview[$m["id"]] = $bmiModel->laysanphamchitietbycauhinh($m["id"], 6);
         }
 

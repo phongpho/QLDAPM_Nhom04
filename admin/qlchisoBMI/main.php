@@ -312,15 +312,25 @@
 
                     <!-- Bảng Danh sách cấu hình BMI & Đồ dùng gợi ý -->
                     <div class="gb-table-card">
-                        <div class="gb-table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="fw-bold text-dark mb-0 fs-6">Danh sách các khoảng BMI & Gợi ý đồ dùng</h5>
-                                <span class="badge bg-slate-100 text-slate-700 border px-2 py-1" style="font-size: 0.75rem;">
-                                    <?= count($danhsach) ?> mốc
-                                </span>
+                        <!-- Toolbar Tìm kiếm nhanh mốc BMI -->
+                        <div class="gb-table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div class="flex-grow-1" style="max-width: 360px;">
+                                <form method="GET" action="index.php">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa fa-search"></i></span>
+                                        <input type="text" name="tukhoa" class="form-control border-start-0 ps-0" placeholder="Tìm theo tên thể trạng, lời khuyên..." value="<?= htmlspecialchars($filter_tukhoa ?? '') ?>">
+                                    </div>
+                                </form>
                             </div>
-                            <div class="small text-muted">
-                                <i class="fa fa-circle-info text-primary me-1"></i>Nhấp <strong>"Chọn thêm"</strong> hoặc biểu tượng <i class="fa fa-pen text-warning mx-1"></i> để chọn đồ dùng gợi ý tương ứng
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-slate-100 text-slate-700 border px-2.5 py-1" style="font-size: 0.775rem;">
+                                    Hiển thị <?= count($danhsach) ?> mốc
+                                </span>
+                                <?php if (!empty($filter_tukhoa)): ?>
+                                    <a href="index.php" class="btn btn-sm btn-outline-secondary" title="Bỏ lọc">
+                                        <i class="fa fa-rotate-left me-1"></i> Bỏ lọc
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
 

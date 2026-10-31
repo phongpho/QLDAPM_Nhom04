@@ -18,6 +18,16 @@ if (!empty($currentUser["hinhanh"])) {
         <i class="hamburger align-self-center"></i>
     </a>
 
+    <!-- Thanh tìm kiếm nhanh Spotlight trên Top Navbar -->
+    <div class="d-flex align-items-center ms-2 ms-md-3 flex-grow-1" style="max-width: 420px;">
+        <div class="gb-nav-search d-flex align-items-center" onclick="openGlobalSearch()" role="button" title="Bấm hoặc nhấn Ctrl + K để tìm kiếm">
+            <i class="fa fa-search text-muted me-2" style="font-size: 0.875rem;"></i>
+            <span class="text-muted small text-truncate d-none d-sm-inline">Tìm đơn hàng, sản phẩm, khách...</span>
+            <span class="text-muted small d-inline d-sm-none">Tìm kiếm...</span>
+            <kbd class="gb-kbd ms-auto d-none d-md-inline-block">Ctrl K</kbd>
+        </div>
+    </div>
+
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align align-items-center">
             <li class="nav-item dropdown">
@@ -32,10 +42,21 @@ if (!empty($currentUser["hinhanh"])) {
                         Thông báo hệ thống
                     </div>
                     <div class="list-group list-group-flush">
+                        <a href="../qldonhang/index.php" class="list-group-item list-group-item-action py-2">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2 text-center">
+                                    <i class="text-primary" data-feather="truck"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark small fw-semibold">Quản lý đơn hàng</div>
+                                    <div class="text-muted small">Kiểm tra các đơn đặt hàng mới cần xác nhận.</div>
+                                </div>
+                            </div>
+                        </a>
                         <a href="../qldanhmuc/index.php" class="list-group-item list-group-item-action py-2">
                             <div class="row g-0 align-items-center">
                                 <div class="col-2 text-center">
-                                    <i class="text-primary" data-feather="grid"></i>
+                                    <i class="text-info" data-feather="grid"></i>
                                 </div>
                                 <div class="col-10">
                                     <div class="text-dark small fw-semibold">Quản lý danh mục</div>
@@ -93,3 +114,41 @@ if (!empty($currentUser["hinhanh"])) {
         </ul>
     </div>
 </nav>
+
+<!-- Modal Spotlight Tìm Kiếm Toàn Cục (Ctrl + K) -->
+<div class="modal fade gb-spotlight-modal" id="globalSearchModal" tabindex="-1" aria-labelledby="globalSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 680px;">
+        <div class="modal-content shadow-lg border-0">
+            <div class="gb-spotlight-input-wrapper">
+                <i class="fa fa-search text-primary fs-5"></i>
+                <input type="text" id="globalSearchInput" class="form-control gb-spotlight-input" 
+                       placeholder="Tìm nhanh đơn hàng (GYM...), sản phẩm, khách hàng, danh mục..." 
+                       autocomplete="off">
+                <button type="button" class="btn btn-sm btn-light border px-2 py-1 text-muted" data-bs-dismiss="modal" title="Đóng (Esc)">
+                    <kbd class="small" style="font-size: 0.7rem;">ESC</kbd>
+                </button>
+            </div>
+            <div class="gb-spotlight-results" id="globalSearchResults">
+                <div class="p-4 text-center text-muted">
+                    <div class="d-flex justify-content-center gap-2 mb-2 flex-wrap">
+                        <span class="badge bg-slate-100 text-slate-700 border">Mã đơn hàng (GYM...)</span>
+                        <span class="badge bg-slate-100 text-slate-700 border">Tên sản phẩm</span>
+                        <span class="badge bg-slate-100 text-slate-700 border">Khách hàng & SĐT</span>
+                    </div>
+                    <div class="small">Gõ từ khóa bất kỳ để tra cứu tức thì trên toàn bộ hệ thống GymBro Admin.</div>
+                </div>
+            </div>
+            <div class="p-2.5 bg-white border-top d-flex justify-content-between align-items-center px-3">
+                <span class="small text-muted" style="font-size: 0.75rem;">
+                    <i class="fa fa-keyboard text-secondary me-1"></i> Dùng phím <kbd class="gb-kbd">Ctrl K</kbd> để mở tìm kiếm nhanh
+                </span>
+                <span class="small text-muted" style="font-size: 0.75rem;">
+                    GymBro Spotlight Search
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tự động đính kèm engine tìm kiếm -->
+<script src="../inc/js/admin-search.js"></script>
