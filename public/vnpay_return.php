@@ -8,8 +8,8 @@ $gsTieude = 'Kết quả thanh toán VNPay';
 include(__DIR__ . '/inc/head-client.php');
 
 $thanhcong = $donhang
-    && isset($_GET['vnp_ResponseCode']) && $_GET['vnp_ResponseCode'] === '00'
-    && (!isset($_GET['vnp_TransactionStatus']) || $_GET['vnp_TransactionStatus'] === '00');
+    && ((int) $donhang['datt'] === 1 || (isset($_GET['vnp_ResponseCode']) && $_GET['vnp_ResponseCode'] === '00'
+    && (!isset($_GET['vnp_TransactionStatus']) || $_GET['vnp_TransactionStatus'] === '00')));
 $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) : 0;
 ?>
 
@@ -123,7 +123,13 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             </div>
                             <div class="gs-cart-summary__line">
                                 <span>Đã thanh toán</span>
-                                <strong><?php echo ((int) $donhang['datt'] === 1) ? 'Có' : 'Chưa'; ?></strong>
+                                <strong>
+                                    <?php if ((int) $donhang['datt'] === 1) : ?>
+                                        <span class="badge bg-success">Đã thanh toán</span>
+                                    <?php else : ?>
+                                        <span class="badge bg-danger">Chưa thanh toán</span>
+                                    <?php endif; ?>
+                                </strong>
                             </div>
                             <div class="gs-cart-summary__line">
                                 <span>Ngày đặt</span>
@@ -131,7 +137,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             </div>
 
                             <?php if (!$thanhcong) : ?>
-                                <a class="btn-gs btn-gs--dark w-100" href="vnpay_demo.php?madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
+                                <a class="btn-gs btn-gs--dark w-100" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
                                     <i class="fa-solid fa-rotate-right"></i> Thanh toán lại
                                 </a>
                             <?php endif; ?>

@@ -542,7 +542,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
                 header('Location: ' . $vnpay->taoUrlthanhtoan($kq['madonhang'], $kq['tongtien'], 'Thanh toan don hang'));
                 exit();
             }
-            gsChuyenTrang('vnpay_demo.php?madonhang=' . urlencode($kq['madonhang']));
+            gsThongBao('error', 'Cổng thanh toán VNPay chưa được cấu hình!');
         }
 
         gsChuyenTrang('index.php?action=hoantat&madonhang=' . urlencode($kq['madonhang']));
@@ -555,53 +555,31 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         include('hoantat.php');
         break;
 
-    case 'vnpay_demo':
+    case 'thanhtoanlai_vnpay':
         $madonhang = isset($_GET['madonhang']) ? trim($_GET['madonhang']) : '';
-        $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
-        include('vnpay_demo.php');
-        break;
-
-    case 'vnpay_demo_xuly':
-        $madonhang = isset($_POST['madonhang']) ? trim($_POST['madonhang']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
         if (!$donhang) {
             gsThongBao('error', 'Không tìm thấy đơn hàng cần thanh toán!');
-            gsChuyenTrang('index.php');
+            gsChuyenTrang('index.php?action=donhang');
         }
-
-        $ketqua = (isset($_POST['ketqua']) && $_POST['ketqua'] === 'huy') ? 'huy' : 'thanhcong';
-        $mahoso = ($ketqua === 'thanhcong') ? '00' : '24';
-        if ($ketqua === 'thanhcong') {
-            $otp = isset($_POST['otp']) ? trim($_POST['otp']) : '';
-            if ($otp !== VNPAY::OTP_TEST) {
-                gsThongBao('error', 'Mã OTP không đúng! Thẻ test dùng OTP ' . VNPAY::OTP_TEST . '.');
-                gsChuyenTrang('index.php?action=vnpay_demo&madonhang=' . urlencode($madonhang));
-            }
-            $dh->capnhatdatt($donhang['id'], 1);
+        if ((int) $donhang['datt'] === 1) {
+            gsThongBao('info', 'Đơn hàng này đã được thanh toán thành công!');
+            gsChuyenTrang('index.php?action=donhang');
         }
-
-        $truyvan = http_build_query(array(
-            'vnp_TxnRef'            => $donhang['madonhang'],
-            'vnp_Amount'            => (int) round((float) $donhang['tongtien']) * 100,
-            'vnp_OrderInfo'         => 'Thanh toan don hang ' . $donhang['madonhang'],
-            'vnp_ResponseCode'      => $mahoso,
-            'vnp_TransactionStatus' => $mahoso,
-            'vnp_TransactionNo'     => 'DEMO' . $donhang['id'],
-            'vnp_PayDate'           => date('YmdHis'),
-            'vnp_SecureHash'        => 'demo'
-        ));
-        gsChuyenTrang('vnpay_return.php?' . $truyvan);
+        if ($vnpay->dacauhinh()) {
+            header('Location: ' . $vnpay->taoUrlthanhtoan($donhang['madonhang'], $donhang['tongtien'], 'Thanh toan don hang'));
+            exit();
+        }
+        gsThongBao('error', 'Cổng thanh toán VNPay chưa được cấu hình!');
+        gsChuyenTrang('index.php?action=donhang');
         break;
 
     case 'vnpay_return':
         $madonhang = isset($_GET['vnp_TxnRef']) ? trim($_GET['vnp_TxnRef']) : '';
         $donhang   = ($madonhang !== '') ? $dh->laydonhangtheoma($madonhang) : null;
 
-        $lademo = isset($_GET['vnp_SecureHash']) && $_GET['vnp_SecureHash'] === 'demo';
-        $hopLe  = false;
-        if ($lademo) {
-            $hopLe = true;
-        } elseif ($vnpay->dacauhinh()) {
+        $hopLe = false;
+        if ($vnpay->dacauhinh()) {
             $hopLe = $vnpay->kiemTrachuky($_GET);
         }
 
@@ -614,6 +592,8 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
             gsThongBao('error', 'Kết quả thanh toán không hợp lệ (chữ ký VNPay không đúng)!');
         } elseif ($thanhcong) {
             $dh->capnhatdatt($donhang['id'], 1);
+            $dh->capnhattrangthai($donhang['id'], 2);
+            $donhang = $dh->laydonhangtheoma($madonhang);
             gsThongBao('success', 'Thanh toán VNPay thành công! Đơn hàng đã được ghi nhận.');
         } else {
             gsThongBao('warning', 'Giao dịch VNPay đã bị hủy hoặc thất bại. Bạn có thể thanh toán lại hoặc chọn COD.');
