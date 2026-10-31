@@ -68,7 +68,7 @@ include(__DIR__ . '/inc/head-client.php');
                             <div class="gs-checkout__box mt-4">
                                 <h3 class="gs-checkout__title"><i class="fa-solid fa-credit-card"></i> Chưa hoàn tất thanh toán VNPay</h3>
                                 <p class="mb-2">Đơn hàng đã được tạo nhưng chưa thanh toán. Bạn có thể thanh toán lại ngay bây giờ.</p>
-                                <a class="btn-gs btn-gs--dark" href="vnpay_demo.php?madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
+                                <a class="btn-gs btn-gs--dark" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
                                     <i class="fa-solid fa-rotate-right"></i> Thanh toán lại qua VNPay
                                 </a>
                             </div>

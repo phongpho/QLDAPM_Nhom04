@@ -120,8 +120,8 @@ include(__DIR__ . '/inc/head-client.php');
                         <label class="gs-paymethod">
                             <input type="radio" name="phuongthuc_tt" value="vnpay">
                             <span class="gs-paymethod__body">
-                                <strong>Thanh toán VNPay Sandbox</strong>
-                                <small>Chuyển sang cổng thanh toán VNPay Sandbox để hoàn tất đơn hàng.</small>
+                                <strong>Thanh toán VNPay Sandbox (Thẻ Test NCB)</strong>
+                                <small>Số thẻ: <strong>9704198526191432198</strong> · Tên: <strong>NGUYEN VAN A</strong> · Ngày: <strong>07/15</strong> · OTP: <strong>123456</strong></small>
                             </span>
                         </label>
 
