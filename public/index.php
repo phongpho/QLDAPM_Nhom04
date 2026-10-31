@@ -213,6 +213,33 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         gsChuyenTrang('index.php?action=taikhoan&tab=address');
         break;
 
+    case 'ajax_timkiem':
+        header('Content-Type: application/json; charset=utf-8');
+        $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+        if (mb_strlen($q, 'UTF-8') < 2) {
+            echo json_encode(array('ok' => true, 'data' => array()));
+            exit();
+        }
+        $ds = $sp->timkiemnhanh($q, 5);
+        $ketqua = array();
+        foreach ($ds as $item) {
+            $hinhanh = trim((string)$item['hinhanh']);
+            $anhUrl = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '../assets/images/systems/logo.png';
+            $giaban = (float) $item['giaban'];
+            $giagoc = (float) $item['giagoc'];
+            $ketqua[] = array(
+                'id' => (int) $item['id'],
+                'tensanpham' => $item['tensanpham'],
+                'hinhanh' => $anhUrl,
+                'giaban_format' => number_format($giaban, 0, ',', '.') . '₫',
+                'giagoc_format' => ($giagoc > $giaban) ? number_format($giagoc, 0, ',', '.') . '₫' : '',
+                'tendanhmuc' => $item['tendanhmuc'] ?? '',
+                'tenthuonghieu' => $item['tenthuonghieu'] ?? ''
+            );
+        }
+        echo json_encode(array('ok' => true, 'data' => $ketqua));
+        exit();
+
     case 'sanpham':
         $loai          = isset($_GET['loai']) ? trim($_GET['loai']) : '';
         $doituong      = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
@@ -252,6 +279,21 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         }
 
         $sp->tangluotxem($id);
+
+        // luu san pham vao danh sach vua xem trong session
+        if (!isset($_SESSION['gs_daxem']) || !is_array($_SESSION['gs_daxem'])) {
+            $_SESSION['gs_daxem'] = array();
+        }
+        // loai bo id hien tai neu da co de dua len dau
+        $_SESSION['gs_daxem'] = array_diff($_SESSION['gs_daxem'], array($id));
+        array_unshift($_SESSION['gs_daxem'], $id);
+        // giu toi da 8 san pham vua xem
+        $_SESSION['gs_daxem'] = array_slice($_SESSION['gs_daxem'], 0, 8);
+
+        // lay danh sach san pham vua xem (khong bao gom san pham dang xem)
+        $dsIdDaXem = array_diff($_SESSION['gs_daxem'], array($id));
+        $sanphamVuaXem = !empty($dsIdDaXem) ? $sp->laysanphamtheomangid(array_slice($dsIdDaXem, 0, 4)) : array();
+
         $mangsizes      = $sp->tachsizethanhmmang($sanpham['sizes']);
         $dsDanhgia      = $sp->laydanhgiasanpham($id, 20);
         $diemDanhgia    = $sp->laydiemdanhgiasanpham($id);

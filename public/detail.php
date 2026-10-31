@@ -288,4 +288,25 @@ include(__DIR__ . '/inc/recommendation.php');
     </section>
 <?php endif; ?>
 
+<?php if (!empty($sanphamVuaXem)) : ?>
+    <!-- san pham vua xem -->
+    <section class="gs-section gs-section--grey">
+        <div class="container">
+            <div class="gs-section__head">
+                <div>
+                    <h2 class="gs-section__title">Sản phẩm bạn vừa xem</h2>
+                    <span class="gs-section__sub">Danh sách các sản phẩm bạn đã quan tâm duyệt xem gần đây</span>
+                </div>
+            </div>
+            <div class="row g-4">
+                <?php
+                foreach ($sanphamVuaXem as $card) :
+                    include(__DIR__ . '/inc/product-card.php');
+                endforeach;
+                ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
 <?php include(__DIR__ . '/inc/footer.php'); ?>

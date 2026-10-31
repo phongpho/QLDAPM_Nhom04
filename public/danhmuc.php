@@ -96,7 +96,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="input-group">
                             <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..."
                                 value="<?php echo htmlspecialchars($tukhoa); ?>">
-                            <button class="btn btn-danger" type="submit" aria-label="Tìm kiếm">
+                            <button class="btn btn-warning text-dark fw-bold" style="background-color: var(--gs-primary, #f97316); border-color: var(--gs-primary, #f97316); color: #fff !important;" type="submit" aria-label="Tìm kiếm">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
@@ -283,9 +283,9 @@ include(__DIR__ . '/inc/head-client.php');
                             }
                             .gs-size-btn.is-active {
                                 color: #ffffff !important;
-                                background-color: #dc3545 !important;
-                                border-color: #dc3545 !important;
-                                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important;
+                                background-color: var(--gs-primary, #f97316) !important;
+                                border-color: var(--gs-primary, #f97316) !important;
+                                box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.35) !important;
                             }
                         </style>
                         <div class="gs-brand-grid">

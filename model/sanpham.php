@@ -367,6 +367,34 @@ class SANPHAM
         }
     }
 
+    // lay danh sach san pham theo mang id (dung cho san pham vua xem)
+    public function laysanphamtheomangid($mangiDs)
+    {
+        if (!is_array($mangiDs) || empty($mangiDs)) {
+            return array();
+        }
+        $mangiDs = array_map('intval', $mangiDs);
+        $mangiDs = array_filter($mangiDs, function($v) { return $v > 0; });
+        if (empty($mangiDs)) {
+            return array();
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $inList = implode(',', $mangiDs);
+            $sql = "SELECT s.*, d.tendanhmuc, d.loai, t.tenthuonghieu
+                    FROM sanpham s
+                    JOIN danhmuc d ON d.id = s.danhmuc_id
+                    LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
+                    WHERE s.trangthai = 1 AND d.trangthai = 1 AND s.id IN ($inList)
+                    ORDER BY FIELD(s.id, $inList)";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return array();
+        }
+    }
+
     public function laysanphamtuongtu($danhmuc_id, $tru_id = 0, $limit = 4)
     {
         $dbcon = DATABASE::connect();
@@ -430,6 +458,34 @@ class SANPHAM
         } catch (PDOException $e) {
             echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
             exit();
+        }
+    }
+
+    // tim kiem nhanh cho live search
+    public function timkiemnhanh($tukhoa, $limit = 5)
+    {
+        $tukhoa = trim((string) $tukhoa);
+        if ($tukhoa === '') {
+            return array();
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT s.id, s.tensanpham, s.hinhanh, s.giaban, s.giagoc, d.tendanhmuc, t.tenthuonghieu
+                    FROM sanpham s
+                    JOIN danhmuc d ON d.id = s.danhmuc_id
+                    LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
+                    WHERE s.trangthai = 1 AND d.trangthai = 1 
+                      AND (s.tensanpham LIKE :tukhoa1 OR s.mota LIKE :tukhoa2 OR t.tenthuonghieu LIKE :tukhoa3)
+                    ORDER BY s.luotmua DESC, s.noibat DESC
+                    LIMIT " . (int) $limit;
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(':tukhoa1', '%' . $tukhoa . '%');
+            $cmd->bindValue(':tukhoa2', '%' . $tukhoa . '%');
+            $cmd->bindValue(':tukhoa3', '%' . $tukhoa . '%');
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return array();
         }
     }
 
