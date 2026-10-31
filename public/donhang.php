@@ -90,7 +90,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <span class="gs-order__tong">Tổng cộng: <strong><?php echo gsTien($od['tongtien']); ?></strong></span>
                             </div>
                             <?php if ((int) $od['datt'] === 0 && $od['phuongthuc_tt'] === 'vnpay') : ?>
-                                <a class="btn-gs btn-gs--dark" href="vnpay_demo.php?madonhang=<?php echo urlencode($od['madonhang']); ?>">
+                                <a class="btn-gs btn-gs--dark" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($od['madonhang']); ?>">
                                     <i class="fa-solid fa-rotate-right"></i> Thanh toán lại
                                 </a>
                             <?php endif; ?>

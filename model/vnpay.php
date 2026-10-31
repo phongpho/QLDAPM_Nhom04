@@ -2,8 +2,8 @@
 class VNPAY
 {
     const VNP_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-    const VNP_TMNCODE = '';
-    const VNP_HASHSECRET = '';
+    const VNP_TMNCODE = 'Q283846N';
+    const VNP_HASHSECRET = 'QVZUTGRVUPJWBFUBNBBMFDVMAXWKFADL';
     const VNP_VERSION = '2.1.0';
 
     const THE_TEST = '9704198526191432198';
@@ -27,10 +27,6 @@ class VNPAY
         return $this->layUrlgoc() . '/vnpay_return.php';
     }
 
-    public function layUrlDemoThanhToan()
-    {
-        return $this->layUrlgoc() . '/vnpay_demo.php';
-    }
 
     private function layUrlgoc()
     {
@@ -50,6 +46,13 @@ class VNPAY
     
     public function taoUrlthanhtoan($madonhang, $sotien, $mota = 'Thanh toan don hang', $nganhang = 'NCB')
     {
+        $tz = new DateTimeZone('Asia/Ho_Chi_Minh');
+        $now = new DateTime('now', $tz);
+        $vnp_CreateDate = $now->format('YmdHis');
+        $expire = clone $now;
+        $expire->modify('+15 minutes');
+        $vnp_ExpireDate = $expire->format('YmdHis');
+
         $duLieu = array(
             'vnp_Version' => self::VNP_VERSION,
             'vnp_Command' => 'pay',
@@ -62,8 +65,8 @@ class VNPAY
             'vnp_Amount' => (int) round($sotien) * 100,
             'vnp_ReturnUrl' => $this->layReturnUrl(),
             'vnp_IpAddr' => $this->layIp(),
-            'vnp_CreateDate' => date('YmdHis'),
-            'vnp_ExpireDate' => date('YmdHis', strtotime('+15 minutes'))
+            'vnp_CreateDate' => $vnp_CreateDate,
+            'vnp_ExpireDate' => $vnp_ExpireDate
         );
         if ($nganhang !== '') {
             $duLieu['vnp_BankCode'] = $nganhang;
@@ -94,12 +97,18 @@ class VNPAY
             return false;
         }
         $chuky_nhan = $duLieu['vnp_SecureHash'];
-        unset($duLieu['vnp_SecureHash'], $duLieu['vnp_SecureHashType']);
 
-        ksort($duLieu);
+        $duLieuLoc = array();
+        foreach ($duLieu as $khoa => $giatri) {
+            if (substr($khoa, 0, 4) === 'vnp_' && $khoa !== 'vnp_SecureHash' && $khoa !== 'vnp_SecureHashType') {
+                $duLieuLoc[$khoa] = $giatri;
+            }
+        }
+
+        ksort($duLieuLoc);
         $chuoi_bam = '';
         $i = 0;
-        foreach ($duLieu as $khoa => $giatri) {
+        foreach ($duLieuLoc as $khoa => $giatri) {
             if ($i === 1) {
                 $chuoi_bam .= '&' . urlencode($khoa) . '=' . urlencode($giatri);
             } else {
