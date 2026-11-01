@@ -135,6 +135,116 @@ class DANHGIA
             return ['tong' => 0, 'diemsao_tb' => 5.0, 'danhgia_5sao' => 0, 'hienthi' => 0, 'an_chotam' => 0];
         }
     }
+
+    // Kiểm tra khách hàng đã mua sản phẩm này chưa (hoặc là Admin/Nhân viên thì luôn được phép)
+    public function kiemtraduocdanhgia($nguoidung_id, $sanpham_id)
+    {
+        if ((int)$nguoidung_id <= 0 || (int)$sanpham_id <= 0) {
+            return false;
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            // 1. Kiểm tra nếu đã mua sản phẩm trong đơn hàng (không bị hủy d.trangthai != 6)
+            $sql = "SELECT COUNT(*) 
+                    FROM donhang d
+                    JOIN donhangct ct ON ct.donhang_id = d.id
+                    WHERE d.nguoidung_id = :nguoidung_id 
+                      AND ct.sanpham_id = :sanpham_id 
+                      AND d.trangthai != 6";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":nguoidung_id", (int)$nguoidung_id, PDO::PARAM_INT);
+            $cmd->bindValue(":sanpham_id", (int)$sanpham_id, PDO::PARAM_INT);
+            $cmd->execute();
+            if ((int)$cmd->fetchColumn() > 0) {
+                return true;
+            }
+
+            // 2. Nếu là Admin hoặc Nhân viên thì luôn cho phép test đánh giá
+            $sqlRole = "SELECT loai FROM nguoidung WHERE id = :uid LIMIT 1";
+            $cmdRole = $dbcon->prepare($sqlRole);
+            $cmdRole->bindValue(":uid", (int)$nguoidung_id, PDO::PARAM_INT);
+            $cmdRole->execute();
+            $loai = (int)$cmdRole->fetchColumn();
+            return ($loai === 1 || $loai === 2);
+        } catch (PDOException $e) {
+            error_log("Lỗi kiemtraduocdanhgia: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Lấy đánh giá của người dùng cho 1 sản phẩm cụ thể (nếu có)
+    public function laydanhgiacuatoi($nguoidung_id, $sanpham_id)
+    {
+        if ((int)$nguoidung_id <= 0 || (int)$sanpham_id <= 0) {
+            return null;
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT * FROM danhgia 
+                    WHERE nguoidung_id = :nguoidung_id AND sanpham_id = :sanpham_id 
+                    LIMIT 1";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":nguoidung_id", (int)$nguoidung_id, PDO::PARAM_INT);
+            $cmd->bindValue(":sanpham_id", (int)$sanpham_id, PDO::PARAM_INT);
+            $cmd->execute();
+            $res = $cmd->fetch(PDO::FETCH_ASSOC);
+            return $res ? $res : null;
+        } catch (PDOException $e) {
+            error_log("Lỗi laydanhgiacuatoi: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    // Lấy danh sách ID các sản phẩm mà người dùng đã đánh giá
+    public function laydanhsachidsanphamdadanhgia($nguoidung_id)
+    {
+        if ((int)$nguoidung_id <= 0) {
+            return [];
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT sanpham_id FROM danhgia WHERE nguoidung_id = :nguoidung_id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":nguoidung_id", (int)$nguoidung_id, PDO::PARAM_INT);
+            $cmd->execute();
+            $ids = $cmd->fetchAll(PDO::FETCH_COLUMN);
+            return array_map('intval', $ids);
+        } catch (PDOException $e) {
+            error_log("Lỗi laydanhsachidsanphamdadanhgia: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    // Lưu hoặc cập nhật đánh giá của khách hàng
+    public function luudanhgia($nguoidung_id, $sanpham_id, $sao, $noidung)
+    {
+        if ((int)$nguoidung_id <= 0 || (int)$sanpham_id <= 0) {
+            return false;
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $sao = max(1, min(5, (int)$sao));
+            $noidung = trim((string)$noidung);
+
+            $sql = "INSERT INTO danhgia (nguoidung_id, sanpham_id, sao, noidung, trangthai, ngay)
+                    VALUES (:nguoidung_id, :sanpham_id, :sao, :noidung, 1, NOW())
+                    ON DUPLICATE KEY UPDATE 
+                        sao = :sao_up,
+                        noidung = :noidung_up,
+                        trangthai = 1,
+                        ngay = NOW()";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":nguoidung_id", (int)$nguoidung_id, PDO::PARAM_INT);
+            $cmd->bindValue(":sanpham_id", (int)$sanpham_id, PDO::PARAM_INT);
+            $cmd->bindValue(":sao", $sao, PDO::PARAM_INT);
+            $cmd->bindValue(":noidung", $noidung, PDO::PARAM_STR);
+            $cmd->bindValue(":sao_up", $sao, PDO::PARAM_INT);
+            $cmd->bindValue(":noidung_up", $noidung, PDO::PARAM_STR);
+            return $cmd->execute();
+        } catch (PDOException $e) {
+            error_log("Lỗi luudanhgia: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 ?>
-

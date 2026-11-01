@@ -236,6 +236,72 @@ include(__DIR__ . '/inc/head-client.php');
                 </div>
 
                 <div class="tab-pane fade" id="gsTabDanhgia" role="tabpanel">
+                    <?php if ($gsNguoidungId <= 0) : ?>
+                        <div class="p-3 mb-4 rounded border border-secondary border-opacity-25 bg-dark d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-lock text-warning"></i>
+                            <span>Vui lòng <a href="index.php?action=dangnhap" class="text-danger fw-bold">đăng nhập</a> để đánh giá sản phẩm sau khi mua hàng.</span>
+                        </div>
+                    <?php elseif (empty($duocDanhgia)) : ?>
+                        <div class="p-3 mb-4 rounded border border-secondary border-opacity-25 bg-dark d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-info"></i>
+                            <span>Bạn cần <strong>đặt mua sản phẩm này</strong> để có thể gửi đánh giá.</span>
+                        </div>
+                    <?php else : ?>
+                        <div class="card bg-dark border-secondary border-opacity-50 p-4 mb-4 rounded-3 shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                                <h5 class="m-0 text-white fw-bold">
+                                    <i class="fa-solid fa-pen-to-square text-danger me-2"></i>
+                                    <?php echo !empty($danhgiaCuaToi) ? 'Cập nhật đánh giá của bạn' : 'Viết đánh giá của bạn'; ?>
+                                </h5>
+                                <?php if (!empty($danhgiaCuaToi)) : ?>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                        <i class="fa-solid fa-check me-1"></i> Đã đánh giá (<?php echo date('d/m/Y', strtotime($danhgiaCuaToi['ngay'])); ?>)
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+
+                            <form action="index.php?action=danhgiasanpham" method="POST">
+                                <input type="hidden" name="sanpham_id" value="<?php echo (int) $sanpham['id']; ?>">
+                                <input type="hidden" name="sao" id="inputRatingStarDetail" value="<?php echo !empty($danhgiaCuaToi) ? (int)$danhgiaCuaToi['sao'] : 5; ?>">
+
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50 small mb-1">Mức độ hài lòng:</label>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="gs-star-picker" id="starRatingDetail" style="font-size: 1.5rem; cursor: pointer; color: #ffc107;">
+                                            <?php 
+                                            $curSao = !empty($danhgiaCuaToi) ? (int)$danhgiaCuaToi['sao'] : 5;
+                                            for ($i = 1; $i <= 5; $i++) : 
+                                            ?>
+                                                <i class="fa-<?php echo ($i <= $curSao) ? 'solid' : 'regular'; ?> fa-star star-node" data-val="<?php echo $i; ?>"></i>
+                                            <?php endfor; ?>
+                                        </div>
+                                        <span id="starRatingDetailLabel" class="small text-white-50 ms-2">
+                                            <?php 
+                                            $nhanSao = array(1 => '1 sao - Rất tệ', 2 => '2 sao - Chưa hài lòng', 3 => '3 sao - Bình thường', 4 => '4 sao - Hài lòng', 5 => '5 sao - Tuyệt vời');
+                                            echo isset($nhanSao[$curSao]) ? $nhanSao[$curSao] : '5 sao - Tuyệt vời';
+                                            ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="noidungDanhGiaDetail" class="form-label text-white-50 small mb-1">Nội dung nhận xét:</label>
+                                    <textarea class="form-control bg-black text-white border-secondary" 
+                                              id="noidungDanhGiaDetail" 
+                                              name="noidung" 
+                                              rows="3" 
+                                              placeholder="Chia sẻ trải nghiệm về chất liệu, form dáng, độ bền..."><?php echo htmlspecialchars($danhgiaCuaToi['noidung'] ?? ''); ?></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-danger px-4 fw-semibold">
+                                    <i class="fa-solid fa-paper-plane me-1"></i>
+                                    <?php echo !empty($danhgiaCuaToi) ? 'Lưu thay đổi' : 'Gửi đánh giá'; ?>
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
+
+                    <h6 class="text-white-50 text-uppercase fw-bold small mb-3">Tất cả nhận xét &amp; đánh giá</h6>
                     <?php if (count($dsDanhgia) === 0) : ?>
                         <p class="text-secondary">Chưa có đánh giá nào cho sản phẩm này.</p>
                     <?php else : ?>
@@ -308,5 +374,53 @@ include(__DIR__ . '/inc/recommendation.php');
         </div>
     </section>
 <?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const picker = document.getElementById('starRatingDetail');
+    if (!picker) return;
+    const input = document.getElementById('inputRatingStarDetail');
+    const label = document.getElementById('starRatingDetailLabel');
+    const stars = picker.querySelectorAll('.star-node');
+    const texts = {
+        1: '1 sao - Rất tệ',
+        2: '2 sao - Chưa hài lòng',
+        3: '3 sao - Bình thường',
+        4: '4 sao - Hài lòng',
+        5: '5 sao - Tuyệt vời'
+    };
+
+    function highlightStars(val) {
+        stars.forEach(s => {
+            const v = parseInt(s.dataset.val, 10);
+            if (v <= val) {
+                s.classList.remove('fa-regular');
+                s.classList.add('fa-solid');
+            } else {
+                s.classList.remove('fa-solid');
+                s.classList.add('fa-regular');
+            }
+        });
+        if (label && texts[val]) {
+            label.textContent = texts[val];
+        }
+    }
+
+    stars.forEach(s => {
+        s.addEventListener('mouseenter', function () {
+            highlightStars(parseInt(this.dataset.val, 10));
+        });
+        s.addEventListener('click', function () {
+            const v = parseInt(this.dataset.val, 10);
+            input.value = v;
+            highlightStars(v);
+        });
+    });
+
+    picker.addEventListener('mouseleave', function () {
+        highlightStars(parseInt(input.value, 10));
+    });
+});
+</script>
 
 <?php include(__DIR__ . '/inc/footer.php'); ?>

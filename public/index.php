@@ -13,6 +13,7 @@ require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/../model/nguoidung.php');
 require_once(__DIR__ . '/../model/yeuthich.php');
+require_once(__DIR__ . '/../model/danhgia.php');
 require_once(__DIR__ . '/inc/shop_helper.php');
 
 $gsModule36 = true;
@@ -29,6 +30,7 @@ $dc   = new DIACHI();
 $vnpay = new VNPAY();
 $nd   = new NGUOIDUNG();
 $yt   = new YEUTHICH();
+$dgModel = new DANHGIA();
 
 $gh->dongbo();
 $gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
@@ -297,6 +299,8 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         $mangsizes      = $sp->tachsizethanhmmang($sanpham['sizes']);
         $dsDanhgia      = $sp->laydanhgiasanpham($id, 20);
         $diemDanhgia    = $sp->laydiemdanhgiasanpham($id);
+        $duocDanhgia    = ($gsNguoidungId > 0) ? $dgModel->kiemtraduocdanhgia($gsNguoidungId, $id) : false;
+        $danhgiaCuaToi  = ($gsNguoidungId > 0) ? $dgModel->laydanhgiacuatoi($gsNguoidungId, $id) : null;
         $sanphamtuongtu = $sp->laysanphamtuongtu($sanpham['danhmuc_id'], $id, 4);
 
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
@@ -689,12 +693,59 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         gsChuyenTrang('index.php?action=yeuthich');
         break;
 
+    case 'danhgiasanpham':
+        if ($gsNguoidungId <= 0) {
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => 'Vui lòng đăng nhập để đánh giá sản phẩm!'));
+            }
+            gsThongBao('warning', 'Vui lòng đăng nhập để đánh giá sản phẩm!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $sanpham_id = isset($_POST['sanpham_id']) ? (int) $_POST['sanpham_id'] : 0;
+        $sao        = isset($_POST['sao']) ? (int) $_POST['sao'] : 5;
+        $noidung    = isset($_POST['noidung']) ? trim($_POST['noidung']) : '';
+
+        if ($sanpham_id <= 0) {
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => 'Sản phẩm không hợp lệ!'));
+            }
+            gsThongBao('error', 'Sản phẩm không hợp lệ!');
+            gsChuyenTrang('index.php');
+        }
+
+        if (!$dgModel->kiemtraduocdanhgia($gsNguoidungId, $sanpham_id)) {
+            $msg = 'Bạn cần đặt mua sản phẩm này trước khi gửi đánh giá!';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => $msg));
+            }
+            gsThongBao('error', $msg);
+            gsChuyenTrang(gsQuayLai('index.php?action=chitiet&id=' . $sanpham_id));
+        }
+
+        $luuKq = $dgModel->luudanhgia($gsNguoidungId, $sanpham_id, $sao, $noidung);
+        if ($luuKq) {
+            $msg = 'Cảm ơn bạn! Đánh giá sản phẩm đã được gửi thành công.';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => true, 'message' => $msg));
+            }
+            gsThongBao('success', $msg);
+        } else {
+            $msg = 'Có lỗi xảy ra khi lưu đánh giá, vui lòng thử lại!';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => $msg));
+            }
+            gsThongBao('error', $msg);
+        }
+        gsChuyenTrang(gsQuayLai('index.php?action=chitiet&id=' . $sanpham_id));
+        break;
+
     case 'donhang':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem đơn hàng của bạn!');
             gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
         }
         $dsDonhang = $dh->laydanhsachdonhang($gsNguoidungId);
+        $dsIdSpDaDanhgia = ($gsNguoidungId > 0) ? $dgModel->laydanhsachidsanphamdadanhgia($gsNguoidungId) : array();
         include('donhang.php');
         break;
 
