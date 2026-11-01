@@ -147,14 +147,14 @@ include(__DIR__ . '/inc/head-client.php');
                     <!-- Chọn số sao -->
                     <div class="mb-3 text-center py-2 bg-black bg-opacity-50 rounded">
                         <label class="form-label d-block text-white-50 small mb-2">Chạm để chọn số sao:</label>
-                        <div class="gs-modal-star-picker" id="modalStarPicker" style="font-size: 2rem; cursor: pointer; color: #ffc107;">
+                        <div class="gs-modal-star-picker" id="modalStarPicker">
                             <i class="fa-solid fa-star modal-star-node" data-val="1"></i>
                             <i class="fa-solid fa-star modal-star-node" data-val="2"></i>
                             <i class="fa-solid fa-star modal-star-node" data-val="3"></i>
                             <i class="fa-solid fa-star modal-star-node" data-val="4"></i>
                             <i class="fa-solid fa-star modal-star-node" data-val="5"></i>
                         </div>
-                        <div id="modalStarLabel" class="small fw-semibold text-warning mt-1">5 sao - Tuyệt vời</div>
+                        <div class="mt-2"><span id="modalStarLabel" class="gs-star-badge">5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa</span></div>
                     </div>
 
                     <!-- Nội dung đánh giá -->
@@ -193,11 +193,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const stars = modalStarPicker.querySelectorAll('.modal-star-node');
 
     const starTexts = {
-        1: '1 sao - Rất tệ',
-        2: '2 sao - Chưa hài lòng',
-        3: '3 sao - Bình thường',
-        4: '4 sao - Hài lòng',
-        5: '5 sao - Tuyệt vời'
+        1: '1 sao - Có gì nhắn shop nhen',
+        2: '2 sao - Bình tĩnh nhắn cho sop đi',
+        3: '3 sao - Nhắn shop đi mò',
+        4: '4 sao - Sản phẩm rất tốt',
+        5: '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
     };
 
     function setStars(val) {

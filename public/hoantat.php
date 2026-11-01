@@ -96,15 +96,21 @@ include(__DIR__ . '/inc/head-client.php');
                                             <div class="mb-2">
                                                 <label class="small text-white-50 mb-1 d-block">Mức độ hài lòng:</label>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="ht-star-picker" style="font-size: 1.4rem; cursor: pointer; color: #ffc107;">
+                                                    <div class="ht-star-picker">
                                                         <?php for ($s = 1; $s <= 5; $s++) : ?>
                                                             <i class="fa-<?php echo ($s <= $curSao) ? 'solid' : 'regular'; ?> fa-star ht-star-item" data-val="<?php echo $s; ?>"></i>
                                                         <?php endfor; ?>
                                                     </div>
-                                                    <span class="ht-star-label small text-warning fw-semibold ms-2">
+                                                    <span class="ht-star-label gs-star-badge ms-2">
                                                         <?php
-                                                        $nhanSao = array(1 => '1 sao - Rất tệ', 2 => '2 sao - Chưa hài lòng', 3 => '3 sao - Bình thường', 4 => '4 sao - Hài lòng', 5 => '5 sao - Tuyệt vời');
-                                                        echo isset($nhanSao[$curSao]) ? $nhanSao[$curSao] : '5 sao - Tuyệt vời';
+                                                        $nhanSao = array(
+                                                            1 => '1 sao - Có gì nhắn shop nhen',
+                                                            2 => '2 sao - Bình tĩnh nhắn cho sop đi',
+                                                            3 => '3 sao - Nhắn shop đi mò',
+                                                            4 => '4 sao - Sản phẩm rất tốt',
+                                                            5 => '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
+                                                        );
+                                                        echo isset($nhanSao[$curSao]) ? $nhanSao[$curSao] : '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa';
                                                         ?>
                                                     </span>
                                                 </div>
@@ -240,11 +246,11 @@ include(__DIR__ . '/inc/head-client.php');
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const starTexts = {
-        1: '1 sao - Rất tệ',
-        2: '2 sao - Chưa hài lòng',
-        3: '3 sao - Bình thường',
-        4: '4 sao - Hài lòng',
-        5: '5 sao - Tuyệt vời'
+        1: '1 sao - Có gì nhắn shop nhen',
+        2: '2 sao - Bình tĩnh nhắn cho sop đi',
+        3: '3 sao - Nhắn shop đi mò',
+        4: '4 sao - Sản phẩm rất tốt',
+        5: '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
     };
 
     document.querySelectorAll('.form-danhgia-hoantat').forEach(form => {
