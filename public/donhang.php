@@ -72,7 +72,7 @@ include(__DIR__ . '/inc/head-client.php');
                                     </div>
                                     <div class="d-flex flex-column align-items-end justify-content-center gap-2">
                                         <span class="gs-order__price"><?php echo gsTien($ct['thanhtien']); ?></span>
-                                        <?php if ((int)$od['trangthai'] !== 6) : 
+                                        <?php if ((int)$od['trangthai'] === 5) : 
                                             $daDanhGia = in_array((int)$ct['sanpham_id'], $dsIdSpDaDanhgia ?? array(), true);
                                         ?>
                                             <button type="button" 
@@ -87,6 +87,10 @@ include(__DIR__ . '/inc/head-client.php');
                                                 <i class="fa-<?php echo $daDanhGia ? 'solid' : 'regular'; ?> fa-star text-warning me-1"></i>
                                                 <?php echo $daDanhGia ? 'Đã đánh giá' : 'Đánh giá'; ?>
                                             </button>
+                                        <?php elseif ((int)$od['trangthai'] !== 6) : ?>
+                                            <span class="text-white-50 small" style="font-size: 0.75rem;" title="Chỉ đánh giá khi nhận hàng thành công">
+                                                <i class="fa-regular fa-clock me-1 text-warning"></i>Đánh giá sau khi nhận hàng
+                                            </span>
                                         <?php endif; ?>
                                     </div>
                                 </div>

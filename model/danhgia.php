@@ -136,7 +136,7 @@ class DANHGIA
         }
     }
 
-    // Kiểm tra khách hàng đã mua sản phẩm này chưa (hoặc là Admin/Nhân viên thì luôn được phép)
+    // Kiểm tra khách hàng đã mua và nhận hàng thành công (hoàn thành) sản phẩm này chưa
     public function kiemtraduocdanhgia($nguoidung_id, $sanpham_id)
     {
         if ((int)$nguoidung_id <= 0 || (int)$sanpham_id <= 0) {
@@ -144,28 +144,18 @@ class DANHGIA
         }
         $dbcon = DATABASE::connect();
         try {
-            // 1. Kiểm tra nếu đã mua sản phẩm trong đơn hàng (không bị hủy d.trangthai != 6)
+            // Kiểm tra khách hàng đã mua sản phẩm trong đơn hàng ĐÃ HOÀN THÀNH (nhận hàng thành công: d.trangthai = 5)
             $sql = "SELECT COUNT(*) 
                     FROM donhang d
                     JOIN donhangct ct ON ct.donhang_id = d.id
                     WHERE d.nguoidung_id = :nguoidung_id 
                       AND ct.sanpham_id = :sanpham_id 
-                      AND d.trangthai != 6";
+                      AND d.trangthai = 5";
             $cmd = $dbcon->prepare($sql);
             $cmd->bindValue(":nguoidung_id", (int)$nguoidung_id, PDO::PARAM_INT);
             $cmd->bindValue(":sanpham_id", (int)$sanpham_id, PDO::PARAM_INT);
             $cmd->execute();
-            if ((int)$cmd->fetchColumn() > 0) {
-                return true;
-            }
-
-            // 2. Nếu là Admin hoặc Nhân viên thì luôn cho phép test đánh giá
-            $sqlRole = "SELECT loai FROM nguoidung WHERE id = :uid LIMIT 1";
-            $cmdRole = $dbcon->prepare($sqlRole);
-            $cmdRole->bindValue(":uid", (int)$nguoidung_id, PDO::PARAM_INT);
-            $cmdRole->execute();
-            $loai = (int)$cmdRole->fetchColumn();
-            return ($loai === 1 || $loai === 2);
+            return ((int)$cmd->fetchColumn() > 0);
         } catch (PDOException $e) {
             error_log("Lỗi kiemtraduocdanhgia: " . $e->getMessage());
             return false;
