@@ -1,163 +1,73 @@
 <?php
-if (!isset($gsGoiyTieude) || $gsGoiyTieude === '') {
-    $gsGoiyTieude = 'Gợi ý cá nhân hóa cho bạn';
-}
-
-if (!isset($gsNguoidungId) || $gsNguoidungId <= 0) {
-    return;
-}
-
 if (!isset($gsModule36)) {
     header('Location: ../index.php');
     exit();
 }
-if (!isset($gsGoiyChiTiet)) {
-    $gsGoiyChiTiet = true;
+
+// Kiểm tra biến gợi ý từ controller; nếu chưa có thì tự động tra cứu
+if (!isset($thongTinBmiKhach) || !isset($dsSanPhamBmiGoiy)) {
+    if (isset($bmiModel) && isset($sp) && isset($gsNguoidungId) && $gsNguoidungId > 0) {
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
+    }
 }
-$gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
+
+// QUY TẮC BẮT BUỘC THEO HƯỚNG DẪN:
+// 1. Khách chưa đăng nhập -> TUYỆT ĐỐI KHÔNG hiển thị
+// 2. Khách đã đăng nhập nhưng CHƯA nhập thể trạng -> TUYỆT ĐỐI KHÔNG hiển thị (không chừa khoảng trống)
+// 3. Mốc BMI chưa được Admin gán sản phẩm (danh sách rỗng) -> TUYỆT ĐỐI KHÔNG hiển thị
+if (empty($thongTinBmiKhach) || empty($dsSanPhamBmiGoiy)) {
+    return;
+}
 ?>
-<section class="gs-section gs-section--goiy">
+
+<!-- ================================================================= -->
+<!-- SECTION: MỘT SỐ SẢN PHẨM PHÙ HỢP VỚI BẠN (GỢI Ý THEO CHỈ SỐ BMI)  -->
+<!-- ĐIỀU KIỆN: CHỈ HIỂN THỊ KHI ĐÃ ĐĂNG NHẬP VÀ ĐÃ NHẬP FORM THỂ TRẠNG -->
+<!-- ================================================================= -->
+<section class="gs-section gs-section--bmi-recommended py-5" style="border-top: 1px solid var(--gs-border); border-bottom: 1px solid var(--gs-border); background: rgba(16, 22, 34, 0.6);">
     <div class="container">
-        <div class="gs-section__head">
+        
+        <!-- Header của Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
             <div>
-                <h2 class="gs-section__title"><?php echo htmlspecialchars($gsGoiyTieude); ?></h2>
-                <span class="gs-section__sub">
-                    <?php if ($gsGoiy) : ?>
-                        Dựa trên chỉ số cơ thể và mục tiêu tập luyện của bạn để chọn size, sản phẩm và combo phù hợp.
-                    <?php else : ?>
-                        Nhập chiều cao, cân nặng và mục tiêu để nhận gợi ý size cùng combo tập luyện chuẩn form.
+                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                    <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.82rem; font-weight: 700; padding: 6px 12px; border-radius: var(--gs-radius-pill);">
+                        <i class="fa-solid fa-heart-pulse me-1"></i> Gợi ý theo chỉ số BMI
+                    </span>
+                    <span class="badge" style="background-color: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--gs-border); font-size: 0.82rem; font-weight: 600; padding: 6px 12px; border-radius: var(--gs-radius-pill);">
+                        Thể trạng: <strong class="text-warning"><?= htmlspecialchars($thongTinBmiKhach['phanloai']) ?></strong> (BMI: <?= number_format($thongTinBmiKhach['bmi'], 1) ?>)
+                    </span>
+                </div>
+                <h2 class="gs-section__title mb-1" style="font-size: 1.8rem; font-weight: 800; color: #ffffff;">
+                    Một số sản phẩm phù hợp với bạn
+                </h2>
+                <p class="text-secondary small mb-0 mt-1">
+                    <?php if (!empty($thongTinBmiKhach['khuyenghe'])): ?>
+                        <i class="fa-solid fa-lightbulb text-warning me-1"></i>
+                        <?= htmlspecialchars($thongTinBmiKhach['khuyenghe']) ?>
+                    <?php else: ?>
+                        Các trang phục tập gym, phụ kiện và thực phẩm bổ sung được tuyển chọn phù hợp nhất với thể trạng của bạn.
                     <?php endif; ?>
-                </span>
+                </p>
             </div>
-            <?php if ($gsSizeGoiy !== '') : ?>
-                <span class="gs-sizegoiy-badge">
-                    <i class="fa-solid fa-ruler"></i> Size gợi ý: <?php echo htmlspecialchars($gsSizeGoiy); ?>
-                </span>
-            <?php endif; ?>
+            <div>
+                <a href="index.php?action=taikhoan&tab=thetrang" class="btn btn-sm btn-outline-warning" style="font-weight: 600; border-radius: 8px; padding: 7px 16px;">
+                    <i class="fa-solid fa-sliders me-1"></i> Cập nhật chỉ số cơ thể
+                </a>
+            </div>
         </div>
 
-        <?php if (!$gsGoiy) : ?>
-            <div class="gs-cta-banner">
-                <div class="gs-cta-banner__text">
-                    <h3>Bạn chưa nhập chỉ số cơ thể!</h3>
-                    <p>
-                        Nhập chiều cao, cân nặng, giới tính và mục tiêu để hệ thống tự động tính BMI,
-                        gợi ý size quần áo chuẩn và combo sản phẩm phù hợp nhất.
-                    </p>
-                </div>
-                <div class="gs-cta-banner__icon" aria-hidden="true">
-                    <i class="fa-solid fa-weight-scale"></i>
-                </div>
-            </div>
-
-            <?php include(__DIR__ . '/bmi-form.php'); ?>
-
-        <?php else : ?>
-            <div class="gs-goiy-summary">
-                <div class="gs-goiy-summary__item">
-                    <span>Chỉ số BMI</span>
-                    <strong><?php echo htmlspecialchars($gsGoiy['bmi']); ?></strong>
-                </div>
-                <div class="gs-goiy-summary__item">
-                    <span>Phân loại</span>
-                    <strong><?php echo $gsGoiy['cauhinh'] ? htmlspecialchars($gsGoiy['cauhinh']['phanloai']) : 'Chưa xác định'; ?></strong>
-                </div>
-                <div class="gs-goiy-summary__item">
-                    <span>Mục tiêu tập luyện</span>
-                    <strong><?php echo htmlspecialchars(gsTenMuctieu($gsGoiy['muctieu'])); ?></strong>
-                </div>
-                <div class="gs-goiy-summary__item">
-                    <span>Size quần áo chuẩn</span>
-                    <strong><?php echo ($gsSizeGoiy !== '') ? htmlspecialchars($gsSizeGoiy) : '—'; ?></strong>
-                    <?php if ($gsGoiy['sizegoiy']) : ?>
-                        <small>
-                            (theo cao: <?php echo htmlspecialchars($gsGoiy['sizegoiy']['size_cao'] ? $gsGoiy['sizegoiy']['size_cao'] : '—'); ?>
-                            · theo nặng: <?php echo htmlspecialchars($gsGoiy['sizegoiy']['size_nang'] ? $gsGoiy['sizegoiy']['size_nang'] : '—'); ?>)
-                        </small>
-                    <?php endif; ?>
-                </div>
-                <div class="gs-goiy-summary__item">
-                    <span>Thể trạng</span>
-                    <strong><?php echo htmlspecialchars($gsGoiy['chieucao']); ?> cm · <?php echo htmlspecialchars($gsGoiy['cannang']); ?> kg
-                        · <?php echo ($gsGoiy['gioitinh'] === 'nu') ? 'Nữ' : 'Nam'; ?></strong>
-                </div>
-            </div>
-
-            <?php if ($gsGoiy['cauhinh'] && !empty($gsGoiy['cauhinh']['khuyenghe'])) : ?>
-                <p class="gs-goiy-advice">
-                    <i class="fa-solid fa-lightbulb"></i>
-                    <span><?php echo htmlspecialchars($gsGoiy['cauhinh']['khuyenghe']); ?></span>
-                </p>
-            <?php endif; ?>
-
-            <?php if ($gsGoiyChiTiet && count($gsGoiy['sanpham']) > 0) : ?>
-                <div class="row g-4 mt-2">
-                    <?php foreach ($gsGoiy['sanpham'] as $card) : ?>
-                        <?php include(__DIR__ . '/product-card.php'); ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <?php
-            $combo = $gsGoiy['combo'];
-            $comboCoSanpham = ($combo['quanao'] || $combo['phukien'] || $combo['tpbs']);
-            ?>
-            <?php if ($gsGoiyChiTiet && $comboCoSanpham) : ?>
+        <!-- Danh sách thẻ sản phẩm gợi ý do Admin gán -->
+        <div class="row g-4">
+            <?php foreach ($dsSanPhamBmiGoiy as $card): ?>
                 <?php
-                $tongcombo = 0;
-                foreach ($combo as $motsp) {
-                    if ($motsp) {
-                        $tongcombo += (float) $motsp['giaban'];
-                    }
-                }
+                // Tái sử dụng thẻ sản phẩm chuẩn của Storefront
+                include(__DIR__ . '/product-card.php'); 
                 ?>
-                <div class="gs-combo">
-                    <div class="gs-combo__head">
-                        <h3 class="gs-combo__title"><i class="fa-solid fa-layer-group text-danger"></i> Combo gợi ý theo thể trạng của bạn</h3>
-                        <span class="gs-combo__sub">1 Đồ tập + 1 Phụ kiện + 1 Thực phẩm bổ sung phù hợp mục tiêu
-                            <?php echo htmlspecialchars(gsTenMuctieu($gsGoiy['muctieu'])); ?></span>
-                    </div>
+            <?php endforeach; ?>
+        </div>
 
-                    <div class="row g-3">
-                        <?php foreach (array('quanao' => 'Đồ tập', 'phukien' => 'Phụ kiện', 'tpbs' => 'Thực phẩm bổ sung') as $nhom => $tennhom) : ?>
-                            <?php $motsp = $combo[$nhom]; ?>
-                            <?php if ($motsp) : ?>
-                                <div class="col-12 col-md-4">
-                                    <a class="gs-combo__item" href="index.php?action=chitiet&id=<?php echo (int) $motsp['id']; ?>">
-                                        <span class="gs-combo__nhom"><?php echo htmlspecialchars($tennhom); ?></span>
-                                        <img class="gs-combo__img" src="../assets/images/products/<?php echo htmlspecialchars($motsp['hinhanh']); ?>"
-                                            alt="<?php echo htmlspecialchars($motsp['tensanpham']); ?>" loading="lazy" onerror="gsOnErrorImg(this)">
-                                        <span class="gs-combo__name"><?php echo htmlspecialchars($motsp['tensanpham']); ?></span>
-                                        <span class="gs-combo__price"><?php echo gsTien($motsp['giaban']); ?></span>
-                                        <?php if ($nhom === 'quanao' && $gsSizeGoiy !== '') : ?>
-                                            <span class="gs-combo__note"><i class="fa-solid fa-ruler"></i> Tự chọn size gợi ý: <?php echo htmlspecialchars($gsSizeGoiy); ?></span>
-                                        <?php elseif ($nhom !== 'quanao') : ?>
-                                            <span class="gs-combo__note"><i class="fa-solid fa-check"></i> Không cần chọn size</span>
-                                        <?php endif; ?>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <div class="gs-combo__foot">
-                        <div class="gs-combo__total">
-                            <span>Tổng combo</span>
-                            <strong><?php echo gsTien($tongcombo); ?></strong>
-                        </div>
-                        <form class="gs-form-cart" method="post" action="index.php">
-                            <input type="hidden" name="action" value="themcombo">
-                            <input type="hidden" name="quanao_id" value="<?php echo $combo['quanao'] ? (int) $combo['quanao']['id'] : 0; ?>">
-                            <input type="hidden" name="phukien_id" value="<?php echo $combo['phukien'] ? (int) $combo['phukien']['id'] : 0; ?>">
-                            <input type="hidden" name="tpbs_id" value="<?php echo $combo['tpbs'] ? (int) $combo['tpbs']['id'] : 0; ?>">
-                            <input type="hidden" name="size" value="<?php echo htmlspecialchars($gsSizeGoiy); ?>">
-                            <button type="submit" class="btn-gs btn-gs--dark">
-                                <i class="fa-solid fa-bag-shopping"></i> Thêm cả Combo vào giỏ
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            <?php endif; ?>
-        <?php endif; ?>
     </div>
 </section>

@@ -14,6 +14,7 @@ require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/../model/nguoidung.php');
 require_once(__DIR__ . '/../model/yeuthich.php');
 require_once(__DIR__ . '/../model/danhgia.php');
+require_once(__DIR__ . '/../model/bmi.php');
 require_once(__DIR__ . '/inc/shop_helper.php');
 
 $gsModule36 = true;
@@ -31,6 +32,7 @@ $vnpay = new VNPAY();
 $nd   = new NGUOIDUNG();
 $yt   = new YEUTHICH();
 $dgModel = new DANHGIA();
+$bmiModel = new BMI();
 
 $gh->dongbo();
 $gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
@@ -268,6 +270,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         );
 
         $dsThuonghieu = $sp->laydanhsachthuonghieu();
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('danhmuc.php');
         break;
@@ -303,6 +308,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         $danhgiaCuaToi  = ($gsNguoidungId > 0) ? $dgModel->laydanhgiacuatoi($gsNguoidungId, $id) : null;
         $sanphamtuongtu = $sp->laysanphamtuongtu($sanpham['danhmuc_id'], $id, 4);
 
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         $sizegoiy = '';
         if ($gsGoiy && $gsGoiy['sizegoiy'] && in_array($gsGoiy['sizegoiy']['size'], $mangsizes, true)) {
@@ -388,6 +396,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
 
     case 'themcombo':
         $items = array();
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         $sizegoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
         $sizechon = isset($_POST['size']) ? trim($_POST['size']) : '';
@@ -750,6 +761,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         break;
 
     default:
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('main.php');
         break;
