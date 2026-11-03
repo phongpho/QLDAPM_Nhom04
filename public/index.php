@@ -725,7 +725,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         }
 
         if (!$dgModel->kiemtraduocdanhgia($gsNguoidungId, $sanpham_id)) {
-            $msg = 'Bạn cần đặt mua sản phẩm này trước khi gửi đánh giá!';
+            $msg = 'Chỉ khách hàng đã mua và nhận hàng thành công mới có thể gửi đánh giá!';
             if (gsLaAjax()) {
                 gsTraJson(array('ok' => false, 'message' => $msg));
             }

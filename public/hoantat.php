@@ -47,7 +47,8 @@ include(__DIR__ . '/inc/head-client.php');
                             <?php endforeach; ?>
                         </div>
 
-                        <!-- MỤC ĐÁNH GIÁ SẢN PHẨM VỪA MUA -->
+                        <?php if ((int)$donhang['trangthai'] === 5) : ?>
+                        <!-- MỤC ĐÁNH GIÁ SẢN PHẨM ĐÃ MUA (KHI ĐÃ HOÀN THÀNH ĐƠN HÀNG) -->
                         <div class="gs-checkout__box mt-4" id="mucDanhGiaHoanTat">
                             <div class="d-flex align-items-center justify-content-between mb-3 border-bottom border-secondary border-opacity-50 pb-2 flex-wrap gap-2">
                                 <h3 class="gs-checkout__title mb-0">
@@ -134,6 +135,22 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php endforeach; ?>
                             </div>
                         </div>
+                        <?php else : ?>
+                        <!-- THÔNG BÁO HƯỚNG DẪN ĐÁNH GIÁ SAU KHI NHẬN HÀNG -->
+                        <div class="gs-checkout__box mt-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="fs-2 text-warning"><i class="fa-solid fa-box-open"></i></div>
+                                <div>
+                                    <h5 class="text-white fw-bold mb-1">Đánh giá sản phẩm sau khi nhận hàng</h5>
+                                    <p class="text-secondary small mb-0">
+                                        Đơn hàng của bạn đang được chuẩn bị. Sau khi nhận hàng thành công, bạn có thể vào mục 
+                                        <a href="index.php?action=donhang" class="text-warning fw-semibold text-decoration-underline">Đơn mua của tôi</a> 
+                                        để chia sẻ cảm nhận và đánh giá chất lượng sản phẩm nhé!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
 
                         <?php if ($donhang['phuongthuc_tt'] === 'chuyenkhoan') : ?>
                             <?php $urlqr = $vnpay->layUrlQrVietQR($donhang['madonhang'], $donhang['tongtien']); ?>

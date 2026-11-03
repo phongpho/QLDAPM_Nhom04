@@ -244,7 +244,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <?php elseif (empty($duocDanhgia)) : ?>
                         <div class="p-3 mb-4 rounded border border-secondary border-opacity-25 bg-dark d-flex align-items-center gap-2">
                             <i class="fa-solid fa-circle-info text-info"></i>
-                            <span>Bạn cần <strong>đặt mua sản phẩm này</strong> để có thể gửi đánh giá.</span>
+                            <span>Chỉ khách hàng <strong>đã mua và nhận hàng thành công</strong> mới có thể gửi đánh giá sản phẩm này.</span>
                         </div>
                     <?php else : ?>
                         <div class="card bg-dark border-secondary border-opacity-50 p-4 mb-4 rounded-3 shadow-sm">
