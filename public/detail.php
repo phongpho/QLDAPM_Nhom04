@@ -139,6 +139,15 @@ include(__DIR__ . '/inc/head-client.php');
                                 title="<?php echo $daThichDetail ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
                             <i class="<?php echo $daThichDetail ? 'fa-solid fa-heart text-danger fs-5' : 'fa-regular fa-heart text-danger fs-5'; ?>"></i>
                         </button>
+                        <?php $daSosanhDetail = in_array((int)$sanpham['id'], $_SESSION['gs_sosanh'] ?? array(), true); ?>
+                        <button type="button" class="btn btn-outline-warning d-flex align-items-center justify-content-center px-3 gap-2 gs-btn-detail-compare"
+                                style="border-radius: 8px; min-height: 48px; border-color: rgba(249, 115, 22, 0.4); color: #f97316;"
+                                data-id="<?php echo (int) $sanpham['id']; ?>"
+                                onclick="gsToggleSoSanh(this, <?php echo (int) $sanpham['id']; ?>)"
+                                title="<?php echo $daSosanhDetail ? 'Bỏ so sánh' : 'Thêm vào so sánh'; ?>">
+                            <i class="fa-solid fa-code-compare fs-5"></i>
+                            <span class="d-none d-sm-inline gs-compare-btn-text"><?php echo $daSosanhDetail ? 'Đang so sánh' : 'So sánh'; ?></span>
+                        </button>
                     </div>
                 </form>
 

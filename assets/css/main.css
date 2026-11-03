@@ -1961,3 +1961,48 @@ img {
 .swal2-html-container {
     color: var(--gs-text-secondary) !important;
 }
+
+
+/* --- SO SANH SAN PHAM (MODULE 5) --- */
+.gs-compare-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    background: rgba(11, 15, 23, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(249, 115, 22, 0.35);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+    animation: gsSlideUp 0.3s ease;
+}
+
+@keyframes gsSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.gs-btn-compare {
+    transition: all 0.2s ease;
+}
+
+.gs-btn-compare:hover {
+    transform: scale(1.1);
+    background: rgba(249, 115, 22, 0.2) !important;
+}
+
+.gs-btn-detail-compare:hover {
+    background-color: #f97316 !important;
+    color: #000 !important;
+}
+
+.gs-compare-table th,
+.gs-compare-table td {
+    vertical-align: middle;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.gs-compare-label {
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
