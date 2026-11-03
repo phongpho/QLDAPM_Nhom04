@@ -1962,7 +1962,6 @@ img {
     color: var(--gs-text-secondary) !important;
 }
 
-
 /* --- SO SANH SAN PHAM (MODULE 5) --- */
 .gs-compare-dock {
     position: fixed;
@@ -2005,4 +2004,194 @@ img {
 .gs-compare-label {
     white-space: nowrap;
     font-size: 0.9rem;
+
+/* ==========================================================================
+   17. MODERN ATHLETIC STAR RATING SYSTEM (Interactive & Aesthetic)
+   ========================================================================== */
+
+/* Star Pickers (detail.php, hoantat.php, donhang.php) */
+.gs-star-picker,
+.ht-star-picker,
+.gs-modal-star-picker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--gs-radius-pill);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    user-select: none;
+    transition: var(--gs-transition);
+}
+
+.gs-star-picker:hover,
+.ht-star-picker:hover,
+.gs-modal-star-picker:hover {
+    border-color: rgba(245, 158, 11, 0.35);
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.gs-modal-star-picker {
+    gap: 12px;
+    padding: 10px 20px;
+    background: rgba(11, 15, 23, 0.85);
+}
+
+/* Individual Interactive Star Nodes */
+.star-node,
+.ht-star-item,
+.modal-star-node {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.55rem;
+    line-height: 1;
+    padding: 2px 3px;
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                color 0.18s ease,
+                filter 0.2s ease;
+}
+
+.gs-modal-star-picker .modal-star-node {
+    font-size: 2.15rem;
+    padding: 2px 6px;
+}
+
+/* Inactive Star */
+.star-node.fa-regular,
+.ht-star-item.fa-regular,
+.modal-star-node.fa-regular {
+    color: #475569 !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    opacity: 0.7;
+}
+
+/* Active / Filled Star */
+.star-node.fa-solid,
+.ht-star-item.fa-solid,
+.modal-star-node.fa-solid {
+    color: #fbbf24 !important;
+    filter: drop-shadow(0 2px 7px rgba(245, 158, 11, 0.65)) drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+    opacity: 1;
+}
+
+/* Interactive Hover Effect */
+.star-node:hover,
+.ht-star-item:hover,
+.modal-star-node:hover {
+    transform: scale(1.3) translateY(-2px);
+    color: #f59e0b !important;
+    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.85)) drop-shadow(0 0 20px rgba(251, 191, 36, 0.6)) !important;
+}
+
+.star-node:active,
+.ht-star-item:active,
+.modal-star-node:active {
+    transform: scale(1.15);
+}
+
+/* Modern Rating Badges */
+.gs-star-badge,
+#starRatingDetailLabel,
+.ht-star-label,
+#modalStarLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: var(--gs-radius-pill);
+    background: rgba(245, 158, 11, 0.12);
+    color: #fbbf24 !important;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    font-weight: 700;
+    font-size: 0.86rem;
+    letter-spacing: 0.01em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: var(--gs-transition);
+}
+
+/* Product Detail & Card Static Star Display */
+.gs-detail__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--gs-dark-800);
+    border: 1px solid var(--gs-border);
+    border-radius: var(--gs-radius-pill);
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.gs-detail__rating .fa-star {
+    font-size: 1.05rem;
+}
+
+.gs-detail__rating .fa-star.fa-solid {
+    color: #fbbf24;
+    filter: drop-shadow(0 1px 4px rgba(251, 191, 36, 0.5));
+}
+
+.gs-detail__rating .fa-star.fa-regular {
+    color: #475569;
+}
+
+.gs-detail__rating span:first-of-type {
+    color: #fbbf24;
+    font-weight: 800;
+    margin-left: 4px;
+}
+
+/* Review List Items */
+.gs-review {
+    background: var(--gs-dark-800);
+    border: 1px solid var(--gs-border);
+    border-radius: var(--gs-radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: var(--gs-transition);
+}
+
+.gs-review:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.gs-review__head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 0.6rem;
+}
+
+.gs-review__head strong {
+    color: var(--gs-text-primary);
+    font-size: 0.95rem;
+}
+
+.gs-review__sao {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.gs-review__sao .fa-star.fa-solid {
+    color: #fbbf24;
+    font-size: 0.92rem;
+    filter: drop-shadow(0 1px 4px rgba(251, 191, 36, 0.45));
+}
+
+.gs-review__sao .fa-star.fa-regular {
+    color: #334155;
+    font-size: 0.92rem;
+}
+
+.gs-review__noidung {
+    color: var(--gs-text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 0;
 }
