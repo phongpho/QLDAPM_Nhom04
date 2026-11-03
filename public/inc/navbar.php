@@ -113,6 +113,15 @@
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=sosanh">
+                                <span class="d-flex align-items-center gap-2">
+                                    <span class="gs-menu-icon-box"><i class="fa-solid fa-code-compare"></i></span>
+                                    <span>So sánh sản phẩm</span>
+                                </span>
+                                <span class="badge rounded-pill bg-warning text-dark fw-bold" id="badgeSosanhNavbar"><?php echo isset($_SESSION['gs_sosanh']) ? count($_SESSION['gs_sosanh']) : 0; ?></span>
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=giohang">
                                 <span class="d-flex align-items-center gap-2">
                                     <span class="gs-menu-icon-box"><i class="fa-solid fa-bag-shopping"></i></span>
