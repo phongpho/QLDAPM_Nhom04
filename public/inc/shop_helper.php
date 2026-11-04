@@ -109,6 +109,36 @@ if (!function_exists('gsThongBao')) {
         return round((float) $cannang / ($m * $m), 1);
     }
 
+    function gsLayGoiYTheoBmi($bmiModel, $spModel, $nguoidungId)
+    {
+        if ($nguoidungId <= 0) {
+            return array('thongtin' => null, 'sanpham' => null);
+        }
+        $hoso = $spModel->layhosothetrang($nguoidungId);
+        if (empty($hoso) || empty($hoso['bmi'])) {
+            return array('thongtin' => null, 'sanpham' => null);
+        }
+        $bmiVal = (float)$hoso['bmi'];
+        $cauhinh = $bmiModel->laycauhinhchiso($bmiVal);
+        if (!$cauhinh || (int)$cauhinh['trangthai'] !== 1) {
+            return array('thongtin' => null, 'sanpham' => null);
+        }
+        $sanphamList = $bmiModel->laysanphamchitietbycauhinh($cauhinh['id'], 8);
+        if (empty($sanphamList)) {
+            return array('thongtin' => null, 'sanpham' => null);
+        }
+        return array(
+            'thongtin' => array(
+                'hoso'      => $hoso,
+                'cauhinh'   => $cauhinh,
+                'bmi'       => $bmiVal,
+                'phanloai'  => $cauhinh['phanloai'],
+                'khuyenghe' => $cauhinh['khuyenghe']
+            ),
+            'sanpham'  => $sanphamList
+        );
+    }
+
     function gsTenMuctieu($muctieu)
     {
         $mang = array(

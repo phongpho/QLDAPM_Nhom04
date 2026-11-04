@@ -40,14 +40,26 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
                 </span>
             </a>
 
-            <?php $daThichCard = in_array((int)$card['id'], $dsIdYeuthich ?? array(), true); ?>
-            <button type="button" class="btn btn-sm gs-btn-wishlist position-absolute top-0 end-0 m-2 rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
-                    style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); z-index: 5;"
-                    data-id="<?php echo (int) $card['id']; ?>" 
-                    onclick="event.preventDefault(); event.stopPropagation(); gsToggleYeuThich(this, <?php echo (int) $card['id']; ?>);"
-                    title="<?php echo $daThichCard ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
-                <i class="<?php echo $daThichCard ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart text-white'; ?>"></i>
-            </button>
+            <?php 
+            $daThichCard = in_array((int)$card['id'], $dsIdYeuthich ?? array(), true);
+            $daSosanhCard = in_array((int)$card['id'], $_SESSION['gs_sosanh'] ?? array(), true);
+            ?>
+            <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2" style="z-index: 5;">
+                <button type="button" class="btn btn-sm gs-btn-wishlist rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
+                        style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);"
+                        data-id="<?php echo (int) $card['id']; ?>" 
+                        onclick="event.preventDefault(); event.stopPropagation(); gsToggleYeuThich(this, <?php echo (int) $card['id']; ?>);"
+                        title="<?php echo $daThichCard ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
+                    <i class="<?php echo $daThichCard ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart text-white'; ?>"></i>
+                </button>
+                <button type="button" class="btn btn-sm gs-btn-compare rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
+                        style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);"
+                        data-id="<?php echo (int) $card['id']; ?>" 
+                        onclick="event.preventDefault(); event.stopPropagation(); gsToggleSoSanh(this, <?php echo (int) $card['id']; ?>);"
+                        title="<?php echo $daSosanhCard ? 'Bỏ so sánh' : 'Thêm vào so sánh'; ?>">
+                    <i class="fa-solid fa-code-compare <?php echo $daSosanhCard ? 'text-warning' : 'text-white'; ?>"></i>
+                </button>
+            </div>
 
             <div class="gs-product-card__actions">
                 <?php if (!$conhang) : ?>

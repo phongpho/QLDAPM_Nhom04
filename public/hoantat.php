@@ -244,4 +244,55 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const starTexts = {
+        1: '1 sao - Có gì nhắn shop nhen',
+        2: '2 sao - Bình tĩnh nhắn cho sop đi',
+        3: '3 sao - Nhắn shop đi mò',
+        4: '4 sao - Sản phẩm rất tốt',
+        5: '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
+    };
+
+    document.querySelectorAll('.form-danhgia-hoantat').forEach(form => {
+        const picker = form.querySelector('.ht-star-picker');
+        const input = form.querySelector('.input-sao-val');
+        const label = form.querySelector('.ht-star-label');
+        if (!picker || !input) return;
+        const stars = picker.querySelectorAll('.ht-star-item');
+
+        function updateStars(val) {
+            stars.forEach(s => {
+                const v = parseInt(s.dataset.val, 10);
+                if (v <= val) {
+                    s.classList.remove('fa-regular');
+                    s.classList.add('fa-solid');
+                } else {
+                    s.classList.remove('fa-solid');
+                    s.classList.add('fa-regular');
+                }
+            });
+            if (label && starTexts[val]) {
+                label.textContent = starTexts[val];
+            }
+        }
+
+        stars.forEach(s => {
+            s.addEventListener('mouseenter', function () {
+                updateStars(parseInt(this.dataset.val, 10));
+            });
+            s.addEventListener('click', function () {
+                const v = parseInt(this.dataset.val, 10);
+                input.value = v;
+                updateStars(v);
+            });
+        });
+
+        picker.addEventListener('mouseleave', function () {
+            updateStars(parseInt(input.value, 10));
+        });
+    });
+});
+</script>
+
 <?php include(__DIR__ . '/inc/footer.php'); ?>

@@ -1234,3 +1234,146 @@ body, .main, .content {
 
 
 
+
+
+/* ==========================================================================
+   Spotlight Global Search & Live Search Highlight System
+   ========================================================================== */
+.gb-nav-search {
+    background-color: var(--gb-slate-100);
+    border: 1px solid var(--gb-slate-200);
+    border-radius: var(--gb-radius-pill);
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: var(--gb-transition);
+    max-width: 380px;
+    width: 100%;
+}
+
+.gb-nav-search:hover {
+    background-color: var(--gb-white);
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.gb-kbd {
+    background-color: var(--gb-white);
+    border: 1px solid var(--gb-slate-300);
+    border-radius: 4px;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--gb-slate-500);
+    font-family: inherit;
+    box-shadow: 0 1px 1px rgba(15, 23, 42, 0.08);
+}
+
+/* Spotlight Modal Overlay */
+.gb-spotlight-modal .modal-content {
+    border-radius: var(--gb-radius-lg);
+    border: 1px solid var(--gb-slate-200);
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25);
+    overflow: hidden;
+}
+
+.gb-spotlight-input-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--gb-slate-200);
+    background-color: var(--gb-white);
+    gap: 0.75rem;
+}
+
+.gb-spotlight-input {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: var(--gb-slate-900) !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.gb-spotlight-results {
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    background-color: var(--gb-slate-50);
+}
+
+.gb-search-group-header {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gb-slate-400);
+    padding: 0.6rem 0.75rem 0.25rem;
+}
+
+.gb-search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--gb-radius-md);
+    text-decoration: none !important;
+    color: var(--gb-slate-800);
+    transition: var(--gb-transition);
+    background-color: var(--gb-white);
+    margin-bottom: 0.35rem;
+    border: 1px solid transparent;
+}
+
+.gb-search-item:hover, .gb-search-item.active {
+    background-color: var(--gb-primary-subtle);
+    border-color: var(--gb-primary-border);
+    transform: translateX(2px);
+}
+
+.gb-search-item:hover .gb-search-item-title,
+.gb-search-item.active .gb-search-item-title {
+    color: var(--gb-primary);
+}
+
+.gb-search-item-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--gb-slate-900);
+    line-height: 1.3;
+}
+
+.gb-search-item-sub {
+    font-size: 0.775rem;
+    color: var(--gb-slate-500);
+}
+
+/* In-table Live Highlight & Clear Button */
+.gb-search-highlight {
+    background-color: #fef08a !important;
+    color: #854d0e !important;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 700;
+}
+
+.gb-search-clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gb-slate-400);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 0.85rem;
+    display: none;
+    line-height: 1;
+    z-index: 5;
+}
+
+.gb-search-clear-btn:hover {
+    color: var(--gb-slate-700);
+}

@@ -11,7 +11,7 @@ USE gymshop;
 -- 1. NGƯỜI DÙNG
 -- =====================================================================
 
-CREATE TABLE nguoidung (
+CREATE TABLE nguoidung ( 
   id          INT NOT NULL AUTO_INCREMENT,
   gmail       VARCHAR(100) DEFAULT NULL,
   google_id   VARCHAR(50)  DEFAULT NULL,

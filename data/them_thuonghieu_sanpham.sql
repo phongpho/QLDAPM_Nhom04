@@ -3,15 +3,15 @@ USE gymshop;
 INSERT INTO danhmuc (id, tendanhmuc, loai) VALUES
 (7, 'Vitamin & Sức khỏe', 'tpbs');
 
-INSERT INTO thuonghieu (id, tenthuonghieu, logo) VALUES
-(5, 'Under Armour', 'underarmour.png'),
-(6, 'Adidas', 'adidas.png'),
-(7, 'Harbinger', 'harbinger.png'),
-(8, 'BlenderBottle', 'blenderbottle.png'),
-(9, 'Dymatize', 'dymatize.png'),
-(10, 'Applied Nutrition', 'appliednutrition.png'),
-(11, 'MuscleTech', 'muscletech.png'),
-(12, 'Now Foods', 'nowfoods.png');
+INSERT INTO thuonghieu (tenthuonghieu, logo) VALUES
+('Under Armour', 'underarmour.png'),
+('Adidas', 'adidas.png'),
+('Harbinger', 'harbinger.png'),
+('BlenderBottle', 'blenderbottle.png'),
+('Dymatize', 'dymatize.png'),
+('Applied Nutrition', 'appliednutrition.png'),
+('MuscleTech', 'muscletech.png'),
+('Now Foods', 'nowfoods.png');
 
 INSERT INTO sanpham (id, tensanpham, mota, giagoc, giaban, soluongton, hinhanh, danhmuc_id, thuonghieu_id, doituong, sizes, mausac, chatlieu, thanhphan, muctieu, hansudung, noibat, trangthai, luotxem, luotmua) VALUES
 (8, 'Áo Thun Tập Gym Nam Under Armour Tech 2.0', 'Áo thun tập gym nam Under Armour Tech 2.0 mang đến cảm giác tập luyện nhẹ tênh và thông thoáng tối đa. Ứng dụng công nghệ sợi vải UA Tech độc quyền siêu mềm mượt, mô phỏng cảm giác sợi tự nhiên nhưng sở hữu tốc độ khô ráo nhanh gấp 3 lần cotton thông thường. Phom áo Regular thể thao vừa vặn, không quá bó sát cũng không quá rộng thùng thình, tôn lên bờ vai và bắp tay săn chắc. Thiết kế đường may vai công thái học dời về phía trước, loại bỏ hoàn toàn cảm giác cọ xát gồ ghề khi gánh tạ đòn Squat hay vác đòn tạ trên vai.\n\nPhù hợp cho các buổi tập nâng tạ, chạy bộ, cardio, chơi thể thao bóng rổ, tennis hoặc mặc hàng ngày phong cách năng động.\n\nBẢO QUẢN CHUẨN GYMER:\n- Giặt máy bằng nước lạnh dưới 30°C cùng màu tương tự.\n- Không sử dụng chất làm mềm vải (nước xả) để tránh làm bít tắc các vi lỗ thoáng khí trên sợi UA Tech.\n- Sấy ở nhiệt độ thấp hoặc phơi trong bóng râm, không ủi/là trực tiếp lên áo.', 650000, 520000, 45, 'ao_nam_ua_tech.jpg', 1, 5, 'nam', 'S,M,L,XL', 'Đen,Xám,Xanh Navy', '100% Polyester', NULL, 'tangcan,duytri', NULL, 0, 1, 236, 86),
