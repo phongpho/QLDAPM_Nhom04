@@ -122,7 +122,7 @@
 <div class="modal fade" id="gsAuthModal" tabindex="-1" aria-labelledby="gsAuthModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
         <div class="modal-content border-secondary shadow-lg" style="background: #141c2b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px;">
-            <div class="modal-header border-secondary pb-2">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
                 <div class="d-flex align-items-center gap-2">
                     <img src="../assets/images/systems/logo.png?v=<?= file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="36" style="height: 36px; width: auto; object-fit: contain;">
                 </div>
@@ -160,7 +160,7 @@
                                     <input type="password" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" required>
                                 </div>
                             </div>
-                            <button class="btn btn-auth-submit w-100 fw-semibold py-2 mt-2" type="submit">
+                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
                                 <i class="fa-solid fa-right-to-bracket me-1"></i> Đăng nhập
                             </button>
                         </form>
