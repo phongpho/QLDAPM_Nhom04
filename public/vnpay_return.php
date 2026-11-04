@@ -13,138 +13,225 @@ $thanhcong = $donhang
 $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) : 0;
 ?>
 
+<section class="gs-section gs-section--grey gs-page-head">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb gs-breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="index.php?action=donhang">Đơn hàng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Kết quả thanh toán</li>
+            </ol>
+        </nav>
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h1 class="gs-page-head__title mb-1">
+                    <?php echo $thanhcong ? 'Thanh toán VNPay thành công' : 'Thanh toán VNPay không thành công'; ?>
+                </h1>
+                <p class="gs-page-head__sub mb-0">
+                    <?php if ($donhang) : ?>
+                        Mã đơn hàng <strong><?php echo htmlspecialchars($donhang['madonhang']); ?></strong>
+                        <?php echo $thanhcong ? 'đã được ghi nhận thanh toán thành công.' : 'chưa hoàn tất thanh toán.'; ?>
+                    <?php else : ?>
+                        Không tìm thấy thông tin đơn hàng tương ứng.
+                    <?php endif; ?>
+                </p>
+            </div>
+            <a class="btn-gs btn-gs--outline btn-gs--sm" href="index.php?action=sanpham">Tiếp tục mua sắm</a>
+        </div>
+    </div>
+</section>
+
 <section class="gs-section">
     <div class="container">
         <?php if (!$donhang) : ?>
-            <div class="gs-empty">
-                <i class="fa-solid fa-circle-question"></i>
-                <h3>Không tìm thấy đơn hàng</h3>
-                <p>Không có đơn hàng nào khớp với mã giao dịch VNPay trả về.</p>
-                <a class="btn-gs btn-gs--dark" href="index.php">Về trang chủ</a>
+            <div class="gs-empty gs-cart-empty-box">
+                <h3 class="mt-2 mb-2">Không tìm thấy đơn hàng</h3>
+                <p class="text-muted mb-4">Không có đơn hàng nào khớp với mã giao dịch VNPay trả về.</p>
+                <a class="btn-gs btn-gs--primary" href="index.php">Về trang chủ</a>
             </div>
         <?php else : ?>
-            <div class="gs-result<?php echo $thanhcong ? '' : ' gs-result--fail'; ?>">
-                <div class="gs-result__icon">
-                    <i class="fa-solid <?php echo $thanhcong ? 'fa-circle-check' : 'fa-circle-xmark'; ?>"></i>
-                </div>
-                <h1 class="gs-result__title">
-                    <?php echo $thanhcong ? 'Thanh toán VNPay thành công!' : 'Giao dịch VNPay không thành công'; ?>
-                </h1>
-                <p class="gs-result__sub">
-                    Mã đơn hàng <strong><?php echo htmlspecialchars($donhang['madonhang']); ?></strong>
-                    <?php if ($thanhcong) : ?>
-                        đã được ghi nhận là <strong>đã thanh toán</strong>.
-                    <?php else : ?>
-                        chưa được thanh toán. Bạn có thể thử lại bằng VNPay hoặc chọn thanh toán khi nhận hàng (COD).
-                    <?php endif; ?>
-                </p>
-
-                <div class="row g-4 mt-2 text-start">
-                    <div class="col-12 col-lg-7">
-                        <div class="gs-checkout__box">
-                            <h3 class="gs-checkout__title"><i class="fa-solid fa-receipt"></i> Thông tin giao dịch VNPay</h3>
-                            <table class="table gs-table">
-                                <tbody>
-                                    <tr>
-                                        <th>Mã đơn hàng</th>
-                                        <td><?php echo htmlspecialchars($donhang['madonhang']); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Mã giao dịch VNPay</th>
-                                        <td><?php echo isset($_GET['vnp_TransactionNo']) ? htmlspecialchars($_GET['vnp_TransactionNo']) : '—'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Số tiền</th>
-                                        <td><?php echo gsTien($sotienvnpay > 0 ? $sotienvnpay : $donhang['tongtien']); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Mã phản hồi</th>
-                                        <td><?php echo isset($_GET['vnp_ResponseCode']) ? htmlspecialchars($_GET['vnp_ResponseCode']) : '—'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Trạng thái giao dịch</th>
-                                        <td><?php echo isset($_GET['vnp_TransactionStatus']) ? htmlspecialchars($_GET['vnp_TransactionStatus']) : '—'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Thời gian thanh toán</th>
-                                        <td>
-                                            <?php
-                                            if (isset($_GET['vnp_PayDate']) && strlen($_GET['vnp_PayDate']) >= 14) {
-                                                $pd = $_GET['vnp_PayDate'];
-                                                echo htmlspecialchars(substr($pd, 6, 2) . '/' . substr($pd, 4, 2) . '/' . substr($pd, 0, 4)
-                                                    . ' ' . substr($pd, 8, 2) . ':' . substr($pd, 10, 2) . ':' . substr($pd, 12, 2));
-                                            } else {
-                                                echo '—';
-                                            }
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Phương thức thanh toán</th>
-                                        <td><?php echo htmlspecialchars($dh->laytenphuongthuc($donhang['phuongthuc_tt'])); ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="row g-4">
+                <div class="col-12 col-lg-7">
+                    <div class="gs-checkout__box">
+                        <div class="gs-checkout__box-head mb-3">
+                            <h3 class="gs-checkout__title mb-1">Thông tin giao dịch VNPay</h3>
+                            <span class="small text-white-50">Chi tiết đối soát giao dịch cổng thanh toán điện tử.</span>
                         </div>
 
-                        <div class="gs-checkout__box mt-4">
-                            <h3 class="gs-checkout__title"><i class="fa-solid fa-box"></i> Sản phẩm trong đơn</h3>
-                            <?php foreach ($chitiet as $ct) : ?>
-                                <div class="gs-checkout__item">
-                                    <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
-                                        alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
-                                    <div>
-                                        <span class="gs-checkout__item-name"><?php echo htmlspecialchars($ct['tensanpham']); ?></span>
-                                        <span class="gs-checkout__item-meta">
-                                            <?php echo ((string) $ct['size'] !== '') ? ('Size ' . htmlspecialchars($ct['size'])) : 'Freesize'; ?>
-                                            × <?php echo (int) $ct['soluong']; ?>
-                                        </span>
-                                    </div>
-                                    <span class="gs-checkout__item-price"><?php echo gsTien($ct['thanhtien']); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                            <div class="gs-cart-summary__line gs-cart-summary__line--total">
-                                <span>Tổng cộng</span>
-                                <strong><?php echo gsTien($donhang['tongtien']); ?></strong>
+                        <div class="gs-info-list">
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Mã đơn hàng</span>
+                                <span class="gs-info-value font-monospace text-warning"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Mã giao dịch VNPay</span>
+                                <span class="gs-info-value font-monospace"><?php echo isset($_GET['vnp_TransactionNo']) ? htmlspecialchars($_GET['vnp_TransactionNo']) : '—'; ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Số tiền thanh toán</span>
+                                <span class="gs-info-value text-white"><?php echo gsTien($sotienvnpay > 0 ? $sotienvnpay : $donhang['tongtien']); ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Mã phản hồi</span>
+                                <span class="gs-info-value"><?php echo isset($_GET['vnp_ResponseCode']) ? htmlspecialchars($_GET['vnp_ResponseCode']) : '—'; ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Trạng thái giao dịch</span>
+                                <span class="gs-info-value">
+                                    <?php if ($thanhcong) : ?>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">Thành công (00)</span>
+                                    <?php else : ?>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Không thành công</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Thời gian thanh toán</span>
+                                <span class="gs-info-value">
+                                    <?php
+                                    if (isset($_GET['vnp_PayDate']) && strlen($_GET['vnp_PayDate']) >= 14) {
+                                        $pd = $_GET['vnp_PayDate'];
+                                        echo htmlspecialchars(substr($pd, 6, 2) . '/' . substr($pd, 4, 2) . '/' . substr($pd, 0, 4)
+                                            . ' ' . substr($pd, 8, 2) . ':' . substr($pd, 10, 2) . ':' . substr($pd, 12, 2));
+                                    } else {
+                                        echo '—';
+                                    }
+                                    ?>
+                                </span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Phương thức</span>
+                                <span class="gs-info-value"><?php echo htmlspecialchars($dh->laytenphuongthuc($donhang['phuongthuc_tt'])); ?></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12 col-lg-5">
-                        <div class="gs-cart-summary">
-                            <h3 class="gs-cart-summary__title">Trạng thái đơn hàng</h3>
+                    <div class="gs-checkout__box mt-4">
+                        <div class="gs-checkout__box-head mb-3">
+                            <h3 class="gs-checkout__title mb-1">
+                                Sản phẩm trong đơn (<?php echo count($chitiet); ?> món)
+                            </h3>
+                            <span class="small text-white-50">Danh sách sản phẩm bạn đã đặt mua.</span>
+                        </div>
+
+                        <div class="gs-checkout-items-list mb-3">
+                            <?php foreach ($chitiet as $ct) : ?>
+                                <?php
+                                $spId = (int) ($ct['sanpham_id'] ?? 0);
+                                $sizeText = ((string) $ct['size'] !== '') ? htmlspecialchars($ct['size']) : 'Freesize';
+                                $dongSoluong = (int) $ct['soluong'];
+                                $dongThanhtien = (float) $ct['thanhtien'];
+                                ?>
+                                <div class="gs-checkout-item">
+                                    <div class="gs-checkout-item__thumb">
+                                        <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
+                                            alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
+                                        <span class="gs-checkout-item__qty-pill"><?php echo $dongSoluong; ?></span>
+                                    </div>
+                                    <div class="gs-checkout-item__details">
+                                        <span class="gs-checkout-item__name">
+                                            <?php echo htmlspecialchars($ct['tensanpham']); ?>
+                                        </span>
+                                        <div class="gs-checkout-item__meta mt-1">
+                                            <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
+                                            <span class="small text-white-50 ms-1">Số lượng: <?php echo $dongSoluong; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="gs-checkout-item__total">
+                                        <?php echo gsTien($dongThanhtien); ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="gs-cart-summary__breakdown">
                             <div class="gs-cart-summary__line">
-                                <span>Trạng thái</span>
-                                <strong>
-                                    <span class="badge <?php echo $dh->laymautrangthai($donhang['trangthai']); ?>">
-                                        <?php echo htmlspecialchars($dh->laytentrangthai($donhang['trangthai'])); ?>
-                                    </span>
-                                </strong>
+                                <span>Tạm tính</span>
+                                <strong><?php echo gsTien($donhang['tamtinh']); ?></strong>
                             </div>
+                            <?php if ((float) $donhang['giamgia'] > 0) : ?>
+                                <div class="gs-cart-summary__line">
+                                    <span>Giảm giá</span>
+                                    <strong class="text-success">-<?php echo gsTien($donhang['giamgia']); ?></strong>
+                                </div>
+                            <?php endif; ?>
                             <div class="gs-cart-summary__line">
-                                <span>Đã thanh toán</span>
+                                <span>Phí vận chuyển</span>
                                 <strong>
-                                    <?php if ((int) $donhang['datt'] === 1) : ?>
-                                        <span class="badge bg-success">Đã thanh toán</span>
+                                    <?php if ((float) $donhang['phivanchuyen'] > 0) : ?>
+                                        <?php echo gsTien($donhang['phivanchuyen']); ?>
                                     <?php else : ?>
-                                        <span class="badge bg-danger">Chưa thanh toán</span>
+                                        <span class="text-success">Miễn phí</span>
                                     <?php endif; ?>
                                 </strong>
                             </div>
-                            <div class="gs-cart-summary__line">
-                                <span>Ngày đặt</span>
-                                <strong><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($donhang['ngay']))); ?></strong>
+                            <div class="gs-cart-summary__line gs-cart-summary__line--total">
+                                <span>Tổng cộng</span>
+                                <strong class="gs-cart-total-highlight"><?php echo gsTien($donhang['tongtien']); ?></strong>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <?php if (!$thanhcong) : ?>
-                                <a class="btn-gs btn-gs--dark w-100" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
-                                    <i class="fa-solid fa-rotate-right"></i> Thanh toán lại
-                                </a>
-                            <?php endif; ?>
-                            <a class="btn-gs btn-gs--light w-100<?php echo $thanhcong ? '' : ' mt-2'; ?>" href="index.php?action=donhang">
-                                <i class="fa-solid fa-receipt"></i> Xem đơn hàng của tôi
+                <div class="col-12 col-lg-5">
+                    <div class="gs-cart-summary gs-checkout-summary">
+                        <div class="gs-cart-summary__head mb-3">
+                            <h3 class="gs-cart-summary__title mb-0">Trạng thái đơn hàng</h3>
+                        </div>
+
+                        <div class="gs-info-list mb-3">
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Trạng thái xử lý</span>
+                                <span class="gs-info-value">
+                                    <span class="badge <?php echo $dh->laymautrangthai($donhang['trangthai']); ?>">
+                                        <?php echo htmlspecialchars($dh->laytentrangthai($donhang['trangthai'])); ?>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Tình trạng thanh toán</span>
+                                <span class="gs-info-value">
+                                    <?php if ((int) $donhang['datt'] === 1) : ?>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">Đã thanh toán</span>
+                                    <?php else : ?>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Chưa thanh toán</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Ngày đặt hàng</span>
+                                <span class="gs-info-value"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($donhang['ngay']))); ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Người nhận</span>
+                                <span class="gs-info-value"><?php echo htmlspecialchars($donhang['tennguoinhan']); ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Số điện thoại</span>
+                                <span class="gs-info-value"><?php echo htmlspecialchars($donhang['sdtnhan']); ?></span>
+                            </div>
+                            <div class="gs-info-row">
+                                <span class="gs-info-label">Địa chỉ giao</span>
+                                <span class="gs-info-value text-break" style="max-width: 60%;"><?php echo htmlspecialchars($donhang['diachinhan']); ?></span>
+                            </div>
+                        </div>
+
+                        <?php if (!$thanhcong) : ?>
+                            <a class="btn-gs btn-gs--primary btn-gs--lg w-100 gs-btn-checkout" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
+                                THANH TOÁN LẠI
                             </a>
-                            <a class="gs-cart__link mt-3" href="index.php?action=sanpham"><i class="fa-solid fa-arrow-left-long"></i> Tiếp tục mua sắm</a>
+                        <?php endif; ?>
+
+                        <a class="btn-gs <?php echo $thanhcong ? 'btn-gs--primary btn-gs--lg' : 'btn-gs--outline btn-gs--sm mt-2'; ?> w-100 text-center" href="index.php?action=donhang">
+                            XEM ĐƠN HÀNG CỦA TÔI
+                        </a>
+
+                        <a class="btn-gs btn-gs--outline btn-gs--sm w-100 text-center mt-2" href="index.php?action=sanpham">
+                            Tiếp tục mua sắm
+                        </a>
+
+                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-secondary border-opacity-25 text-center small text-white-50">
+                            Chính hãng 100% · Bảo mật SSL · Đổi trả 7 ngày
                         </div>
                     </div>
                 </div>

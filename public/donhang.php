@@ -20,106 +20,137 @@ include(__DIR__ . '/inc/head-client.php');
                 <li class="breadcrumb-item active" aria-current="page">Đơn hàng của tôi</li>
             </ol>
         </nav>
-        <h1 class="gs-page-head__title">Đơn hàng của tôi</h1>
-        <p class="gs-page-head__sub">Theo dõi trạng thái và chi tiết các đơn hàng bạn đã đặt tại GYMBRO.</p>
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h1 class="gs-page-head__title mb-1">
+                    Đơn hàng của tôi
+                    <?php if (count($dsDonhang) > 0) : ?>
+                        <span class="gs-cart-count-badge"><?php echo count($dsDonhang); ?> đơn</span>
+                    <?php endif; ?>
+                </h1>
+                <p class="gs-page-head__sub mb-0">Theo dõi trạng thái và chi tiết các đơn hàng bạn đã đặt tại GYMBRO.</p>
+            </div>
+            <a class="btn-gs btn-gs--outline btn-gs--sm" href="index.php?action=sanpham">Tiếp tục mua sắm</a>
+        </div>
     </div>
 </section>
 
 <section class="gs-section">
     <div class="container">
         <?php if (count($dsDonhang) === 0) : ?>
-            <div class="gs-empty">
-                <i class="fa-solid fa-receipt"></i>
-                <h3>Bạn chưa có đơn hàng nào</h3>
-                <p>Hãy chọn sản phẩm phù hợp với mục tiêu tập luyện và đặt đơn đầu tiên nhé!</p>
-                <a class="btn-gs btn-gs--dark" href="index.php?action=sanpham">Mua sắm ngay</a>
+            <div class="gs-empty gs-cart-empty-box">
+                <h3 class="mt-2 mb-2">Bạn chưa có đơn hàng nào</h3>
+                <p class="text-muted mb-4">Hãy chọn sản phẩm phù hợp với mục tiêu tập luyện và đặt đơn đầu tiên nhé!</p>
+                <a class="btn-gs btn-gs--primary" href="index.php?action=sanpham">Mua sắm ngay</a>
             </div>
         <?php else : ?>
-            <?php foreach ($dsDonhang as $od) : ?>
-                <?php $chitietdon = $dh->laychitietdonhang($od['id']); ?>
-                <div class="gs-order">
-                    <div class="gs-order__head">
-                        <div>
-                            <span class="gs-order__ma"><?php echo htmlspecialchars($od['madonhang']); ?></span>
-                            <span class="gs-order__ngay"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($od['ngay']))); ?></span>
-                        </div>
-                        <div class="gs-order__right">
-                            <span class="badge <?php echo $dh->laymautrangthai($od['trangthai']); ?>">
-                                <?php echo htmlspecialchars($dh->laytentrangthai($od['trangthai'])); ?>
-                            </span>
-                            <span class="gs-order__tt">
-                                <?php echo ((int) $od['datt'] === 1) ? 'Đã thanh toán' : 'Chưa thanh toán'; ?>
-                                · <?php echo htmlspecialchars($dh->laytenphuongthuc($od['phuongthuc_tt'])); ?>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="gs-order__body">
-                        <div class="gs-order__items">
-                            <?php foreach ($chitietdon as $ct) : ?>
-                                <div class="gs-order__item">
-                                    <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
-                                        alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
-                                    <div>
-                                        <a class="gs-order__name" href="index.php?action=chitiet&id=<?php echo (int) $ct['sanpham_id']; ?>">
-                                            <?php echo htmlspecialchars($ct['tensanpham']); ?>
-                                        </a>
-                                        <span class="gs-order__meta">
-                                            <?php echo ((string) $ct['size'] !== '') ? ('Size ' . htmlspecialchars($ct['size'])) : 'Freesize'; ?>
-                                            × <?php echo (int) $ct['soluong']; ?>
-                                            · <?php echo gsTien($ct['dongia']); ?>
-                                        </span>
-                                    </div>
-                                    <div class="d-flex flex-column align-items-end justify-content-center gap-2">
-                                        <span class="gs-order__price"><?php echo gsTien($ct['thanhtien']); ?></span>
-                                        <?php if ((int)$od['trangthai'] === 5) : 
-                                            $daDanhGia = in_array((int)$ct['sanpham_id'], $dsIdSpDaDanhgia ?? array(), true);
-                                        ?>
-                                            <button type="button" 
-                                                    class="btn btn-sm <?php echo $daDanhGia ? 'btn-outline-secondary' : 'btn-outline-danger'; ?> px-2 py-1"
-                                                    style="font-size: 0.8rem; border-radius: 6px;"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#modalDanhGia"
-                                                    data-id="<?php echo (int) $ct['sanpham_id']; ?>"
-                                                    data-name="<?php echo htmlspecialchars($ct['tensanpham']); ?>"
-                                                    data-img="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
-                                                    data-dadanhgia="<?php echo $daDanhGia ? '1' : '0'; ?>">
-                                                <i class="fa-<?php echo $daDanhGia ? 'solid' : 'regular'; ?> fa-star text-warning me-1"></i>
-                                                <?php echo $daDanhGia ? 'Đã đánh giá' : 'Đánh giá'; ?>
-                                            </button>
-                                        <?php elseif ((int)$od['trangthai'] !== 6) : ?>
-                                            <span class="text-white-50 small" style="font-size: 0.75rem;" title="Chỉ đánh giá khi nhận hàng thành công">
-                                                <i class="fa-regular fa-clock me-1 text-warning"></i>Đánh giá sau khi nhận hàng
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <div class="gs-order__foot">
-                            <div class="gs-order__info">
-                                <span><i class="fa-solid fa-user"></i> <?php echo htmlspecialchars($od['tennguoinhan']); ?> · <?php echo htmlspecialchars($od['sdtnhan']); ?></span>
-                                <span><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($od['diachinhan']); ?></span>
-                                <?php if (!empty($od['ghichu'])) : ?>
-                                    <span><i class="fa-solid fa-note-sticky"></i> <?php echo htmlspecialchars($od['ghichu']); ?></span>
+            <div class="gs-orders-list">
+                <?php foreach ($dsDonhang as $od) : ?>
+                    <?php $chitietdon = $dh->laychitietdonhang($od['id']); ?>
+                    <div class="gs-order-card">
+                        <div class="gs-order-card__head">
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="gs-order-card__code"><?php echo htmlspecialchars($od['madonhang']); ?></span>
+                                <span class="text-white-50 small">•</span>
+                                <span class="text-white-50 small"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($od['ngay']))); ?></span>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-0">
+                                <span class="badge <?php echo $dh->laymautrangthai($od['trangthai']); ?>">
+                                    <?php echo htmlspecialchars($dh->laytentrangthai($od['trangthai'])); ?>
+                                </span>
+                                <?php if ((int) $od['datt'] === 1) : ?>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Đã thanh toán</span>
+                                <?php else : ?>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Chưa thanh toán</span>
                                 <?php endif; ?>
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                                    <?php echo htmlspecialchars($dh->laytenphuongthuc($od['phuongthuc_tt'])); ?>
+                                </span>
                             </div>
-                            <div class="gs-order__sum">
-                                <span>Tạm tính: <strong><?php echo gsTien($od['tamtinh']); ?></strong></span>
-                                <span>Giảm giá: <strong class="<?php echo ((float) $od['giamgia'] > 0) ? 'text-danger' : ''; ?>"><?php echo ((float) $od['giamgia'] > 0 ? '-' : '') . gsTien($od['giamgia']); ?></strong></span>
-                                <span>Phí vận chuyển: <strong><?php echo ((float) $od['phivanchuyen'] > 0) ? gsTien($od['phivanchuyen']) : 'Miễn phí'; ?></strong></span>
-                                <span class="gs-order__tong">Tổng cộng: <strong><?php echo gsTien($od['tongtien']); ?></strong></span>
+                        </div>
+
+                        <div class="gs-order-card__body">
+                            <div class="gs-order-card__items">
+                                <?php foreach ($chitietdon as $ct) : ?>
+                                    <?php
+                                    $spId = (int) ($ct['sanpham_id'] ?? 0);
+                                    $sizeText = ((string) $ct['size'] !== '') ? htmlspecialchars($ct['size']) : 'Freesize';
+                                    $dongSoluong = (int) $ct['soluong'];
+                                    $dongDongia = (float) $ct['dongia'];
+                                    $dongThanhtien = (float) $ct['thanhtien'];
+                                    ?>
+                                    <div class="gs-order-item">
+                                        <a class="gs-order-item__thumb" href="index.php?action=chitiet&id=<?php echo $spId; ?>" target="_blank">
+                                            <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>"
+                                                alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
+                                            <span class="gs-order-item__qty-pill"><?php echo $dongSoluong; ?></span>
+                                        </a>
+                                        <div class="gs-order-item__info">
+                                            <a class="gs-order-item__name" href="index.php?action=chitiet&id=<?php echo $spId; ?>" target="_blank">
+                                                <?php echo htmlspecialchars($ct['tensanpham']); ?>
+                                            </a>
+                                            <div class="gs-order-item__meta mt-1">
+                                                <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
+                                                <span class="small text-white-50 ms-1"><?php echo gsTien($dongDongia); ?> × <?php echo $dongSoluong; ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="gs-order-item__total">
+                                            <?php echo gsTien($dongThanhtien); ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                            <?php if ((int) $od['datt'] === 0 && $od['phuongthuc_tt'] === 'vnpay') : ?>
-                                <a class="btn-gs btn-gs--dark" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($od['madonhang']); ?>">
-                                    <i class="fa-solid fa-rotate-right"></i> Thanh toán lại
-                                </a>
-                            <?php endif; ?>
+
+                            <div class="gs-order-card__foot">
+                                <div class="gs-order-recipient">
+                                    <div class="small text-white fw-bold mb-1">Thông tin giao hàng:</div>
+                                    <div class="small text-white-50">
+                                        <strong><?php echo htmlspecialchars($od['tennguoinhan']); ?></strong> · <?php echo htmlspecialchars($od['sdtnhan']); ?>
+                                    </div>
+                                    <div class="small text-white-50">
+                                        <?php echo htmlspecialchars($od['diachinhan']); ?>
+                                    </div>
+                                    <?php if (!empty($od['ghichu'])) : ?>
+                                        <div class="small text-warning mt-1">
+                                            Ghi chú: <?php echo htmlspecialchars($od['ghichu']); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="gs-order-summary">
+                                    <div class="gs-order-summary__line">
+                                        <span>Tạm tính:</span>
+                                        <strong><?php echo gsTien($od['tamtinh']); ?></strong>
+                                    </div>
+                                    <?php if ((float) $od['giamgia'] > 0) : ?>
+                                        <div class="gs-order-summary__line">
+                                            <span>Giảm giá:</span>
+                                            <strong class="text-success">-<?php echo gsTien($od['giamgia']); ?></strong>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="gs-order-summary__line">
+                                        <span>Phí vận chuyển:</span>
+                                        <strong>
+                                            <?php echo ((float) $od['phivanchuyen'] > 0) ? gsTien($od['phivanchuyen']) : 'Miễn phí'; ?>
+                                        </strong>
+                                    </div>
+                                    <div class="gs-order-summary__line gs-order-summary__line--total">
+                                        <span>Tổng cộng:</span>
+                                        <strong class="gs-order-total-highlight"><?php echo gsTien($od['tongtien']); ?></strong>
+                                    </div>
+
+                                    <?php if ((int) $od['datt'] === 0 && $od['phuongthuc_tt'] === 'vnpay') : ?>
+                                        <a class="btn-gs btn-gs--primary btn-gs--sm w-100 mt-2 text-center"
+                                            href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($od['madonhang']); ?>">
+                                            THANH TOÁN LẠI QUA VNPAY
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
     </div>
 </section>

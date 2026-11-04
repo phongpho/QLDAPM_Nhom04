@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class GIOHANG
 {
     private $nguoidung_id;

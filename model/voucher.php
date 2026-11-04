@@ -46,7 +46,46 @@ class VOUCHER
     public function getTrangthai() { return $this->trangthai; }
     public function setTrangthai($value) { $this->trangthai = $value; }
 
-    public function kiemTraVoucher($ma, $tamtinh)
+    public function laVoucherHoiVienMoi($voucher)
+    {
+        if (!$voucher) {
+            return false;
+        }
+        $ma = isset($voucher['ma']) ? strtoupper(trim($voucher['ma'])) : '';
+        $mota = isset($voucher['mota']) ? mb_strtolower($voucher['mota'], 'UTF-8') : '';
+        return ($ma === 'TANBINH' || mb_strpos($mota, 'hội viên mới', 0, 'UTF-8') !== false || mb_strpos($mota, 'thành viên mới', 0, 'UTF-8') !== false);
+    }
+
+    public function daDungVoucherHoiVienMoi($nguoidungId, $voucherId = 0)
+    {
+        $nguoidungId = (int) $nguoidungId;
+        if ($nguoidungId <= 0) {
+            return false;
+        }
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) FROM donhang 
+                    WHERE nguoidung_id = :uid 
+                      AND trangthai != 6 
+                      AND (voucher_id = :vid OR voucher_id IN (SELECT id FROM voucher WHERE ma = 'TANBINH'))";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":uid", $nguoidungId, PDO::PARAM_INT);
+            $cmd->bindValue(":vid", (int) $voucherId, PDO::PARAM_INT);
+            $cmd->execute();
+            if (((int) $cmd->fetchColumn()) > 0) {
+                return true;
+            }
+            $sql2 = "SELECT COUNT(*) FROM donhang WHERE nguoidung_id = :uid AND trangthai != 6";
+            $cmd2 = $dbcon->prepare($sql2);
+            $cmd2->bindValue(":uid", $nguoidungId, PDO::PARAM_INT);
+            $cmd2->execute();
+            return ((int) $cmd2->fetchColumn()) > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function kiemTraVoucher($ma, $tamtinh, $nguoidungId = 0)
     {
         $ma = trim((string) $ma);
         if ($ma === '') {
@@ -71,6 +110,17 @@ class VOUCHER
                     'voucher' => null,
                     'giamgia' => 0
                 );
+            }
+
+            if ($this->laVoucherHoiVienMoi($voucher)) {
+                if ((int) $nguoidungId > 0 && $this->daDungVoucherHoiVienMoi($nguoidungId, $voucher['id'])) {
+                    return array(
+                        'ok' => false,
+                        'message' => 'Mã ' . $voucher['ma'] . ' chỉ áp dụng cho hội viên mới trong lần mua đầu tiên!',
+                        'voucher' => null,
+                        'giamgia' => 0
+                    );
+                }
             }
 
             if ((float) $tamtinh < (float) $voucher['donhang_toithieu']) {
@@ -142,17 +192,28 @@ class VOUCHER
         }
     }
 
-    public function layvoucherdanghoatdong($limit = 5)
+    public function layvoucherdanghoatdong($limit = 5, $nguoidungId = 0)
     {
         $dbcon = DATABASE::connect();
         try {
             $sql = "SELECT * FROM voucher
                     WHERE trangthai = 1 AND ngayhethan > NOW() AND dasudung < soluong
-                    ORDER BY donhang_toithieu ASC
-                    LIMIT " . (int) $limit;
+                    ORDER BY donhang_toithieu ASC";
             $cmd = $dbcon->prepare($sql);
             $cmd->execute();
-            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+            $danhsach = $cmd->fetchAll(PDO::FETCH_ASSOC);
+            $ketqua = array();
+            $nguoidungId = (int) $nguoidungId;
+            foreach ($danhsach as $v) {
+                if ($this->laVoucherHoiVienMoi($v) && $nguoidungId > 0 && $this->daDungVoucherHoiVienMoi($nguoidungId, $v['id'])) {
+                    continue;
+                }
+                $ketqua[] = $v;
+                if (count($ketqua) >= (int) $limit) {
+                    break;
+                }
+            }
+            return $ketqua;
         } catch (PDOException $e) {
             echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
             exit();

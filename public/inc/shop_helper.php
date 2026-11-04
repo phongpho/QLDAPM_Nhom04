@@ -159,16 +159,18 @@ if (!function_exists('gsThongBao')) {
         return isset($mang[$loai]) ? $mang[$loai] : $loai;
     }
 
-    function gsTinhTongtienGio($gh, $vc, $voucherApdung = null)
+    function gsTinhTongtienGio($gh, $vc, $voucherApdung = null, $nguoidungId = 0)
     {
         $tamtinh = (float) $gh->tamtinh();
         $giamgia = 0;
         $voucher = null;
         if ($voucherApdung && isset($voucherApdung['ma'])) {
-            $kq = $vc->kiemTraVoucher($voucherApdung['ma'], $tamtinh);
+            $kq = $vc->kiemTraVoucher($voucherApdung['ma'], $tamtinh, $nguoidungId);
             if ($kq['ok']) {
                 $giamgia = (float) $kq['giamgia'];
                 $voucher = $kq['voucher'];
+            } else {
+                unset($_SESSION['gs_voucher']);
             }
         }
 

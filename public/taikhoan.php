@@ -5,93 +5,93 @@ if (!isset($gsModule36)) {
     return;
 }
 
-$gsTieude = 'Hồ sơ cá nhân - GYMBRO';
+$gsTieude = 'Tài khoản của tôi';
 include(__DIR__ . '/inc/head-client.php');
 
-$user = $nd->laythongtinnguoidung($gsND['email']);
+$user = $nd->laythongtinnguoidung($gsND['email']) ?: $gsND;
 $dsDiachi = $dc->laydanhsachdiachi($gsNguoidungId);
 $hosoThetrang = $sp->layhosothetrang($gsNguoidungId);
-
-// Lấy thông báo lỗi/thành công
 $tabActive = $_GET['tab'] ?? 'profile';
 ?>
 
-<section class="gs-section py-4">
+<section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
-        
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-4">
+        <nav aria-label="breadcrumb">
             <ol class="breadcrumb gs-breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php" class="text-secondary text-decoration-none">Trang chủ</a></li>
-                <li class="breadcrumb-item active text-white" aria-current="page">Tài khoản của tôi</li>
+                <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tài khoản của tôi</li>
             </ol>
         </nav>
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h1 class="gs-page-head__title mb-1">Tài khoản của tôi</h1>
+                <p class="gs-page-head__sub mb-0">Quản lý thông tin cá nhân, sổ địa chỉ và bảo mật tài khoản.</p>
+            </div>
+            <a class="btn-gs btn-gs--outline btn-gs--sm" href="index.php?action=donhang">Đơn mua của tôi</a>
+        </div>
+    </div>
+</section>
 
+<section class="gs-section">
+    <div class="container">
         <div class="row g-4">
-            <!-- SIDEBAR TRÁI -->
             <div class="col-12 col-lg-3">
-                <div class="card border-secondary-subtle p-3" style="background-color: #141414; border-color: #2a2a2a !important;">
-                    
-                    <!-- Avatar & Tên tóm tắt -->
-                    <div class="d-flex align-items-center gap-3 pb-3 border-bottom border-secondary">
+                <div class="gs-checkout__box p-3">
+                    <div class="d-flex align-items-center gap-3 pb-3 border-bottom border-secondary border-opacity-25">
                         <?php
                         $avatar = !empty($user['hinhanh']) && file_exists('../assets/images/users/' . $user['hinhanh'])
                             ? '../assets/images/users/' . htmlspecialchars($user['hinhanh'])
                             : '../assets/images/users/user.png';
                         ?>
-                        <img src="<?= $avatar ?>" alt="Avatar" width="55" height="55" class="rounded-circle object-fit-cover border border-danger">
+                        <img src="<?= $avatar ?>" alt="Avatar" width="56" height="56" class="rounded-circle object-fit-cover gs-account-avatar">
                         <div class="overflow-hidden">
-                            <span class="text-secondary small d-block">Tài khoản của</span>
-                            <strong class="text-white text-truncate d-block"><?= htmlspecialchars($user['hoten']) ?></strong>
+                            <span class="text-white-50 small d-block">Tài khoản của</span>
+                            <strong class="text-white text-truncate d-block fs-6"><?= htmlspecialchars($user['hoten']) ?></strong>
                         </div>
                     </div>
 
-                    <!-- Menu List-Group Tabs -->
-                    <div class="list-group list-group-flush pt-2" id="accountTabs" role="tablist">
-                        <button class="list-group-item list-group-item-action bg-transparent text-white border-0 py-2 px-1 d-flex align-items-center gap-2 <?= ($tabActive === 'profile') ? 'active text-danger fw-bold' : '' ?>"
+                    <div class="gs-account-nav pt-3" id="accountTabs" role="tablist">
+                        <button class="gs-account-nav__item <?= ($tabActive === 'profile') ? 'active' : '' ?>"
                             id="tab-profile-btn" data-bs-toggle="list" data-bs-target="#pane-profile" type="button" role="tab">
-                            <i class="fa-regular fa-user" style="width: 20px;"></i> Thông tin cá nhân
+                            Thông tin cá nhân
                         </button>
 
-                        <button class="list-group-item list-group-item-action bg-transparent text-white border-0 py-2 px-1 d-flex align-items-center gap-2 <?= ($tabActive === 'address') ? 'active text-danger fw-bold' : '' ?>"
+                        <button class="gs-account-nav__item <?= ($tabActive === 'address') ? 'active' : '' ?>"
                             id="tab-address-btn" data-bs-toggle="list" data-bs-target="#pane-address" type="button" role="tab">
-                            <i class="fa-solid fa-map-location-dot" style="width: 20px;"></i> Sổ địa chỉ nhận hàng
+                            Sổ địa chỉ nhận hàng
                         </button>
 
-                        <button class="list-group-item list-group-item-action bg-transparent text-white border-0 py-2 px-1 d-flex align-items-center gap-2 <?= ($tabActive === 'thetrang') ? 'active text-danger fw-bold' : '' ?>"
+                        <button class="gs-account-nav__item <?= ($tabActive === 'thetrang') ? 'active' : '' ?>"
                             id="tab-thetrang-btn" data-bs-toggle="list" data-bs-target="#pane-thetrang" type="button" role="tab">
-                            <i class="fa-solid fa-weight-scale" style="width: 20px;"></i> Hồ sơ thể trạng (BMI)
+                            Hồ sơ thể trạng (BMI)
                         </button>
 
-                        <button class="list-group-item list-group-item-action bg-transparent text-white border-0 py-2 px-1 d-flex align-items-center gap-2 <?= ($tabActive === 'password') ? 'active text-danger fw-bold' : '' ?>"
+                        <button class="gs-account-nav__item <?= ($tabActive === 'password') ? 'active' : '' ?>"
                             id="tab-password-btn" data-bs-toggle="list" data-bs-target="#pane-password" type="button" role="tab">
-                            <i class="fa-solid fa-key" style="width: 20px;"></i> Đổi mật khẩu
+                            Đổi mật khẩu
                         </button>
 
-                        <hr class="border-secondary my-2">
+                        <div class="border-top border-secondary border-opacity-25 my-2 pt-2"></div>
 
-                        <a href="index.php?action=donhang" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-2 px-1 d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-box-open" style="width: 20px;"></i> Đơn mua của tôi
+                        <a href="index.php?action=donhang" class="gs-account-nav__item">
+                            Đơn mua của tôi
                         </a>
 
-                        <a href="index.php?action=dangxuat" class="list-group-item list-group-item-action bg-transparent text-danger border-0 py-2 px-1 d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket" style="width: 20px;"></i> Đăng xuất
+                        <a href="index.php?action=dangxuat" class="gs-account-nav__item text-danger">
+                            Đăng xuất
                         </a>
                     </div>
-
                 </div>
             </div>
 
-            <!-- NỘI DUNG PHẢI -->
             <div class="col-12 col-lg-9">
-                <div class="card border-secondary-subtle p-4" style="background-color: #141414; border-color: #2a2a2a !important;">
+                <div class="gs-checkout__box p-4">
                     <div class="tab-content" id="accountTabsContent">
 
-                        <!-- TAB 1: THÔNG TIN CÁ NHÂN -->
                         <div class="tab-pane fade <?= ($tabActive === 'profile') ? 'show active' : '' ?>" id="pane-profile" role="tabpanel">
-                            <div class="border-bottom border-secondary pb-3 mb-4">
-                                <h4 class="text-white fw-bold mb-1">Hồ Sơ Của Tôi</h4>
-                                <span class="text-secondary small">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
+                            <div class="gs-checkout__box-head mb-4">
+                                <h3 class="gs-checkout__title mb-1">Hồ sơ cá nhân</h3>
+                                <span class="small text-white-50">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
                             </div>
 
                             <form action="index.php" method="post" enctype="multipart/form-data">
@@ -101,81 +101,79 @@ $tabActive = $_GET['tab'] ?? 'profile';
                                 <div class="row g-4 align-items-center">
                                     <div class="col-12 col-md-8">
                                         <div class="mb-3">
-                                            <label class="form-label small text-secondary">Email đăng nhập</label>
-                                            <input type="email" class="form-control bg-dark text-white border-secondary" name="txtemail" value="<?= htmlspecialchars($user['email']) ?>" readonly style="opacity: 0.7;">
-                                            <span class="form-text text-secondary small">Email không thể thay đổi sau khi đăng ký</span>
+                                            <label class="gs-form-label">Email đăng nhập</label>
+                                            <input type="email" class="form-control gs-input" name="txtemail" value="<?= htmlspecialchars($user['email']) ?>" readonly style="opacity: 0.6; cursor: not-allowed;">
+                                            <span class="small text-white-50 mt-1 d-block">Email không thể thay đổi sau khi đăng ký</span>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label small text-secondary">Họ và tên <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="txthoten" value="<?= htmlspecialchars($user['hoten']) ?>" required>
+                                            <label class="gs-form-label">Họ và tên <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control gs-input" name="txthoten" value="<?= htmlspecialchars($user['hoten']) ?>" required>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label small text-secondary">Số điện thoại <span class="text-danger">*</span></label>
-                                            <input type="tel" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="txtsodt" value="<?= htmlspecialchars($user['sodienthoai']) ?>" pattern="[0-9]{10}" required>
+                                            <label class="gs-form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                            <input type="tel" class="form-control gs-input" name="txtsodt" value="<?= htmlspecialchars($user['sodienthoai']) ?>" pattern="[0-9]{10}" required>
                                         </div>
 
-                                        <button type="submit" class="btn btn-danger px-4 mt-2">
-                                            <i class="fa-solid fa-floppy-disk me-1"></i> Lưu thay đổi
+                                        <button type="submit" class="btn-gs btn-gs--primary btn-gs--md mt-2">
+                                            LƯU THAY ĐỔI
                                         </button>
                                     </div>
 
-                                    <div class="col-12 col-md-4 text-center border-start-md border-secondary">
+                                    <div class="col-12 col-md-4 text-center border-start-md border-secondary border-opacity-25 ps-md-4">
                                         <div class="mb-3">
-                                            <img src="<?= $avatar ?>" id="previewAvatar" alt="Avatar" width="120" height="120" class="rounded-circle object-fit-cover border border-2 border-danger mb-2">
+                                            <img src="<?= $avatar ?>" id="previewAvatar" alt="Avatar" width="120" height="120" class="rounded-circle object-fit-cover gs-account-avatar-large mb-3">
                                         </div>
-                                        <label for="inputAvatar" class="btn btn-outline-light btn-sm mb-2">
-                                            <i class="fa-solid fa-camera me-1"></i> Chọn ảnh mới
+                                        <label for="inputAvatar" class="btn-gs btn-gs--outline btn-gs--sm mb-2">
+                                            Chọn ảnh mới
                                         </label>
                                         <input type="file" id="inputAvatar" name="fhinh" accept="image/*" class="d-none" onchange="previewImg(this)">
-                                        <div class="text-secondary small">Dụng lượng file tối đa 2MB<br>Định dạng: JPG, PNG, WEBP</div>
+                                        <div class="text-white-50 small">Dung lượng file tối đa 2MB<br>Định dạng: JPG, PNG, WEBP</div>
                                     </div>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- TAB 2: SỔ ĐỊA CHỈ NHẬN HÀNG -->
                         <div class="tab-pane fade <?= ($tabActive === 'address') ? 'show active' : '' ?>" id="pane-address" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-4">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gs-checkout__box-head mb-4 gap-2">
                                 <div>
-                                    <h4 class="text-white fw-bold mb-1">Địa Chỉ Của Tôi</h4>
-                                    <span class="text-secondary small">Địa chỉ nhận hàng phục vụ việc giao nhận sản phẩm</span>
+                                    <h3 class="gs-checkout__title mb-1">Địa chỉ của tôi</h3>
+                                    <span class="small text-white-50">Địa chỉ nhận hàng phục vụ việc giao nhận sản phẩm</span>
                                 </div>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalThemDiaChi">
-                                    <i class="fa-solid fa-plus me-1"></i> Thêm địa chỉ mới
+                                <button type="button" class="btn-gs btn-gs--primary btn-gs--sm" data-bs-toggle="modal" data-bs-target="#modalThemDiaChi">
+                                    + Thêm địa chỉ mới
                                 </button>
                             </div>
 
                             <?php if (count($dsDiachi) === 0): ?>
-                                <div class="text-center py-4 text-secondary">
-                                    <i class="fa-solid fa-map-location-dot fs-1 mb-2"></i>
-                                    <p>Bạn chưa lưu địa chỉ nào. Hãy thêm địa chỉ để thanh toán nhanh hơn!</p>
+                                <div class="text-center py-4 text-white-50">
+                                    <p class="mb-0">Bạn chưa lưu địa chỉ nào. Hãy thêm địa chỉ để thanh toán nhanh hơn!</p>
                                 </div>
                             <?php else: ?>
-                                <div class="list-group list-group-flush">
+                                <div class="d-flex flex-column gap-3">
                                     <?php foreach ($dsDiachi as $dcItem): ?>
-                                        <div class="list-group-item bg-transparent text-white border-secondary py-3 px-0">
-                                            <div class="d-flex justify-content-between align-items-start">
+                                        <div class="p-3 rounded-3" style="background: var(--gs-dark-850); border: 1px solid var(--gs-border);">
+                                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                                                 <div>
                                                     <div class="d-flex align-items-center gap-2 mb-1">
-                                                        <strong class="fs-6"><?= htmlspecialchars($dcItem['tennguoinhan']) ?></strong>
-                                                        <span class="text-secondary">|</span>
-                                                        <span class="text-secondary"><?= htmlspecialchars($dcItem['sodienthoai']) ?></span>
+                                                        <strong class="text-white fs-6"><?= htmlspecialchars($dcItem['tennguoinhan']) ?></strong>
+                                                        <span class="text-white-50">•</span>
+                                                        <span class="text-warning small"><?= htmlspecialchars($dcItem['sodienthoai']) ?></span>
                                                         <?php if ((int) $dcItem['macdinh'] === 1): ?>
-                                                            <span class="badge bg-danger ms-2">Mặc định</span>
+                                                            <span class="gs-badge gs-badge--soft ms-2">Mặc định</span>
                                                         <?php endif; ?>
                                                     </div>
                                                     <div class="text-white-50 small"><?= htmlspecialchars($dcItem['diachi']) ?></div>
                                                 </div>
-                                                <div class="d-flex gap-2">
+                                                <div class="d-flex align-items-center gap-2">
                                                     <?php if ((int) $dcItem['macdinh'] !== 1): ?>
-                                                        <a href="index.php?action=datdiachimacdinh&id=<?= (int)$dcItem['id'] ?>" class="btn btn-outline-secondary btn-sm text-white-50">
+                                                        <a href="index.php?action=datdiachimacdinh&id=<?= (int)$dcItem['id'] ?>" class="btn-gs btn-gs--outline btn-gs--xs">
                                                             Thiết lập mặc định
                                                         </a>
                                                     <?php endif; ?>
-                                                    <a href="index.php?action=xoadiachi&id=<?= (int)$dcItem['id'] ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa địa chỉ này?');">
-                                                        <i class="fa-solid fa-trash"></i>
+                                                    <a href="index.php?action=xoadiachi&id=<?= (int)$dcItem['id'] ?>" class="btn-gs btn-gs--subtle-danger btn-gs--xs" onclick="return confirm('Bạn chắc chắn muốn xóa địa chỉ này?');">
+                                                        Xóa
                                                     </a>
                                                 </div>
                                             </div>
@@ -185,11 +183,10 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             <?php endif; ?>
                         </div>
 
-                        <!-- TAB 3: HỒ SƠ THỂ TRẠNG (BMI) -->
                         <div class="tab-pane fade <?= ($tabActive === 'thetrang') ? 'show active' : '' ?>" id="pane-thetrang" role="tabpanel">
-                            <div class="border-bottom border-secondary pb-3 mb-4">
-                                <h4 class="text-white fw-bold mb-1">Hồ Sơ Thể Trạng &amp; BMI</h4>
-                                <span class="text-secondary small">Cập nhật chỉ số để hệ thống gợi ý size đồ tập và combo dinh dưỡng phù hợp</span>
+                            <div class="gs-checkout__box-head mb-4">
+                                <h3 class="gs-checkout__title mb-1">Hồ sơ thể trạng &amp; BMI</h3>
+                                <span class="small text-white-50">Cập nhật chỉ số để hệ thống gợi ý size đồ tập và combo dinh dưỡng phù hợp</span>
                             </div>
 
                             <?php 
@@ -198,33 +195,32 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             ?>
                         </div>
 
-                        <!-- TAB 4: ĐỔI MẬT KHẨU -->
                         <div class="tab-pane fade <?= ($tabActive === 'password') ? 'show active' : '' ?>" id="pane-password" role="tabpanel">
-                            <div class="border-bottom border-secondary pb-3 mb-4">
-                                <h4 class="text-white fw-bold mb-1">Đổi Mật Khẩu</h4>
-                                <span class="text-secondary small">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</span>
+                            <div class="gs-checkout__box-head mb-4">
+                                <h3 class="gs-checkout__title mb-1">Đổi mật khẩu</h3>
+                                <span class="small text-white-50">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</span>
                             </div>
 
-                            <form action="index.php" method="post" style="max-width: 500px;">
+                            <form action="index.php" method="post" style="max-width: 480px;">
                                 <input type="hidden" name="action" value="xldoimatkhau">
 
                                 <div class="mb-3">
-                                    <label class="form-label small text-secondary">Mật khẩu hiện tại <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="txtmatkhaucu" required>
+                                    <label class="gs-form-label">Mật khẩu hiện tại <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control gs-input" name="txtmatkhaucu" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label small text-secondary">Mật khẩu mới <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="txtmatkhaumoi" minlength="6" placeholder="Tối thiểu 6 ký tự" required>
+                                    <label class="gs-form-label">Mật khẩu mới <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control gs-input" name="txtmatkhaumoi" minlength="6" placeholder="Tối thiểu 6 ký tự" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label small text-secondary">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="txtxacnhanmatkhau" required>
+                                    <label class="gs-form-label">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control gs-input" name="txtxacnhanmatkhau" required>
                                 </div>
 
-                                <button type="submit" class="btn btn-danger px-4">
-                                    <i class="fa-solid fa-key me-1"></i> Xác nhận đổi mật khẩu
+                                <button type="submit" class="btn-gs btn-gs--primary btn-gs--md">
+                                    XÁC NHẬN ĐỔI MẬT KHẨU
                                 </button>
                             </form>
                         </div>
@@ -233,43 +229,41 @@ $tabActive = $_GET['tab'] ?? 'profile';
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
-<!-- MODAL THÊM ĐỊA CHỈ MỚI -->
 <div class="modal fade" id="modalThemDiaChi" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-secondary-subtle" style="background-color: #141414;">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title text-white fw-bold">Thêm Địa Chỉ Nhận Hàng Mới</h5>
+        <div class="modal-content" style="background-color: var(--gs-dark-800); border: 1px solid var(--gs-border); border-radius: var(--gs-radius-lg);">
+            <div class="modal-header border-secondary border-opacity-25">
+                <h5 class="modal-title text-white fw-bold">Thêm địa chỉ nhận hàng</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="index.php" method="post">
                 <input type="hidden" name="action" value="themdiachimoi">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small text-secondary">Tên người nhận <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="tennguoinhan" placeholder="VD: Nguyễn Văn A" required>
+                        <label class="gs-form-label">Tên người nhận <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control gs-input" name="tennguoinhan" placeholder="Họ và tên người nhận" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small text-secondary">Số điện thoại <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="sodienthoai" pattern="[0-9]{10}" placeholder="0901234567" required>
+                        <label class="gs-form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control gs-input" name="sodienthoai" pattern="[0-9]{10}" placeholder="Số điện thoại nhận hàng (10 số)" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small text-secondary">Địa chỉ cụ thể <span class="text-danger">*</span></label>
-                        <textarea class="form-control text-white border-secondary" style="background-color: #1e1e1e;" name="diachi" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố..." required></textarea>
+                        <label class="gs-form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
+                        <textarea class="form-control gs-input" name="diachi" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành..." required></textarea>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="macdinh" value="1" id="chkMacdinh">
+                        <input class="form-check-input" type="checkbox" name="macdinh" value="1" id="chkMacdinh" checked>
                         <label class="form-check-label small text-white" for="chkMacdinh">
                             Đặt làm địa chỉ mặc định
                         </label>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger btn-sm px-3">Hoàn thành</button>
+                <div class="modal-footer border-secondary border-opacity-25">
+                    <button type="button" class="btn-gs btn-gs--outline btn-gs--sm" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn-gs btn-gs--primary btn-gs--sm px-3">Lưu địa chỉ</button>
                 </div>
             </form>
         </div>
@@ -277,15 +271,15 @@ $tabActive = $_GET['tab'] ?? 'profile';
 </div>
 
 <script>
-    function previewImg(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('previewAvatar').src = e.target.result;
-            }
-            reader.readAsDataURL(input.files[0]);
+function previewImg(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewAvatar').src = e.target.result;
         }
+        reader.readAsDataURL(input.files[0]);
     }
+}
 </script>
 
 <?php include(__DIR__ . '/inc/footer.php'); ?>

@@ -17,13 +17,34 @@ $tenthuonghieu = !empty($sanpham['tenthuonghieu']) ? $sanpham['tenthuonghieu'] :
 $danhmucCha = gsTenLoai($sanpham['loai']);
 $mucdanhmuc = array('quanao' => 'Đồ tập', 'phukien' => 'Phụ kiện', 'tpbs' => 'Thực phẩm bổ sung');
 $mangsizes = isset($mangsizes) ? $mangsizes : $sp->tachsizethanhmmang($sanpham['sizes']);
+
+function gsLayMauHex($ten) {
+    $t = mb_strtolower(trim($ten), 'UTF-8');
+    if (strpos($t, 'đen') !== false) return '#18181b';
+    if (strpos($t, 'trắng') !== false) return '#ffffff';
+    if (strpos($t, 'xám') !== false) return '#71717a';
+    if (strpos($t, 'xanh navy') !== false || strpos($t, 'xanh than') !== false) return '#1e3a8a';
+    if (strpos($t, 'xanh dương') !== false) return '#2563eb';
+    if (strpos($t, 'xanh mint') !== false) return '#34d399';
+    if (strpos($t, 'hồng') !== false) return '#f472b6';
+    if (strpos($t, 'đỏ') !== false) return '#dc2626';
+    if (strpos($t, 'tím') !== false) return '#a855f7';
+    if (strpos($t, 'cam') !== false) return '#f97316';
+    return '#475569';
+}
+
+$motaRaw = (string)$sanpham['mota'];
+$motaParts = explode("\n\n", $motaRaw);
+$motaTongQuan = array_shift($motaParts);
+$motaChiTiet = implode("\n\n", $motaParts);
+
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
-<section class="gs-section gs-section--grey gs-page-head">
+<section class="gs-section gs-section--grey gs-page-head py-3">
     <div class="container">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb gs-breadcrumb">
+            <ol class="breadcrumb gs-breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a href="index.php?action=sanpham">Sản phẩm</a></li>
                 <li class="breadcrumb-item">
@@ -35,36 +56,44 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
-<section class="gs-section">
+<section class="gs-section pt-4">
     <div class="container">
-        <div class="row g-5">
+        <div class="row g-4 g-lg-5">
 
             <div class="col-12 col-lg-5">
-                <div class="gs-detail__media">
+                <div class="gs-detail__media" style="border-radius: 20px; background: #141c2b; border: 1px solid rgba(255,255,255,0.08); padding: 2rem; position: relative;">
                     <img class="gs-detail__img" src="../assets/images/products/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>"
                         alt="<?php echo htmlspecialchars($sanpham['tensanpham']); ?>" onerror="gsOnErrorImg(this)">
                     <?php if ($phantramgiam > 0) : ?>
-                        <span class="badge-gs badge-gs--sale gs-detail__sale">-<?php echo $phantramgiam; ?>%</span>
+                        <span class="badge-gs badge-gs--sale gs-detail__sale" style="position: absolute; top: 1rem; left: 1rem;">-<?php echo $phantramgiam; ?>%</span>
                     <?php endif; ?>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-3 px-2 text-secondary small">
+                    <span>100% Chính hãng</span>
+                    <span>•</span>
+                    <span>Giao nhanh 2h</span>
+                    <span>•</span>
+                    <span>Đổi trả 7 ngày</span>
                 </div>
             </div>
 
             <div class="col-12 col-lg-7">
-                <span class="gs-detail__cat"><?php echo htmlspecialchars($danhmucCha); ?></span>
-                <h1 class="gs-detail__title"><?php echo htmlspecialchars($sanpham['tensanpham']); ?></h1>
-
-                <div class="gs-detail__meta">
-                    <span><i class="fa-solid fa-tag"></i> Thương hiệu: <strong><?php echo htmlspecialchars($tenthuonghieu); ?></strong></span>
-                    <span><i class="fa-solid fa-fire-flame-curved"></i> Đã bán: <strong><?php echo (int) $sanpham['luotmua']; ?></strong></span>
-                    <span><i class="fa-regular fa-eye"></i> Lượt xem: <strong><?php echo (int) $sanpham['luotxem'] + 1; ?></strong></span>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1 text-uppercase fw-bold" style="font-size: 0.78rem; letter-spacing: 0.05em;"><?php echo htmlspecialchars($danhmucCha); ?></span>
+                    <span class="badge bg-secondary-subtle text-secondary px-2.5 py-1 fw-semibold" style="font-size: 0.78rem;"><?php echo htmlspecialchars($tenthuonghieu); ?></span>
                 </div>
 
-                <div class="gs-detail__rating">
-                    <?php for ($i = 1; $i <= 5; $i++) : ?>
-                        <i class="fa-<?php echo ($i <= round($diemDanhgia['diem'])) ? 'solid' : 'regular'; ?> fa-star"></i>
-                    <?php endfor; ?>
-                    <span><?php echo number_format($diemDanhgia['diem'], 1, ',', '.'); ?>/5</span>
-                    <span class="text-secondary">(<?php echo (int) $diemDanhgia['soluot']; ?> đánh giá)</span>
+                <h1 class="gs-detail__title mb-2" style="font-size: 2.1rem; line-height: 1.25;"><?php echo htmlspecialchars($sanpham['tensanpham']); ?></h1>
+
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-3 text-secondary small">
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="text-warning"><i class="fa-solid fa-star"></i> <?php echo number_format($diemDanhgia['diem'], 1, ',', '.'); ?>/5</span>
+                        <span>(<?php echo (int) $diemDanhgia['soluot']; ?> đánh giá)</span>
+                    </div>
+                    <span>•</span>
+                    <div>Đã bán <strong><?php echo (int) $sanpham['luotmua']; ?></strong></div>
+                    <span>•</span>
+                    <div><strong><?php echo (int) $sanpham['luotxem'] + 1; ?></strong> lượt xem</div>
                 </div>
 
                 <div class="gs-detail__price">
@@ -75,25 +104,29 @@ include(__DIR__ . '/inc/head-client.php');
                     <?php endif; ?>
                 </div>
 
-                <p class="gs-detail__tinhtrang">
+                <div class="mb-3">
                     <?php if ($conhang) : ?>
-                        <span class="gs-stock gs-stock--con"><i class="fa-solid fa-circle-check"></i> Còn hàng (<?php echo (int) $sanpham['soluongton']; ?> sản phẩm)</span>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 rounded-pill">
+                            Còn hàng (<?php echo (int) $sanpham['soluongton']; ?> sản phẩm)
+                        </span>
                     <?php else : ?>
-                        <span class="gs-stock gs-stock--het"><i class="fa-solid fa-circle-xmark"></i> Hết hàng</span>
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1.5 rounded-pill">
+                            Tạm hết hàng
+                        </span>
                     <?php endif; ?>
-                </p>
+                </div>
 
                 <form class="gs-form-cart gs-detail__form" method="post" action="index.php">
                     <input type="hidden" name="action" value="themvaogiohang">
                     <input type="hidden" name="sanpham_id" value="<?php echo (int) $sanpham['id']; ?>">
 
                     <?php if (count($mangsizes) > 0) : ?>
-                        <div class="gs-detail__option">
-                            <div class="gs-detail__option-head">
-                                <span class="gs-detail__label">Chọn size</span>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                <span class="gs-detail__label mb-0">Chọn size</span>
                                 <?php if ($sizegoiy !== '') : ?>
-                                    <span class="gs-sizegoiy-note">
-                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Gợi ý theo chiều cao &amp; cân nặng của bạn: <strong><?php echo htmlspecialchars($sizegoiy); ?></strong>
+                                    <span class="gs-sizegoiy-note mt-0">
+                                        Gợi ý theo chỉ số: <strong>Size <?php echo htmlspecialchars($sizegoiy); ?></strong>
                                     </span>
                                 <?php endif; ?>
                             </div>
@@ -109,32 +142,45 @@ include(__DIR__ . '/inc/head-client.php');
                         </div>
                     <?php else : ?>
                         <input type="hidden" name="size" value="">
-                        <p class="gs-detail__freesize"><i class="fa-solid fa-circle-info"></i> Sản phẩm này không phân biệt size (freesize).</p>
+                        <p class="gs-detail__freesize">Sản phẩm này không phân biệt size (Freesize).</p>
                     <?php endif; ?>
 
                     <?php if (!empty($sanpham['mausac'])) : ?>
-                        <div class="gs-detail__option">
-                            <span class="gs-detail__label">Màu sắc</span>
+                        <div class="mb-3">
+                            <span class="gs-detail__label mb-1 d-block">Màu sắc</span>
                             <div class="gs-detail__mausac">
-                                <?php foreach (explode(',', $sanpham['mausac']) as $mau) : ?>
-                                    <span class="gs-mau"><?php echo htmlspecialchars(trim($mau)); ?></span>
+                                <?php
+                                $danhSachMau = explode(',', $sanpham['mausac']);
+                                foreach ($danhSachMau as $idx => $mau) :
+                                    $tenMauTrim = trim($mau);
+                                    $colorHex = gsLayMauHex($tenMauTrim);
+                                ?>
+                                    <span class="gs-mau<?php echo ($idx === 0) ? ' active' : ''; ?>" onclick="gsChonMau(this, '<?php echo htmlspecialchars($tenMauTrim, ENT_QUOTES); ?>')">
+                                        <span class="gs-mau__dot" style="background-color: <?php echo $colorHex; ?>;"></span>
+                                        <?php echo htmlspecialchars($tenMauTrim); ?>
+                                    </span>
                                 <?php endforeach; ?>
                             </div>
+                            <input type="hidden" id="gsMauChon" name="mausac" value="<?php echo htmlspecialchars(trim($danhSachMau[0] ?? '')); ?>">
                         </div>
                     <?php endif; ?>
 
-                    <div class="gs-detail__buy">
-                        <div class="gs-qty">
-                            <label class="gs-detail__label" for="gsSoLuong">Số lượng</label>
-                            <input class="form-control" type="number" id="gsSoLuong" name="soluong" min="1"
-                                max="<?php echo max(1, (int) $sanpham['soluongton']); ?>" value="1" <?php echo $conhang ? '' : 'disabled'; ?>>
+                    <div class="d-flex align-items-end gap-3 mt-4">
+                        <div>
+                            <label class="gs-detail__label mb-1 d-block" for="gsSoLuong">Số lượng</label>
+                            <div class="gs-qty-group">
+                                <button type="button" class="gs-qty-btn" onclick="gsGiamSoLuong()">-</button>
+                                <input class="gs-qty-input" type="number" id="gsSoLuong" name="soluong" min="1"
+                                    max="<?php echo max(1, (int) $sanpham['soluongton']); ?>" value="1" <?php echo $conhang ? '' : 'disabled'; ?>>
+                                <button type="button" class="gs-qty-btn" onclick="gsTangSoLuong()">+</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn-gs btn-gs--dark gs-detail__addbtn" <?php echo $conhang ? '' : 'disabled'; ?>>
-                            <i class="fa-solid fa-bag-shopping"></i> <?php echo $conhang ? 'Thêm vào giỏ hàng' : 'Tạm hết hàng'; ?>
+                        <button type="submit" class="btn-gs btn-gs--dark flex-grow-1" style="height: 48px;" <?php echo $conhang ? '' : 'disabled'; ?>>
+                            <?php echo $conhang ? 'THÊM VÀO GIỎ HÀNG' : 'TẠM HẾT HÀNG'; ?>
                         </button>
                         <?php $daThichDetail = in_array((int)$sanpham['id'], $dsIdYeuthich ?? array(), true); ?>
                         <button type="button" class="btn btn-outline-danger d-flex align-items-center justify-content-center px-3"
-                                style="border-radius: 8px; min-height: 48px;"
+                                style="border-radius: 8px; height: 48px; min-width: 48px;"
                                 onclick="gsToggleYeuThich(this, <?php echo (int) $sanpham['id']; ?>)"
                                 title="<?php echo $daThichDetail ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
                             <i class="<?php echo $daThichDetail ? 'fa-solid fa-heart text-danger fs-5' : 'fa-regular fa-heart text-danger fs-5'; ?>"></i>
@@ -152,14 +198,29 @@ include(__DIR__ . '/inc/head-client.php');
                 </form>
 
                 <div class="gs-detail__policies">
-                    <span><i class="fa-solid fa-truck-fast"></i> Miễn phí vận chuyển cho đơn từ 500.000đ</span>
-                    <span><i class="fa-solid fa-rotate-left"></i> Đổi trả trong 7 ngày</span>
-                    <span><i class="fa-solid fa-shield-halved"></i> Hàng chính hãng 100%</span>
+                    <div class="gs-detail__policy-item">
+                        <div>
+                            <strong class="d-block text-white">Freeship từ 500k</strong>
+                            <small>Giao hàng toàn quốc</small>
+                        </div>
+                    </div>
+                    <div class="gs-detail__policy-item">
+                        <div>
+                            <strong class="d-block text-white">Đổi trả 7 ngày</strong>
+                            <small>Lỗi NSX hoặc đổi size</small>
+                        </div>
+                    </div>
+                    <div class="gs-detail__policy-item">
+                        <div>
+                            <strong class="d-block text-white">Chính hãng 100%</strong>
+                            <small>Đảm bảo nguồn gốc</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="gs-detail__info">
+        <div class="gs-detail__info mt-5">
             <ul class="nav nav-tabs gs-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#gsTabMota" type="button" role="tab">
@@ -178,70 +239,200 @@ include(__DIR__ . '/inc/head-client.php');
                 </li>
             </ul>
 
-            <div class="tab-content gs-tab-content">
+            <div class="tab-content gs-tab-content pt-4">
                 <div class="tab-pane fade show active" id="gsTabMota" role="tabpanel">
-                    <p class="gs-detail__mota">
-                        <?php echo nl2br(htmlspecialchars($sanpham['mota'] ? $sanpham['mota'] : 'Thông tin mô tả đang được cập nhật.')); ?>
-                    </p>
+                    <div class="gs-mota-section">
+                        <h4 class="gs-mota-title">
+                            Đặc điểm nổi bật &amp; Thiết kế
+                        </h4>
+                        <div class="gs-mota-content">
+                            <?php echo nl2br(htmlspecialchars($motaTongQuan ?: 'Thông tin mô tả đang được cập nhật.')); ?>
+                        </div>
+                    </div>
+
+                    <?php if (!empty($motaChiTiet)) : ?>
+                        <div class="gs-mota-section">
+                            <h4 class="gs-mota-title">
+                                Hướng dẫn sử dụng &amp; Bảo quản chuẩn Gymer
+                            </h4>
+                            <div class="gs-mota-content" style="white-space: pre-line;">
+                                <?php echo htmlspecialchars($motaChiTiet); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="gs-mota-section" style="background: rgba(249, 115, 22, 0.05); border-color: rgba(249, 115, 22, 0.2);">
+                        <h4 class="gs-mota-title" style="color: var(--gs-primary);">
+                            Cam kết chất lượng từ GYMBRO
+                        </h4>
+                        <div class="row g-3 pt-2">
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block">100% Chính Hãng</strong>
+                                        <small class="text-secondary">Phân phối trực tiếp, nguồn gốc rõ ràng minh bạch.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block">Đổi Size Linh Hoạt</strong>
+                                        <small class="text-secondary">Hỗ trợ đổi size trong vòng 7 ngày nhanh chóng.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block">Tư Vấn Thể Hình</strong>
+                                        <small class="text-secondary">Gợi ý sản phẩm chuẩn xác theo chỉ số cơ thể của bạn.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane fade" id="gsTabThongso" role="tabpanel">
-                    <table class="table gs-table">
-                        <tbody>
-                            <tr>
-                                <th>Danh mục</th>
-                                <td><?php echo htmlspecialchars($sanpham['tendanhmuc']); ?> (<?php echo htmlspecialchars($mucdanhmuc[$sanpham['loai']]); ?>)</td>
-                            </tr>
-                            <tr>
-                                <th>Thương hiệu</th>
-                                <td><?php echo htmlspecialchars($tenthuonghieu); ?></td>
-                            </tr>
-                            <tr>
-                                <th>Đối tượng</th>
-                                <td><?php echo ($sanpham['doituong'] === 'nu') ? 'Nữ' : (($sanpham['doituong'] === 'nam') ? 'Nam' : 'Unisex (Nam & Nữ)'); ?></td>
-                            </tr>
+                    <div class="gs-mota-section">
+                        <h4 class="gs-mota-title">
+                            Thông số cơ bản &amp; Phân loại
+                        </h4>
+                        <div class="row g-3 pt-1">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Danh mục</span>
+                                    <strong class="text-white small"><?php echo htmlspecialchars($sanpham['tendanhmuc']); ?> (<?php echo htmlspecialchars($mucdanhmuc[$sanpham['loai']]); ?>)</strong>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Thương hiệu</span>
+                                    <strong class="text-white small"><?php echo htmlspecialchars($tenthuonghieu); ?></strong>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Đối tượng</span>
+                                    <strong class="text-white small"><?php echo ($sanpham['doituong'] === 'nu') ? 'Nữ' : (($sanpham['doituong'] === 'nam') ? 'Nam' : 'Unisex (Nam & Nữ)'); ?></strong>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Size khả dụng</span>
+                                    <strong class="text-white small"><?php echo (count($mangsizes) > 0) ? htmlspecialchars(implode(', ', $mangsizes)) : 'Freesize'; ?></strong>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Màu sắc</span>
+                                    <strong class="text-white small"><?php echo !empty($sanpham['mausac']) ? htmlspecialchars($sanpham['mausac']) : 'Tiêu chuẩn'; ?></strong>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-secondary small">Tình trạng kho</span>
+                                    <strong class="<?php echo $conhang ? 'text-success' : 'text-danger'; ?> small"><?php echo $conhang ? ((int) $sanpham['soluongton'] . ' sản phẩm sẵn sàng') : 'Hết hàng'; ?></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gs-mota-section">
+                        <h4 class="gs-mota-title">
+                            <?php if ($sanpham['loai'] === 'tpbs') : ?>
+                                Thành phần dinh dưỡng &amp; Hạn sử dụng
+                            <?php else : ?>
+                                Chất liệu &amp; Công nghệ hoàn thiện
+                            <?php endif; ?>
+                        </h4>
+                        <div class="gs-mota-content">
                             <?php if (!empty($sanpham['chatlieu'])) : ?>
-                                <tr>
-                                    <th>Chất liệu</th>
-                                    <td><?php echo htmlspecialchars($sanpham['chatlieu']); ?></td>
-                                </tr>
+                                <div class="d-flex align-items-start gap-2 mb-2">
+                                    <strong class="text-white small text-nowrap" style="min-width: 150px;">Chất liệu cấu tạo:</strong>
+                                    <span class="small text-secondary"><?php echo htmlspecialchars($sanpham['chatlieu']); ?></span>
+                                </div>
                             <?php endif; ?>
                             <?php if (!empty($sanpham['thanhphan'])) : ?>
-                                <tr>
-                                    <th>Thành phần dinh dưỡng</th>
-                                    <td><?php echo htmlspecialchars($sanpham['thanhphan']); ?></td>
-                                </tr>
+                                <div class="d-flex align-items-start gap-2 mb-2">
+                                    <strong class="text-white small text-nowrap" style="min-width: 150px;">Thành phần vi chất:</strong>
+                                    <span class="small text-secondary"><?php echo htmlspecialchars($sanpham['thanhphan']); ?></span>
+                                </div>
                             <?php endif; ?>
                             <?php if (!empty($sanpham['hansudung'])) : ?>
-                                <tr>
-                                    <th>Hạn sử dụng</th>
-                                    <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($sanpham['hansudung']))); ?></td>
-                                </tr>
+                                <div class="d-flex align-items-start gap-2 mb-2">
+                                    <strong class="text-white small text-nowrap" style="min-width: 150px;">Hạn dùng khuyến nghị:</strong>
+                                    <span class="small text-warning"><?php echo htmlspecialchars(date('d/m/Y', strtotime($sanpham['hansudung']))); ?></span>
+                                </div>
                             <?php endif; ?>
-                            <tr>
-                                <th>Size đang có</th>
-                                <td><?php echo (count($mangsizes) > 0) ? htmlspecialchars(implode(', ', $mangsizes)) : 'Freesize'; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Phù hợp mục tiêu</th>
-                                <td>
-                                    <?php
-                                    $tenmuctieu = array();
-                                    foreach (explode(',', (string) $sanpham['muctieu']) as $mt) {
-                                        if (trim($mt) !== '') {
-                                            $tenmuctieu[] = gsTenMuctieu(trim($mt));
-                                        }
-                                    }
-                                    echo htmlspecialchars(implode(' · ', $tenmuctieu));
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Tình trạng kho</th>
-                                <td><?php echo $conhang ? ((int) $sanpham['soluongton'] . ' sản phẩm') : 'Hết hàng'; ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <?php if (empty($sanpham['chatlieu']) && empty($sanpham['thanhphan']) && empty($sanpham['hansudung'])) : ?>
+                                <p class="small text-secondary mb-0">Sản phẩm đạt chứng nhận an toàn thể thao và độ bền tiêu chuẩn quốc tế.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="gs-mota-section" style="background: rgba(249, 115, 22, 0.05); border-color: rgba(249, 115, 22, 0.2);">
+                        <h4 class="gs-mota-title" style="color: var(--gs-primary);">
+                            Mục tiêu luyện tập đề xuất
+                        </h4>
+                        <div class="d-flex flex-wrap gap-2 pt-1 mb-2">
+                            <?php
+                            $danhSachMuctieu = explode(',', (string) $sanpham['muctieu']);
+                            foreach ($danhSachMuctieu as $mt) :
+                                $mtTrim = trim($mt);
+                                if ($mtTrim !== '') :
+                            ?>
+                                <span class="badge" style="background: #141c2b; border: 1px solid var(--gs-primary); color: #fff; padding: 0.5rem 0.9rem; font-size: 0.85rem;">
+                                    <?php echo htmlspecialchars(gsTenMuctieu($mtTrim)); ?>
+                                </span>
+                            <?php
+                                endif;
+                            endforeach;
+                            ?>
+                        </div>
+                        <small class="text-secondary d-block mt-2">
+                            Hệ thống GYMBRO tự động phân tích và tối ưu sản phẩm này phù hợp cho gymer theo đuổi các mục tiêu thể trạng trên.
+                        </small>
+                    </div>
+
+                    <div class="gs-mota-section">
+                        <h4 class="gs-mota-title">
+                            Tiêu chuẩn chứng nhận &amp; Bảo hành
+                        </h4>
+                        <div class="row g-3 pt-2">
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block small">Nguồn Gốc Xuất Xứ</strong>
+                                        <small class="text-secondary">Nhập khẩu chính hãng từ thương hiệu <?php echo htmlspecialchars($tenthuonghieu); ?>.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block small">Bảo Hành Đổi Trả</strong>
+                                        <small class="text-secondary">Đổi trả 1-1 trong 7 ngày nếu lỗi kỹ thuật từ nhà sản xuất.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="d-flex align-items-start gap-2">
+                                    
+                                    <div>
+                                        <strong class="text-white d-block small">Đóng Gói Chuyên Nghiệp</strong>
+                                        <small class="text-secondary">Hộp carton bảo vệ 3 lớp, chống va đập trong quá trình vận chuyển.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane fade" id="gsTabDanhgia" role="tabpanel">
@@ -369,73 +560,26 @@ include(__DIR__ . '/inc/recommendation.php');
     </section>
 <?php endif; ?>
 
-<?php if (!empty($sanphamVuaXem)) : ?>
-    <!-- san pham vua xem -->
-    <section class="gs-section gs-section--grey">
-        <div class="container">
-            <div class="gs-section__head">
-                <div>
-                    <h2 class="gs-section__title">Sản phẩm bạn vừa xem</h2>
-                    <span class="gs-section__sub">Danh sách các sản phẩm bạn đã quan tâm duyệt xem gần đây</span>
-                </div>
-            </div>
-            <div class="row g-4">
-                <?php
-                foreach ($sanphamVuaXem as $card) :
-                    include(__DIR__ . '/inc/product-card.php');
-                endforeach;
-                ?>
-            </div>
-        </div>
-    </section>
-<?php endif; ?>
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const picker = document.getElementById('starRatingDetail');
-    if (!picker) return;
-    const input = document.getElementById('inputRatingStarDetail');
-    const label = document.getElementById('starRatingDetailLabel');
-    const stars = picker.querySelectorAll('.star-node');
-    const texts = {
-        1: '1 sao - Có gì nhắn shop nhen',
-        2: '2 sao - Bình tĩnh nhắn cho sop đi',
-        3: '3 sao - Nhắn shop đi mò',
-        4: '4 sao - Sản phẩm rất tốt',
-        5: '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
-    };
-
-    function highlightStars(val) {
-        stars.forEach(s => {
-            const v = parseInt(s.dataset.val, 10);
-            if (v <= val) {
-                s.classList.remove('fa-regular');
-                s.classList.add('fa-solid');
-            } else {
-                s.classList.remove('fa-solid');
-                s.classList.add('fa-regular');
-            }
-        });
-        if (label && texts[val]) {
-            label.textContent = texts[val];
-        }
+function gsGiamSoLuong() {
+    var inp = document.getElementById('gsSoLuong');
+    if (inp && parseInt(inp.value) > 1) {
+        inp.value = parseInt(inp.value) - 1;
     }
-
-    stars.forEach(s => {
-        s.addEventListener('mouseenter', function () {
-            highlightStars(parseInt(this.dataset.val, 10));
-        });
-        s.addEventListener('click', function () {
-            const v = parseInt(this.dataset.val, 10);
-            input.value = v;
-            highlightStars(v);
-        });
-    });
-
-    picker.addEventListener('mouseleave', function () {
-        highlightStars(parseInt(input.value, 10));
-    });
-});
+}
+function gsTangSoLuong() {
+    var inp = document.getElementById('gsSoLuong');
+    var max = parseInt(inp.getAttribute('max')) || 999;
+    if (inp && parseInt(inp.value) < max) {
+        inp.value = parseInt(inp.value) + 1;
+    }
+}
+function gsChonMau(el, tenMau) {
+    document.querySelectorAll('.gs-mau').forEach(function(m) { m.classList.remove('active'); });
+    el.classList.add('active');
+    var inp = document.getElementById('gsMauChon');
+    if (inp) inp.value = tenMau;
+}
 </script>
 
 <?php include(__DIR__ . '/inc/footer.php'); ?>
