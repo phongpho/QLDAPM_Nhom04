@@ -307,7 +307,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
 
     case 'giohang':
         $giohang    = $gh->laygiohang();
-        $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung);
+        $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung, $gsNguoidungId);
 
         $gsGoiy = $gh->dadangnhap() ? gsTinhGoiyChiSo($sp, $gsNguoidungId) : null;
         $goiyMuakem = array();
@@ -323,7 +323,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         if (count($goiyMuakem) === 0) {
             $goiyMuakem = $sp->laysanphambanchay(4);
         }
-        $dsVoucher = $vc->layvoucherdanghoatdong(3);
+        $dsVoucher = $vc->layvoucherdanghoatdong(5, $gsNguoidungId);
         include('cart.php');
         break;
 
@@ -419,7 +419,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
 
     case 'apdungvoucher':
         $ma = isset($_POST['ma']) ? $_POST['ma'] : (isset($_GET['ma']) ? $_GET['ma'] : '');
-        $kq = $vc->kiemTraVoucher($ma, $gh->tamtinh());
+        $kq = $vc->kiemTraVoucher($ma, $gh->tamtinh(), $gsNguoidungId);
         if ($kq['ok']) {
             $_SESSION['gs_voucher'] = array('ma' => $kq['voucher']['ma']);
         } else {
@@ -458,7 +458,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         }
         $dsDiachi      = $dc->laydanhsachdiachi($gsNguoidungId);
         $diachimacdinh = $dc->laydiachimacdinh($gsNguoidungId);
-        $gsTongtien    = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung);
+        $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung, $gsNguoidungId);
         include('checkout.php');
         break;
 
@@ -510,7 +510,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
             $dc->themdiachi($gsNguoidungId, $tennguoinhan, $sdtnhan, $diachinhan, 1);
         }
 
-        $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung);
+        $gsTongtien = gsTinhTongtienGio($gh, $vc, $gsVoucherApdung, $gsNguoidungId);
         $voucherChot = null;
         if ($gsTongtien['voucher']) {
             $voucherChot = array('id' => $gsTongtien['voucher']['id'], 'giamgia' => $gsTongtien['giamgia']);
