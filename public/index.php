@@ -323,7 +323,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
     case 'goy':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem gợi ý cá nhân hóa theo chỉ số cơ thể!');
-            gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
+            gsChuyenTrang('index.php?action=dangnhap');
         }
         $chieucao = isset($_GET['chieucao']) ? (float) $_GET['chieucao'] : null;
         $cannang  = isset($_GET['cannang']) ? (float) $_GET['cannang'] : null;
@@ -338,7 +338,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
     case 'luuhoso':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để lưu hồ sơ thể trạng!');
-            gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
+            gsChuyenTrang('index.php?action=dangnhap');
         }
 
         $chieucao = isset($_POST['chieucao']) ? (float) $_POST['chieucao'] : 0;
@@ -506,7 +506,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
     case 'thanhtoan':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để tiến hành thanh toán!');
-            gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
+            gsChuyenTrang('index.php?action=dangnhap');
         }
         $giohang = $gh->laygiohang();
         if (count($giohang) === 0) {
@@ -525,7 +525,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
     case 'datvnpay':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để tiến hành thanh toán!');
-            gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
+            gsChuyenTrang('index.php?action=dangnhap');
         }
         $giohang = $gh->laygiohang();
         if (count($giohang) === 0) {
@@ -870,7 +870,7 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
     case 'donhang':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem đơn hàng của bạn!');
-            gsChuyenTrang('../admin/ktnguoidung/index.php?action=dangnhap');
+            gsChuyenTrang('index.php?action=dangnhap');
         }
         $dsDonhang = $dh->laydanhsachdonhang($gsNguoidungId);
         $dsIdSpDaDanhgia = ($gsNguoidungId > 0) ? $dgModel->laydanhsachidsanphamdadanhgia($gsNguoidungId) : array();

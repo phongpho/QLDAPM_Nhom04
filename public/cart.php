@@ -187,7 +187,7 @@ include(__DIR__ . '/inc/head-client.php');
                         </a>
                         <?php if (!$gh->dadangnhap()) : ?>
                             <p class="gs-cart-summary__note">
-                                Bạn cần <a href="../admin/ktnguoidung/index.php?action=dangnhap">đăng nhập</a> để đặt hàng.
+                                Bạn cần <a href="?action=dangnhap">đăng nhập</a> để đặt hàng.
                             </p>
                         <?php endif; ?>
                     </div>
