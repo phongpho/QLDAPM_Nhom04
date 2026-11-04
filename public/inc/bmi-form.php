@@ -9,7 +9,9 @@ $hoso = $cohoso ? $gsGoiy : null;
 ?>
 <div class="gs-card gs-chiso">
     <h3 class="gs-chiso__title">
-        <i class="fa-solid fa-calculator text-danger"></i>
+        <span class="gs-menu-icon-box" style="width: 36px; height: 36px; font-size: 1rem; margin-right: 2px;">
+            <i class="fa-solid fa-calculator"></i>
+        </span>
         <?php echo $cohoso ? 'Cập nhật chỉ số cơ thể' : 'Nhập chỉ số cơ thể của bạn'; ?>
     </h3>
     <p class="gs-chiso__desc">

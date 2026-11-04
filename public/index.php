@@ -13,6 +13,8 @@ require_once(__DIR__ . '/../model/diachi.php');
 require_once(__DIR__ . '/../model/vnpay.php');
 require_once(__DIR__ . '/../model/nguoidung.php');
 require_once(__DIR__ . '/../model/yeuthich.php');
+require_once(__DIR__ . '/../model/danhgia.php');
+require_once(__DIR__ . '/../model/bmi.php');
 require_once(__DIR__ . '/inc/shop_helper.php');
 
 $gsModule36 = true;
@@ -29,6 +31,8 @@ $dc   = new DIACHI();
 $vnpay = new VNPAY();
 $nd   = new NGUOIDUNG();
 $yt   = new YEUTHICH();
+$dgModel = new DANHGIA();
+$bmiModel = new BMI();
 
 $gh->dongbo();
 $gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
@@ -213,6 +217,33 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         gsChuyenTrang('index.php?action=taikhoan&tab=address');
         break;
 
+    case 'ajax_timkiem':
+        header('Content-Type: application/json; charset=utf-8');
+        $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+        if (mb_strlen($q, 'UTF-8') < 2) {
+            echo json_encode(array('ok' => true, 'data' => array()));
+            exit();
+        }
+        $ds = $sp->timkiemnhanh($q, 5);
+        $ketqua = array();
+        foreach ($ds as $item) {
+            $hinhanh = trim((string)$item['hinhanh']);
+            $anhUrl = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '../assets/images/systems/logo.png';
+            $giaban = (float) $item['giaban'];
+            $giagoc = (float) $item['giagoc'];
+            $ketqua[] = array(
+                'id' => (int) $item['id'],
+                'tensanpham' => $item['tensanpham'],
+                'hinhanh' => $anhUrl,
+                'giaban_format' => number_format($giaban, 0, ',', '.') . '₫',
+                'giagoc_format' => ($giagoc > $giaban) ? number_format($giagoc, 0, ',', '.') . '₫' : '',
+                'tendanhmuc' => $item['tendanhmuc'] ?? '',
+                'tenthuonghieu' => $item['tenthuonghieu'] ?? ''
+            );
+        }
+        echo json_encode(array('ok' => true, 'data' => $ketqua));
+        exit();
+
     case 'sanpham':
         $loai          = isset($_GET['loai']) ? trim($_GET['loai']) : '';
         $doituong      = isset($_GET['doituong']) ? trim($_GET['doituong']) : '';
@@ -239,6 +270,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         );
 
         $dsThuonghieu = $sp->laydanhsachthuonghieu();
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('danhmuc.php');
         break;
@@ -252,11 +286,31 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         }
 
         $sp->tangluotxem($id);
+
+        // luu san pham vao danh sach vua xem trong session
+        if (!isset($_SESSION['gs_daxem']) || !is_array($_SESSION['gs_daxem'])) {
+            $_SESSION['gs_daxem'] = array();
+        }
+        // loai bo id hien tai neu da co de dua len dau
+        $_SESSION['gs_daxem'] = array_diff($_SESSION['gs_daxem'], array($id));
+        array_unshift($_SESSION['gs_daxem'], $id);
+        // giu toi da 8 san pham vua xem
+        $_SESSION['gs_daxem'] = array_slice($_SESSION['gs_daxem'], 0, 8);
+
+        // lay danh sach san pham vua xem (khong bao gom san pham dang xem)
+        $dsIdDaXem = array_diff($_SESSION['gs_daxem'], array($id));
+        $sanphamVuaXem = !empty($dsIdDaXem) ? $sp->laysanphamtheomangid(array_slice($dsIdDaXem, 0, 4)) : array();
+
         $mangsizes      = $sp->tachsizethanhmmang($sanpham['sizes']);
         $dsDanhgia      = $sp->laydanhgiasanpham($id, 20);
         $diemDanhgia    = $sp->laydiemdanhgiasanpham($id);
+        $duocDanhgia    = ($gsNguoidungId > 0) ? $dgModel->kiemtraduocdanhgia($gsNguoidungId, $id) : false;
+        $danhgiaCuaToi  = ($gsNguoidungId > 0) ? $dgModel->laydanhgiacuatoi($gsNguoidungId, $id) : null;
         $sanphamtuongtu = $sp->laysanphamtuongtu($sanpham['danhmuc_id'], $id, 4);
 
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         $sizegoiy = '';
         if ($gsGoiy && $gsGoiy['sizegoiy'] && in_array($gsGoiy['sizegoiy']['size'], $mangsizes, true)) {
@@ -342,6 +396,9 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
 
     case 'themcombo':
         $items = array();
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         $sizegoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
         $sizechon = isset($_POST['size']) ? trim($_POST['size']) : '';
@@ -647,16 +704,183 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         gsChuyenTrang('index.php?action=yeuthich');
         break;
 
+
+    // xu ly so sanh san pham (module 5)
+    case 'sosanh':
+        $ids = isset($_SESSION['gs_sosanh']) && is_array($_SESSION['gs_sosanh']) ? $_SESSION['gs_sosanh'] : array();
+        $dsSosanh = !empty($ids) ? $sp->laysanphamtheomangid($ids) : array();
+        foreach ($dsSosanh as &$itemSosanh) {
+            $itemSosanh['danhgia_thongke'] = $sp->laydiemdanhgiasanpham($itemSosanh['id']);
+        }
+        unset($itemSosanh);
+
+        // goi y cac san pham cung danh muc neu dang co san pham
+        if (!empty($dsSosanh)) {
+            $dmHienTai = (int) $dsSosanh[0]['danhmuc_id'];
+            $spGoiySosanh = $sp->laysanphamtuongtu($dmHienTai, (int) $dsSosanh[0]['id'], 4);
+            if (empty($spGoiySosanh)) {
+                $spGoiySosanh = $sp->laysanphamnoibatmoi(4);
+            }
+        } else {
+            $spGoiySosanh = $sp->laysanphamnoibatmoi(4);
+        }
+        include('sosanh.php');
+        break;
+
+    case 'ajax_sosanh_them':
+        header('Content-Type: application/json');
+        $id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
+        if ($id <= 0) {
+            echo json_encode(array('ok' => false, 'message' => 'Sản phẩm không hợp lệ!'));
+            exit();
+        }
+        if (!isset($_SESSION['gs_sosanh']) || !is_array($_SESSION['gs_sosanh'])) {
+            $_SESSION['gs_sosanh'] = array();
+        }
+        $daCo = in_array($id, $_SESSION['gs_sosanh']);
+        if (!$daCo && count($_SESSION['gs_sosanh']) >= 3) {
+            echo json_encode(array('ok' => false, 'message' => 'Bạn chỉ có thể so sánh tối đa 3 sản phẩm cùng lúc!'));
+            exit();
+        }
+
+        $spMoi = $sp->laysanphamchitiet($id);
+        if (!$spMoi) {
+            echo json_encode(array('ok' => false, 'message' => 'Không tìm thấy thông tin sản phẩm!'));
+            exit();
+        }
+
+        if ($daCo) {
+            $_SESSION['gs_sosanh'] = array_values(array_diff($_SESSION['gs_sosanh'], array($id)));
+            $trangthaiSosanh = false;
+            $msg = 'Đã bỏ sản phẩm khỏi danh sách so sánh!';
+        } else {
+            // kiem tra chi cho phep so sanh cung danh muc
+            if (!empty($_SESSION['gs_sosanh'])) {
+                $dsHienTai = $sp->laysanphamtheomangid($_SESSION['gs_sosanh']);
+                if (!empty($dsHienTai)) {
+                    $dmCu = (int) $dsHienTai[0]['danhmuc_id'];
+                    $tenDmCu = $dsHienTai[0]['tendanhmuc'] ?? 'Danh mục hiện tại';
+                    $dmMoi = (int) $spMoi['danhmuc_id'];
+                    $tenDmMoi = $spMoi['tendanhmuc'] ?? 'Danh mục mới';
+
+                    if ($dmCu !== $dmMoi) {
+                        echo json_encode(array(
+                            'ok' => false,
+                            'khac_danhmuc' => true,
+                            'danhmuc_cu' => $tenDmCu,
+                            'danhmuc_moi' => $tenDmMoi,
+                            'message' => "Chỉ có thể so sánh các sản phẩm cùng loại hàng! Bạn đang so sánh [{$tenDmCu}], không thể đối chiếu với [{$tenDmMoi}]."
+                        ));
+                        exit();
+                    }
+                }
+            }
+            $_SESSION['gs_sosanh'][] = $id;
+            $trangthaiSosanh = true;
+            $msg = 'Đã thêm sản phẩm vào danh sách so sánh!';
+        }
+        $items = !empty($_SESSION['gs_sosanh']) ? $sp->laysanphamtheomangid($_SESSION['gs_sosanh']) : array();
+        $itemsData = array();
+        foreach ($items as $it) {
+            $itemsData[] = array(
+                'id' => (int) $it['id'],
+                'tensanpham' => $it['tensanpham'],
+                'giaban' => number_format($it['giaban'], 0, ',', '.') . 'đ',
+                'hinhanh' => !empty($it['hinhanh']) ? '../assets/images/products/' . $it['hinhanh'] : '../assets/images/systems/no-image.png'
+            );
+        }
+        echo json_encode(array(
+            'ok' => true,
+            'sosanh' => $trangthaiSosanh,
+            'message' => $msg,
+            'count' => count($_SESSION['gs_sosanh']),
+            'items' => $itemsData
+        ));
+        exit();
+
+    case 'ajax_sosanh_xoa':
+        $id = isset($_REQUEST['id']) ? (int) $_REQUEST['id'] : 0;
+        if (isset($_SESSION['gs_sosanh']) && is_array($_SESSION['gs_sosanh'])) {
+            $_SESSION['gs_sosanh'] = array_values(array_diff($_SESSION['gs_sosanh'], array($id)));
+        }
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode(array('ok' => true, 'count' => count($_SESSION['gs_sosanh'])));
+            exit();
+        }
+        gsChuyenTrang('index.php?action=sosanh');
+        break;
+
+    case 'ajax_sosanh_xoatatca':
+        $_SESSION['gs_sosanh'] = array();
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode(array('ok' => true, 'count' => 0));
+            exit();
+        }
+        gsChuyenTrang('index.php?action=sosanh');
+
+    case 'danhgiasanpham':
+        if ($gsNguoidungId <= 0) {
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => 'Vui lòng đăng nhập để đánh giá sản phẩm!'));
+            }
+            gsThongBao('warning', 'Vui lòng đăng nhập để đánh giá sản phẩm!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $sanpham_id = isset($_POST['sanpham_id']) ? (int) $_POST['sanpham_id'] : 0;
+        $sao        = isset($_POST['sao']) ? (int) $_POST['sao'] : 5;
+        $noidung    = isset($_POST['noidung']) ? trim($_POST['noidung']) : '';
+
+        if ($sanpham_id <= 0) {
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => 'Sản phẩm không hợp lệ!'));
+            }
+            gsThongBao('error', 'Sản phẩm không hợp lệ!');
+            gsChuyenTrang('index.php');
+        }
+
+        if (!$dgModel->kiemtraduocdanhgia($gsNguoidungId, $sanpham_id)) {
+            $msg = 'Chỉ khách hàng đã mua và nhận hàng thành công mới có thể gửi đánh giá!';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => $msg));
+            }
+            gsThongBao('error', $msg);
+            gsChuyenTrang(gsQuayLai('index.php?action=chitiet&id=' . $sanpham_id));
+        }
+
+        $luuKq = $dgModel->luudanhgia($gsNguoidungId, $sanpham_id, $sao, $noidung);
+        if ($luuKq) {
+            $msg = 'Cảm ơn bạn! Đánh giá sản phẩm đã được gửi thành công.';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => true, 'message' => $msg));
+            }
+            gsThongBao('success', $msg);
+        } else {
+            $msg = 'Có lỗi xảy ra khi lưu đánh giá, vui lòng thử lại!';
+            if (gsLaAjax()) {
+                gsTraJson(array('ok' => false, 'message' => $msg));
+            }
+            gsThongBao('error', $msg);
+        }
+        gsChuyenTrang(gsQuayLai('index.php?action=chitiet&id=' . $sanpham_id));
+
+        break;
+
     case 'donhang':
         if ($gsNguoidungId <= 0) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem đơn hàng của bạn!');
             gsChuyenTrang('index.php?action=dangnhap');
         }
         $dsDonhang = $dh->laydanhsachdonhang($gsNguoidungId);
+        $dsIdSpDaDanhgia = ($gsNguoidungId > 0) ? $dgModel->laydanhsachidsanphamdadanhgia($gsNguoidungId) : array();
         include('donhang.php');
         break;
 
     default:
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
         include('main.php');
         break;

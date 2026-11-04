@@ -723,9 +723,9 @@ img {
 }
 
 .badge-gs--sale {
-    background: var(--gs-accent);
+    background: var(--gs-primary);
     color: #ffffff;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
 }
 
 .badge-gs--hot {

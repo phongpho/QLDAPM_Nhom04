@@ -47,6 +47,111 @@ include(__DIR__ . '/inc/head-client.php');
                             <?php endforeach; ?>
                         </div>
 
+                        <?php if ((int)$donhang['trangthai'] === 5) : ?>
+                        <!-- MỤC ĐÁNH GIÁ SẢN PHẨM ĐÃ MUA (KHI ĐÃ HOÀN THÀNH ĐƠN HÀNG) -->
+                        <div class="gs-checkout__box mt-4" id="mucDanhGiaHoanTat">
+                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom border-secondary border-opacity-50 pb-2 flex-wrap gap-2">
+                                <h3 class="gs-checkout__title mb-0">
+                                    <i class="fa-solid fa-star text-warning me-2"></i>Đánh giá sản phẩm đã mua
+                                </h3>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                                    <i class="fa-solid fa-award me-1"></i> Đánh giá ngay
+                                </span>
+                            </div>
+                            <p class="text-white-50 small mb-3">
+                                Chạm để chọn số sao và chia sẻ nhận xét thực tế về sản phẩm bạn vừa mua:
+                            </p>
+
+                            <div class="d-flex flex-column gap-3">
+                                <?php foreach ($chitiet as $ct) : 
+                                    $spId = (int)$ct['sanpham_id'];
+                                    $dgCu = isset($dgModel) ? $dgModel->laydanhgiacuatoi($gsNguoidungId, $spId) : null;
+                                    $curSao = $dgCu ? (int)$dgCu['sao'] : 5;
+                                ?>
+                                    <div class="card bg-black border-secondary border-opacity-50 p-3 rounded-3 shadow-sm">
+                                        <div class="d-flex align-items-center gap-3 mb-2">
+                                            <img src="../assets/images/products/<?php echo htmlspecialchars($ct['hinhanh']); ?>" 
+                                                 alt="<?php echo htmlspecialchars($ct['tensanpham']); ?>" 
+                                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" 
+                                                 onerror="gsOnErrorImg(this)">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-0 text-white fw-bold"><?php echo htmlspecialchars($ct['tensanpham']); ?></h6>
+                                                <div class="d-flex align-items-center gap-2 mt-1">
+                                                    <span class="small text-white-50">
+                                                        <?php echo ((string) $ct['size'] !== '') ? ('Size ' . htmlspecialchars($ct['size'])) : 'Freesize'; ?> · 
+                                                        <?php echo gsTien($ct['dongia']); ?>
+                                                    </span>
+                                                    <?php if ($dgCu) : ?>
+                                                        <span class="badge bg-success-subtle text-success small">
+                                                            <i class="fa-solid fa-check me-1"></i> Đã đánh giá (<?php echo date('d/m/Y', strtotime($dgCu['ngay'])); ?>)
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <form action="index.php?action=danhgiasanpham" method="POST" class="mt-2 pt-2 border-top border-secondary border-opacity-25 form-danhgia-hoantat">
+                                            <input type="hidden" name="sanpham_id" value="<?php echo $spId; ?>">
+                                            <input type="hidden" name="sao" class="input-sao-val" value="<?php echo $curSao; ?>">
+
+                                            <div class="mb-2">
+                                                <label class="small text-white-50 mb-1 d-block">Mức độ hài lòng:</label>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="ht-star-picker">
+                                                        <?php for ($s = 1; $s <= 5; $s++) : ?>
+                                                            <i class="fa-<?php echo ($s <= $curSao) ? 'solid' : 'regular'; ?> fa-star ht-star-item" data-val="<?php echo $s; ?>"></i>
+                                                        <?php endfor; ?>
+                                                    </div>
+                                                    <span class="ht-star-label gs-star-badge ms-2">
+                                                        <?php
+                                                        $nhanSao = array(
+                                                            1 => '1 sao - Có gì nhắn shop nhen',
+                                                            2 => '2 sao - Bình tĩnh nhắn cho sop đi',
+                                                            3 => '3 sao - Nhắn shop đi mò',
+                                                            4 => '4 sao - Sản phẩm rất tốt',
+                                                            5 => '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
+                                                        );
+                                                        echo isset($nhanSao[$curSao]) ? $nhanSao[$curSao] : '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa';
+                                                        ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <textarea class="form-control bg-dark text-white border-secondary" 
+                                                          name="noidung" 
+                                                          rows="2" 
+                                                          placeholder="Nhập cảm nhận của bạn về sản phẩm này (chất liệu, form dáng, độ bền...)..."><?php echo htmlspecialchars($dgCu['noidung'] ?? ''); ?></textarea>
+                                            </div>
+
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-sm btn-danger px-3 fw-semibold">
+                                                    <i class="fa-solid fa-paper-plane me-1"></i>
+                                                    <?php echo $dgCu ? 'Cập nhật đánh giá' : 'Gửi đánh giá'; ?>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <?php else : ?>
+                        <!-- THÔNG BÁO HƯỚNG DẪN ĐÁNH GIÁ SAU KHI NHẬN HÀNG -->
+                        <div class="gs-checkout__box mt-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="fs-2 text-warning"><i class="fa-solid fa-box-open"></i></div>
+                                <div>
+                                    <h5 class="text-white fw-bold mb-1">Đánh giá sản phẩm sau khi nhận hàng</h5>
+                                    <p class="text-secondary small mb-0">
+                                        Đơn hàng của bạn đang được chuẩn bị. Sau khi nhận hàng thành công, bạn có thể vào mục 
+                                        <a href="index.php?action=donhang" class="text-warning fw-semibold text-decoration-underline">Đơn mua của tôi</a> 
+                                        để chia sẻ cảm nhận và đánh giá chất lượng sản phẩm nhé!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
                         <?php if ($donhang['phuongthuc_tt'] === 'chuyenkhoan') : ?>
                             <?php $urlqr = $vnpay->layUrlQrVietQR($donhang['madonhang'], $donhang['tongtien']); ?>
                             <div class="gs-checkout__box mt-4">
@@ -154,5 +259,56 @@ include(__DIR__ . '/inc/head-client.php');
         <?php endif; ?>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const starTexts = {
+        1: '1 sao - Có gì nhắn shop nhen',
+        2: '2 sao - Bình tĩnh nhắn cho sop đi',
+        3: '3 sao - Nhắn shop đi mò',
+        4: '4 sao - Sản phẩm rất tốt',
+        5: '5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa'
+    };
+
+    document.querySelectorAll('.form-danhgia-hoantat').forEach(form => {
+        const picker = form.querySelector('.ht-star-picker');
+        const input = form.querySelector('.input-sao-val');
+        const label = form.querySelector('.ht-star-label');
+        if (!picker || !input) return;
+        const stars = picker.querySelectorAll('.ht-star-item');
+
+        function updateStars(val) {
+            stars.forEach(s => {
+                const v = parseInt(s.dataset.val, 10);
+                if (v <= val) {
+                    s.classList.remove('fa-regular');
+                    s.classList.add('fa-solid');
+                } else {
+                    s.classList.remove('fa-solid');
+                    s.classList.add('fa-regular');
+                }
+            });
+            if (label && starTexts[val]) {
+                label.textContent = starTexts[val];
+            }
+        }
+
+        stars.forEach(s => {
+            s.addEventListener('mouseenter', function () {
+                updateStars(parseInt(this.dataset.val, 10));
+            });
+            s.addEventListener('click', function () {
+                const v = parseInt(this.dataset.val, 10);
+                input.value = v;
+                updateStars(v);
+            });
+        });
+
+        picker.addEventListener('mouseleave', function () {
+            updateStars(parseInt(input.value, 10));
+        });
+    });
+});
+</script>
 
 <?php include(__DIR__ . '/inc/footer.php'); ?>
