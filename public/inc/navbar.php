@@ -48,21 +48,20 @@
             </ul>
             <div class="d-flex align-items-center gap-3 pt-3 pt-lg-0">
                 <!-- thanh tim kiem -->
-                <form action="index.php" method="get" class="m-0 d-flex align-items-center gap-1 gs-nav-search-form position-relative">
+                <form action="index.php" method="get" class="m-0 d-flex align-items-center gap-2 gs-nav-search-form position-relative">
                     <input type="hidden" name="action" value="sanpham">
-                    <div class="input-group input-group-sm">
+                    <div class="input-group input-group-sm gs-nav-search-group">
                         <input type="text" name="q" id="gsNavSearchInput"
-                            class="form-control text-white border-secondary"
-                            style="background-color: #1a1a1a; min-width: 200px; color: #fff !important;"
+                            class="form-control text-white gs-nav-search-input"
                             placeholder="Tìm sản phẩm..."
                             value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
                             autocomplete="off"
                             required>
-                        <button class="btn btn-danger px-3 d-flex align-items-center justify-content-center" type="submit">
+                        <button class="btn gs-nav-search-btn" type="submit" title="Tìm kiếm">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <a href="index.php?action=sanpham" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center px-2 py-1" style="height: 31px;" title="Bộ lọc nâng cao"><i class="fa-solid fa-filter"></i></a>
+                    <a href="index.php?action=sanpham" class="gs-nav-filter-btn" title="Bộ lọc nâng cao"><i class="fa-solid fa-filter"></i></a>
                     <!-- hop goi y live search -->
                     <div class="gs-live-search-dropdown shadow-lg" id="gsLiveSearchDropdown" style="display: none;"></div>
                 </form>

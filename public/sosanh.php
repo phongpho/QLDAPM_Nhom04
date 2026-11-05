@@ -84,7 +84,7 @@ include(__DIR__ . '/inc/head-client.php');
                                         <a href="index.php?action=chitiet&id=<?php echo (int) $p['id']; ?>" class="d-block mb-3 text-decoration-none">
                                             <img src="<?php echo htmlspecialchars($img); ?>" 
                                                  alt="<?php echo htmlspecialchars($p['tensanpham']); ?>" 
-                                                 class="img-fluid rounded-3"
+                                                 class="img-fluid rounded-3 mx-auto d-block"
                                                  style="width: 140px; height: 140px; object-fit: contain; background: var(--gs-dark-900); padding: 6px; border: 1px solid var(--gs-border);"
                                                  onerror="gsOnErrorImg(this)">
                                         </a>
@@ -146,16 +146,16 @@ include(__DIR__ . '/inc/head-client.php');
                                     $giagoc = (float) $p['giagoc'];
                                     $pt = ($giagoc > $giaban && $giagoc > 0) ? (int) round(100 - ($giaban * 100 / $giagoc)) : 0;
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
                                         <div class="fs-5 fw-bold text-white mb-1">
                                             <?php echo number_format($giaban, 0, ',', '.'); ?>đ
                                         </div>
                                         <?php if ($pt > 0) : ?>
-                                            <div class="d-flex align-items-center gap-2">
+                                            <div class="d-flex align-items-center justify-content-center gap-2">
                                                 <span class="text-white-50 text-decoration-line-through small">
                                                     <?php echo number_format($giagoc, 0, ',', '.'); ?>đ
                                                 </span>
-                                                <span class="badge bg-danger rounded-pill">-<?php echo $pt; ?>%</span>
+                                                <span class="badge rounded-pill fw-bold" style="background: var(--gs-primary, #f97316); color: #000; font-size: 0.72rem;">-<?php echo $pt; ?>%</span>
                                             </div>
                                         <?php else : ?>
                                             <span class="text-white-50 small">Giá niêm yết chính hãng</span>
@@ -173,8 +173,8 @@ include(__DIR__ . '/inc/head-client.php');
                                     $dg = $p['danhgia_thongke'] ?? array('diem' => 5, 'soluot' => 0);
                                     $diem = $dg['diem'] > 0 ? $dg['diem'] : 5;
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <div class="d-flex align-items-center gap-1 mb-1">
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <div class="d-flex align-items-center justify-content-center gap-1 mb-1">
                                             <?php for ($i = 1; $i <= 5; $i++) : ?>
                                                 <i class="fa-solid fa-star small <?php echo $i <= round($diem) ? 'text-warning' : 'text-white-50'; ?>"></i>
                                             <?php endfor; ?>
@@ -194,14 +194,8 @@ include(__DIR__ . '/inc/head-client.php');
                                     Thương hiệu
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['tenthuonghieu'])) : ?>
-                                            <span class="badge bg-dark border border-secondary text-white px-3 py-2 fs-6 fw-semibold">
-                                                <?php echo htmlspecialchars($p['tenthuonghieu']); ?>
-                                            </span>
-                                        <?php else : ?>
-                                            <span class="text-white-50">GYMBRO Chính Hãng</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white fw-semibold"><?php echo !empty($p['tenthuonghieu']) ? htmlspecialchars($p['tenthuonghieu']) : 'GYMBRO'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -214,14 +208,14 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : 
                                     $dt = strtolower($p['doituong'] ?? 'unisex');
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if ($dt === 'nam') : ?>
-                                            <span class="badge bg-primary px-2 py-1">Dành cho Nam</span>
-                                        <?php elseif ($dt === 'nu') : ?>
-                                            <span class="badge bg-danger px-2 py-1">Dành cho Nữ</span>
-                                        <?php else : ?>
-                                            <span class="badge bg-secondary px-2 py-1">Unisex (Nam & Nữ)</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white">
+                                            <?php 
+                                            if ($dt === 'nam') echo 'Nam';
+                                            elseif ($dt === 'nu') echo 'Nữ';
+                                            else echo 'Unisex (Nam & Nữ)';
+                                            ?>
+                                        </span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -234,25 +228,23 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : 
                                     $muctieuArr = !empty($p['muctieu']) ? explode(',', $p['muctieu']) : array();
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <div class="d-flex flex-wrap gap-1">
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white">
                                             <?php 
                                             if (empty($muctieuArr)) {
-                                                echo '<span class="text-white-50 small">Mọi mục tiêu tập luyện</span>';
+                                                echo 'Mọi mục tiêu';
                                             } else {
+                                                $tenMt = array();
                                                 foreach ($muctieuArr as $mt) {
                                                     $mt = trim($mt);
-                                                    if ($mt === 'tangcan') {
-                                                        echo '<span class="badge bg-success-subtle text-success border border-success-subtle">Tăng cơ / Tăng cân</span>';
-                                                    } elseif ($mt === 'giamcan') {
-                                                        echo '<span class="badge bg-danger-subtle text-danger border border-danger-subtle">Giảm mỡ / Siết cân</span>';
-                                                    } elseif ($mt === 'duytri') {
-                                                        echo '<span class="badge bg-info-subtle text-info border border-info-subtle">Duy trì vóc dáng</span>';
-                                                    }
+                                                    if ($mt === 'tangcan') $tenMt[] = 'Tăng cơ / Tăng cân';
+                                                    elseif ($mt === 'giamcan') $tenMt[] = 'Giảm mỡ / Siết cân';
+                                                    elseif ($mt === 'duytri') $tenMt[] = 'Duy trì vóc dáng';
                                                 }
+                                                echo htmlspecialchars(implode(', ', $tenMt));
                                             }
                                             ?>
-                                        </div>
+                                        </span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -263,12 +255,8 @@ include(__DIR__ . '/inc/head-client.php');
                                     Chất liệu
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['chatlieu'])) : ?>
-                                            <span class="text-white fw-semibold"><?php echo htmlspecialchars($p['chatlieu']); ?></span>
-                                        <?php else : ?>
-                                            <span class="text-white-50">Không áp dụng</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white"><?php echo !empty($p['chatlieu']) ? htmlspecialchars($p['chatlieu']) : 'Không áp dụng'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -279,14 +267,10 @@ include(__DIR__ . '/inc/head-client.php');
                                     Thành phần dinh dưỡng
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['thanhphan'])) : ?>
-                                            <div class="small p-2 rounded-2" style="background: rgba(255, 255, 255, 0.04); border-left: 3px solid var(--gs-primary); color: #e2e8f0;">
-                                                <?php echo nl2br(htmlspecialchars($p['thanhphan'])); ?>
-                                            </div>
-                                        <?php else : ?>
-                                            <span class="text-white-50">Không áp dụng</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <div class="text-white small mx-auto" style="max-width: 280px; line-height: 1.5;">
+                                            <?php echo !empty($p['thanhphan']) ? nl2br(htmlspecialchars($p['thanhphan'])) : 'Không áp dụng'; ?>
+                                        </div>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -299,16 +283,8 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : 
                                     $sizes = $sp->tachsizethanhmmang($p['sizes'] ?? '');
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($sizes)) : ?>
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <?php foreach ($sizes as $s) : ?>
-                                                    <span class="badge bg-dark border border-secondary text-white px-2 py-1"><?php echo htmlspecialchars($s); ?></span>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php else : ?>
-                                            <span class="text-white-50">Free size / Tiêu chuẩn</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white"><?php echo !empty($sizes) ? htmlspecialchars(implode(', ', $sizes)) : 'Free size / Tiêu chuẩn'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -319,12 +295,8 @@ include(__DIR__ . '/inc/head-client.php');
                                     Màu sắc / Hương vị
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['mausac'])) : ?>
-                                            <span class="text-white-50"><?php echo htmlspecialchars($p['mausac']); ?></span>
-                                        <?php else : ?>
-                                            <span class="text-white-50">Mặc định</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white"><?php echo !empty($p['mausac']) ? htmlspecialchars($p['mausac']) : 'Mặc định'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -335,14 +307,8 @@ include(__DIR__ . '/inc/head-client.php');
                                     Hạn sử dụng
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['hansudung'])) : ?>
-                                            <span class="badge bg-success-subtle text-success">
-                                                <?php echo date('d/m/Y', strtotime($p['hansudung'])); ?>
-                                            </span>
-                                        <?php else : ?>
-                                            <span class="text-white-50">Không thời hạn</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white"><?php echo !empty($p['hansudung']) ? date('d/m/Y', strtotime($p['hansudung'])) : 'Không thời hạn'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -355,12 +321,8 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : 
                                     $conhang = ((int) $p['soluongton'] > 0);
                                 ?>
-                                    <td class="p-3" style="border-color: var(--gs-border);">
-                                        <?php if ($conhang) : ?>
-                                            <span class="text-success fw-bold">Còn hàng (<?php echo (int) $p['soluongton']; ?>)</span>
-                                        <?php else : ?>
-                                            <span class="text-danger fw-bold">Hết hàng</span>
-                                        <?php endif; ?>
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
+                                        <span class="text-white"><?php echo $conhang ? ('Còn hàng (' . (int) $p['soluongton'] . ')') : 'Hết hàng'; ?></span>
                                     </td>
                                 <?php endforeach; ?>
                                 <?php if (count($dsSosanh) < 3) : ?><td style="border-color: var(--gs-border);"></td><?php endif; ?>
@@ -371,7 +333,7 @@ include(__DIR__ . '/inc/head-client.php');
                                     Xem chi tiết
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
-                                    <td class="p-3 text-center" style="border-color: var(--gs-border);">
+                                    <td class="p-3 text-center align-middle" style="border-color: var(--gs-border);">
                                         <a href="index.php?action=chitiet&id=<?php echo (int) $p['id']; ?>" class="btn-gs btn-gs--outline btn-gs--sm w-100">
                                             Xem chi tiết &rarr;
                                         </a>

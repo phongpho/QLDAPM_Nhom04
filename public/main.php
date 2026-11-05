@@ -79,7 +79,6 @@ include(__DIR__ . '/inc/carousel.php');
                 <div class="gs-section__head">
                     <div>
                         <h2 class="gs-section__title"><?php echo htmlspecialchars($khoi['tieude']); ?></h2>
-                        <span class="gs-section__sub"><?php echo htmlspecialchars($khoi['mota']); ?></span>
                     </div>
                     <a class="gs-section__link" href="<?php echo htmlspecialchars($khoi['link']); ?>">
                         Xem tất cả <i class="fa-solid fa-arrow-right-long"></i>
