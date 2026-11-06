@@ -36,6 +36,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="index.php?action=sanpham&loai=phukien">Phụ
                         kiện</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white-50 px-3 hover-white text-nowrap" href="index.php?action=sanpham&loai=tpbs">Thực
                         phẩm bổ sung</a>
@@ -76,7 +77,7 @@
                                 Xin chào, <strong class="text-white d-block text-truncate"><?= htmlspecialchars($_SESSION['nguoidung']['hoten']) ?></strong>
                             </li>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="taikhoan.php">
+                                <a class="dropdown-item py-2 d-flex align-items-center justify-content-between" href="index.php?action=taikhoan">
                                     <span class="d-flex align-items-center gap-2">
                                         <span class="gs-menu-icon-box"><i class="fa-solid fa-id-card"></i></span>
                                         <span>Hồ sơ cá nhân</span>
