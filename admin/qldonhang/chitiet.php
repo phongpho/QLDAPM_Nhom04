@@ -147,9 +147,9 @@ $currentStep = (int)$donhang["trangthai"];
                             <span class="text-dark fw-semibold">Đơn hàng <?= htmlspecialchars($donhang["madonhang"] ?: ('#' . $donhang["id"])) ?></span>
                         </div>
                         <div class="d-flex align-items-center gap-2">
-                            <button onclick="window.print()" class="btn btn-sm btn-light border text-secondary fw-semibold">
-                                <i class="fa fa-print me-1"></i> In đơn hàng
-                            </button>
+                            <a href="index.php?action=inhoadon&id=<?= $donhang["id"] ?>" target="_blank" class="btn btn-sm btn-primary fw-semibold shadow-sm">
+                                <i class="fa fa-print me-1"></i> In hóa đơn / Phiếu gửi
+                            </a>
                             <a href="index.php" class="btn btn-sm btn-light border text-secondary fw-semibold">
                                 <i class="fa fa-arrow-left me-1"></i> Danh sách
                             </a>

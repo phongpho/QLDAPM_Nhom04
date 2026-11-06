@@ -67,6 +67,31 @@ switch ($action) {
         include("chitiet.php");
         break;
 
+    case "inhoadon":
+        $id = (int)($_GET["id"] ?? 0);
+        if ($id <= 0) {
+            $_SESSION["loi"] = "Mã đơn hàng không hợp lệ!";
+            header("Location: index.php");
+            exit();
+        }
+
+        $donhang = $dhModel->laydonhangtheoid($id);
+        if (!$donhang) {
+            $_SESSION["loi"] = "Không tìm thấy đơn hàng yêu cầu trong hệ thống!";
+            header("Location: index.php");
+            exit();
+        }
+
+        $chitiet = $dhModel->laychitietdonhang($id);
+
+        $khachhang = null;
+        if (!empty($donhang["nguoidung_id"])) {
+            $khachhang = $ndModel->laynguoidungtheoid($donhang["nguoidung_id"]);
+        }
+
+        include("inhoadon.php");
+        break;
+
     case "capnhattrangthai":
         $id = (int)($_POST["txtid"] ?? ($_GET["id"] ?? 0));
         $trangthai = (int)($_POST["opttrangthai"] ?? ($_GET["trangthai"] ?? 0));
