@@ -122,19 +122,22 @@
                     </div>
 
                     <!-- Flash Messages -->
-                    <?php if (isset($_SESSION["thongbao"])): ?>
-                        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-4" role="alert" style="background-color: #ecfdf5; color: #065f46; border-left: 4px solid #10b981 !important;">
-                            <i class="fa fa-circle-check fs-5"></i>
-                            <div><strong>Thành công:</strong> <?= htmlspecialchars($_SESSION["thongbao"]) ?></div>
+                    <?php if (isset($_SESSION["thongbao"])): 
+                        $tbLoai = is_array($_SESSION["thongbao"]) ? ($_SESSION["thongbao"]["loai"] ?? "success") : "success";
+                        $tbNoiDung = is_array($_SESSION["thongbao"]) ? ($_SESSION["thongbao"]["noidung"] ?? "") : $_SESSION["thongbao"];
+                    ?>
+                        <div class="alert alert-<?= $tbLoai ?> alert-dismissible fade show d-flex align-items-center gap-2 shadow-xs mb-4" role="alert">
+                            <i class="fa <?= $tbLoai === 'success' ? 'fa-circle-check text-success' : 'fa-circle-exclamation text-danger' ?> fs-5"></i>
+                            <div><?= htmlspecialchars($tbNoiDung) ?></div>
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <?php unset($_SESSION["thongbao"]); ?>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION["loi"])): ?>
-                        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-4" role="alert" style="background-color: #fef2f2; color: #991b1b; border-left: 4px solid #ef4444 !important;">
-                            <i class="fa fa-triangle-exclamation fs-5"></i>
-                            <div><strong>Cảnh báo:</strong> <?= htmlspecialchars($_SESSION["loi"]) ?></div>
+                        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 shadow-xs mb-4" role="alert">
+                            <i class="fa fa-triangle-exclamation text-danger fs-5"></i>
+                            <div><?= htmlspecialchars($_SESSION["loi"]) ?></div>
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <?php unset($_SESSION["loi"]); ?>
