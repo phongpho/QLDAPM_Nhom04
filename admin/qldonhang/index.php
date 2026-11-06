@@ -30,9 +30,11 @@ switch ($action) {
         $phuongthuc = trim($_GET["phuongthuc"] ?? "");
         $datt = $_GET["datt"] ?? "";
         $sapxep = trim($_GET["sapxep"] ?? "moinhat");
+        $tungay = trim($_GET["tungay"] ?? "");
+        $denngay = trim($_GET["denngay"] ?? "");
 
         // Lấy danh sách đơn hàng theo điều kiện lọc
-        $danhsach = $dhModel->laydanhsachdonhangquantri($tukhoa, $trangthai, $phuongthuc, $datt, $sapxep);
+        $danhsach = $dhModel->laydanhsachdonhangquantri($tukhoa, $trangthai, $phuongthuc, $datt, $sapxep, $tungay, $denngay);
 
         // Lấy dữ liệu thống kê phục vụ 4 thẻ KPI Metrics
         $thongke = $dhModel->thongkedonhangquantri();

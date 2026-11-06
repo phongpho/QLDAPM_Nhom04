@@ -151,14 +151,14 @@
                         <!-- Toolbar Bộ lọc chuyên sâu -->
                         <div class="gb-table-header">
                             <form method="GET" action="index.php" class="row g-2 align-items-center">
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-lg-4">
                                     <div class="input-group">
                                         <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa fa-search"></i></span>
                                         <input type="text" name="tukhoa" class="form-control border-start-0 ps-0" placeholder="Mã đơn hàng, tên người nhận, SĐT..." value="<?= htmlspecialchars($tukhoa ?? '') ?>">
                                     </div>
                                 </div>
 
-                                <div class="col-6 col-md-2">
+                                <div class="col-6 col-md-3 col-lg-2">
                                     <select name="trangthai" class="form-select" onchange="this.form.submit()">
                                         <option value="">-- Trạng thái đơn --</option>
                                         <option value="1" <?= ($trangthai === "1") ? "selected" : "" ?>>Mới (Chờ duyệt)</option>
@@ -170,7 +170,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-6 col-md-2">
+                                <div class="col-6 col-md-3 col-lg-2">
                                     <select name="phuongthuc" class="form-select" onchange="this.form.submit()">
                                         <option value="">-- Phương thức TT --</option>
                                         <option value="cod" <?= ($phuongthuc === "cod") ? "selected" : "" ?>>COD (Khi nhận)</option>
@@ -179,7 +179,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-6 col-md-2">
+                                <div class="col-6 col-md-3 col-lg-2">
                                     <select name="datt" class="form-select" onchange="this.form.submit()">
                                         <option value="">-- Thanh toán --</option>
                                         <option value="1" <?= ($datt === "1") ? "selected" : "" ?>>Đã thanh toán</option>
@@ -187,13 +187,41 @@
                                     </select>
                                 </div>
 
-                                <div class="col-6 col-md-2">
+                                <div class="col-6 col-md-3 col-lg-2">
                                     <select name="sapxep" class="form-select" onchange="this.form.submit()">
                                         <option value="moinhat" <?= ($sapxep === "moinhat") ? "selected" : "" ?>>Mới nhất trước</option>
                                         <option value="cuNhat" <?= ($sapxep === "cuNhat") ? "selected" : "" ?>>Cũ nhất trước</option>
                                         <option value="giacao" <?= ($sapxep === "giacao") ? "selected" : "" ?>>Giá trị cao nhất</option>
                                         <option value="giathap" <?= ($sapxep === "giathap") ? "selected" : "" ?>>Giá trị thấp nhất</option>
                                     </select>
+                                </div>
+
+                                <!-- Hàng lọc theo khoảng ngày -->
+                                <div class="col-12 pt-2 border-top mt-2">
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <span class="small fw-semibold text-secondary text-nowrap"><i class="fa fa-calendar-days me-1"></i>Khoảng ngày:</span>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <input type="date" name="tungay" class="form-control form-control-sm" style="max-width: 150px;" value="<?= htmlspecialchars($tungay ?? '') ?>" title="Từ ngày">
+                                            <span class="text-muted small">đến</span>
+                                            <input type="date" name="denngay" class="form-control form-control-sm" style="max-width: 150px;" value="<?= htmlspecialchars($denngay ?? '') ?>" title="Đến ngày">
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-primary px-3">
+                                            <i class="fa fa-filter me-1"></i> Lọc
+                                        </button>
+                                        <?php if (!empty($tungay) || !empty($denngay) || !empty($tukhoa) || $trangthai !== '' || !empty($phuongthuc) || $datt !== ''): ?>
+                                            <a href="index.php" class="btn btn-sm btn-light border text-danger" title="Xóa tất cả bộ lọc">
+                                                <i class="fa fa-rotate-left me-1"></i> Đặt lại
+                                            </a>
+                                        <?php endif; ?>
+
+                                        <!-- Phím tắt ngày nhanh -->
+                                        <div class="d-none d-md-flex align-items-center gap-1 ms-auto">
+                                            <span class="small text-muted me-1">Nhanh:</span>
+                                            <a href="index.php?tungay=<?= date('Y-m-d') ?>&denngay=<?= date('Y-m-d') ?>" class="badge bg-light text-secondary border text-decoration-none py-1">Hôm nay</a>
+                                            <a href="index.php?tungay=<?= date('Y-m-d', strtotime('-7 days')) ?>&denngay=<?= date('Y-m-d') ?>" class="badge bg-light text-secondary border text-decoration-none py-1">7 ngày qua</a>
+                                            <a href="index.php?tungay=<?= date('Y-m-01') ?>&denngay=<?= date('Y-m-t') ?>" class="badge bg-light text-secondary border text-decoration-none py-1">Tháng này</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

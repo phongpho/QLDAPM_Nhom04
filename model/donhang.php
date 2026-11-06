@@ -441,7 +441,7 @@ class DONHANG
     // --- CÁC PHƯƠNG THỨC QUẢN TRỊ ADMIN (qldonhang) ---
 
     // Lấy toàn bộ danh sách đơn hàng cho Admin kèm số lượng mặt hàng và thông tin khách
-    public function laydanhsachdonhangquantri($tukhoa = '', $trangthai = '', $phuongthuc = '', $datt = '', $sapxep = 'moinhat')
+    public function laydanhsachdonhangquantri($tukhoa = '', $trangthai = '', $phuongthuc = '', $datt = '', $sapxep = 'moinhat', $tungay = '', $denngay = '')
     {
         $dbcon = DATABASE::connect();
         try {
@@ -474,6 +474,16 @@ class DONHANG
             if ($datt !== '' && is_numeric($datt)) {
                 $sql .= " AND dh.datt = :datt";
                 $params[':datt'] = (int) $datt;
+            }
+
+            if (!empty($tungay)) {
+                $sql .= " AND DATE(dh.ngay) >= :tungay";
+                $params[':tungay'] = $tungay;
+            }
+
+            if (!empty($denngay)) {
+                $sql .= " AND DATE(dh.ngay) <= :denngay";
+                $params[':denngay'] = $denngay;
             }
 
             switch ($sapxep) {
