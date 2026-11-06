@@ -67,6 +67,31 @@ switch ($action) {
         include("chitiet.php");
         break;
 
+    case "inhoadon":
+        $id = (int)($_GET["id"] ?? 0);
+        if ($id <= 0) {
+            $_SESSION["loi"] = "Mã đơn hàng không hợp lệ!";
+            header("Location: index.php");
+            exit();
+        }
+
+        $donhang = $dhModel->laydonhangtheoid($id);
+        if (!$donhang) {
+            $_SESSION["loi"] = "Không tìm thấy đơn hàng yêu cầu trong hệ thống!";
+            header("Location: index.php");
+            exit();
+        }
+
+        $chitiet = $dhModel->laychitietdonhang($id);
+
+        $khachhang = null;
+        if (!empty($donhang["nguoidung_id"])) {
+            $khachhang = $ndModel->laynguoidungtheoid($donhang["nguoidung_id"]);
+        }
+
+        include("inhoadon.php");
+        break;
+
     case "capnhattrangthai":
         $id = (int)($_POST["txtid"] ?? ($_GET["id"] ?? 0));
         $trangthai = (int)($_POST["opttrangthai"] ?? ($_GET["trangthai"] ?? 0));
@@ -76,7 +101,11 @@ switch ($action) {
         } else {
             if ($dhModel->capnhattrangthai($id, $trangthai)) {
                 $tenTrangThai = $dhModel->laytentrangthai($trangthai);
-                $_SESSION["thongbao"] = "Đã cập nhật trạng thái đơn hàng #{$id} thành: {$tenTrangThai}";
+                if ($trangthai === 6) {
+                    $_SESSION["thongbao"] = "Đã HỦY đơn hàng #{$id}. Toàn bộ số lượng sản phẩm trong đơn đã được tự động hoàn trả lại kho hàng!";
+                } else {
+                    $_SESSION["thongbao"] = "Đã cập nhật trạng thái đơn hàng #{$id} thành: {$tenTrangThai}";
+                }
             } else {
                 $_SESSION["loi"] = "Không thể cập nhật trạng thái đơn hàng, vui lòng thử lại!";
             }

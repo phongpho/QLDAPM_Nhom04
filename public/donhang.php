@@ -145,6 +145,14 @@ include(__DIR__ . '/inc/head-client.php');
                                             THANH TOÁN LẠI QUA VNPAY
                                         </a>
                                     <?php endif; ?>
+
+                                    <?php if ((int) $od['trangthai'] === 1) : ?>
+                                        <a class="btn-gs btn-gs--outline btn-gs--sm w-100 mt-2 text-center text-danger border-danger"
+                                            href="index.php?action=huydonhang&madonhang=<?php echo urlencode($od['madonhang']); ?>"
+                                            onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Các sản phẩm sẽ được tự động hoàn trả lại kho hàng.');">
+                                            <i class="fa-solid fa-xmark me-1"></i> HỦY ĐƠN HÀNG
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

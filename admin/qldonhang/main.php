@@ -283,6 +283,12 @@
                                                            title="Xem chi tiết & Xử lý đơn hàng">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
+                                                        <a href="index.php?action=inhoadon&id=<?= $item["id"] ?>" 
+                                                           target="_blank"
+                                                           class="btn-action-icon btn-action-view" 
+                                                           title="In hóa đơn & Phiếu gửi hàng">
+                                                            <i class="fa fa-print"></i>
+                                                        </a>
                                                         <?php if (isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] === 1 && (int)$item["trangthai"] === 6): ?>
                                                             <a href="index.php?action=xoa&id=<?= $item["id"] ?>" 
                                                                class="btn-action-icon btn-action-delete" 
