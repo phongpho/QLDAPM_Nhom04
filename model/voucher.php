@@ -192,6 +192,21 @@ class VOUCHER
         }
     }
 
+    public function giamdasudung($id)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "UPDATE voucher SET dasudung = GREATEST(0, dasudung - 1)
+                    WHERE id = :id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int) $id, PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function layvoucherdanghoatdong($limit = 5, $nguoidungId = 0)
     {
         $dbcon = DATABASE::connect();

@@ -351,15 +351,90 @@ class DONHANG
     public function capnhattrangthai($donhang_id, $trangthai)
     {
         $dbcon = DATABASE::connect();
+        $donhang_id = (int) $donhang_id;
+        $trangthai = (int) $trangthai;
+
         try {
-            $sql = "UPDATE donhang SET trangthai = :trangthai WHERE id = :id";
-            $cmd = $dbcon->prepare($sql);
-            $cmd->bindValue(":trangthai", (int) $trangthai, PDO::PARAM_INT);
-            $cmd->bindValue(":id", (int) $donhang_id, PDO::PARAM_INT);
-            return $cmd->execute();
-        } catch (PDOException $e) {
-            echo "<p>Lỗi truy vấn: " . $e->getMessage() . "</p>";
-            exit();
+            $dbcon->beginTransaction();
+
+            $sqlHientai = "SELECT id, trangthai, voucher_id FROM donhang WHERE id = :id FOR UPDATE";
+            $cmdHientai = $dbcon->prepare($sqlHientai);
+            $cmdHientai->bindValue(":id", $donhang_id, PDO::PARAM_INT);
+            $cmdHientai->execute();
+            $dh = $cmdHientai->fetch(PDO::FETCH_ASSOC);
+
+            if (!$dh) {
+                $dbcon->rollBack();
+                return false;
+            }
+
+            $trangThaiCu = (int) $dh['trangthai'];
+
+            // Nếu trạng thái giống nhau thì không cần cập nhật
+            if ($trangThaiCu === $trangthai) {
+                $dbcon->commit();
+                return true;
+            }
+
+            // Trường hợp 1: Chuyển từ trạng thái khác sang ĐÃ HỦY (6) -> Hoàn trả tồn kho và lượt dùng voucher
+            if ($trangThaiCu !== 6 && $trangthai === 6) {
+                $sqlCt = "SELECT sanpham_id, soluong FROM donhangct WHERE donhang_id = :id";
+                $cmdCt = $dbcon->prepare($sqlCt);
+                $cmdCt->bindValue(":id", $donhang_id, PDO::PARAM_INT);
+                $cmdCt->execute();
+                $items = $cmdCt->fetchAll(PDO::FETCH_ASSOC);
+
+                require_once(__DIR__ . '/sanpham.php');
+                $spModel = new SANPHAM();
+                foreach ($items as $item) {
+                    $spModel->congsoluongvagiangluotmua((int)$item['sanpham_id'], (int)$item['soluong']);
+                }
+
+                if (!empty($dh['voucher_id'])) {
+                    require_once(__DIR__ . '/voucher.php');
+                    $vcModel = new VOUCHER();
+                    $vcModel->giamdasudung((int)$dh['voucher_id']);
+                }
+            }
+            // Trường hợp 2: Chuyển từ ĐÃ HỦY (6) quay lại các trạng thái hoạt động (1..5) -> Trừ lại kho
+            elseif ($trangThaiCu === 6 && $trangthai !== 6) {
+                $sqlCt = "SELECT sanpham_id, soluong FROM donhangct WHERE donhang_id = :id";
+                $cmdCt = $dbcon->prepare($sqlCt);
+                $cmdCt->bindValue(":id", $donhang_id, PDO::PARAM_INT);
+                $cmdCt->execute();
+                $items = $cmdCt->fetchAll(PDO::FETCH_ASSOC);
+
+                require_once(__DIR__ . '/sanpham.php');
+                $spModel = new SANPHAM();
+                foreach ($items as $item) {
+                    $ok = $spModel->trusoluongvatangluotmua((int)$item['sanpham_id'], (int)$item['soluong']);
+                    if (!$ok) {
+                        $dbcon->rollBack();
+                        return false;
+                    }
+                }
+
+                if (!empty($dh['voucher_id'])) {
+                    require_once(__DIR__ . '/voucher.php');
+                    $vcModel = new VOUCHER();
+                    $vcModel->tangdasudung((int)$dh['voucher_id']);
+                }
+            }
+
+            // Cập nhật trạng thái mới
+            $sqlUpdate = "UPDATE donhang SET trangthai = :trangthai WHERE id = :id";
+            $cmdUpdate = $dbcon->prepare($sqlUpdate);
+            $cmdUpdate->bindValue(":trangthai", $trangthai, PDO::PARAM_INT);
+            $cmdUpdate->bindValue(":id", $donhang_id, PDO::PARAM_INT);
+            $cmdUpdate->execute();
+
+            $dbcon->commit();
+            return true;
+        } catch (Exception $e) {
+            if ($dbcon->inTransaction()) {
+                $dbcon->rollBack();
+            }
+            return false;
         }
     }
 

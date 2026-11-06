@@ -62,9 +62,12 @@ switch ($action) {
         if ($nd->kiemtranguoidunghople($email, $matkhau)) {
             $user = $nd->laythongtinnguoidung($email);
             $_SESSION['nguoidung'] = $user;
+            $gsND = $user;
+            $gsNguoidungId = (int) $user['id'];
+            $gh = new GIOHANG($gsNguoidungId);
             $gh->dongbo();
-$gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
-$dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId) : array();
+            $gsSoluongYeuthich = ($gsNguoidungId > 0) ? $yt->demsoluongyeuthich($gsNguoidungId) : 0;
+            $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId) : array();
 
 
             $redirect = $_SESSION['redirect_sau_login'] ?? 'index.php';
@@ -865,6 +868,35 @@ $dsIdYeuthich = ($gsNguoidungId > 0) ? $yt->laydanhsachidyeuthich($gsNguoidungId
         }
         gsChuyenTrang(gsQuayLai('index.php?action=chitiet&id=' . $sanpham_id));
 
+        break;
+
+    case 'huydonhang':
+        if ($gsNguoidungId <= 0) {
+            gsThongBao('warning', 'Vui lòng đăng nhập để thực hiện thao tác này!');
+            gsChuyenTrang('index.php?action=dangnhap');
+        }
+        $madonhang = trim($_GET['madonhang'] ?? '');
+        $dhInfo = null;
+        if (!empty($madonhang)) {
+            $dhInfo = $dh->laydonhangtheoma($madonhang);
+        }
+
+        if (!$dhInfo || (int)$dhInfo['nguoidung_id'] !== $gsNguoidungId) {
+            gsThongBao('error', 'Không tìm thấy đơn hàng hoặc bạn không có quyền hủy đơn hàng này!');
+            gsChuyenTrang('index.php?action=donhang');
+        }
+
+        if ((int)$dhInfo['trangthai'] !== 1) {
+            gsThongBao('warning', 'Đơn hàng đã được tiếp nhận xử lý hoặc đang vận chuyển, không thể tự hủy! Vui lòng liên hệ hotline để được hỗ trợ.');
+            gsChuyenTrang('index.php?action=donhang');
+        }
+
+        if ($dh->capnhattrangthai((int)$dhInfo['id'], 6)) {
+            gsThongBao('success', 'Đã hủy đơn hàng #' . $dhInfo['madonhang'] . ' thành công. Sản phẩm đã được hoàn trả lại kho!');
+        } else {
+            gsThongBao('error', 'Có lỗi xảy ra khi hủy đơn hàng, vui lòng thử lại!');
+        }
+        gsChuyenTrang('index.php?action=donhang');
         break;
 
     case 'donhang':

@@ -76,7 +76,11 @@ switch ($action) {
         } else {
             if ($dhModel->capnhattrangthai($id, $trangthai)) {
                 $tenTrangThai = $dhModel->laytentrangthai($trangthai);
-                $_SESSION["thongbao"] = "Đã cập nhật trạng thái đơn hàng #{$id} thành: {$tenTrangThai}";
+                if ($trangthai === 6) {
+                    $_SESSION["thongbao"] = "Đã HỦY đơn hàng #{$id}. Toàn bộ số lượng sản phẩm trong đơn đã được tự động hoàn trả lại kho hàng!";
+                } else {
+                    $_SESSION["thongbao"] = "Đã cập nhật trạng thái đơn hàng #{$id} thành: {$tenTrangThai}";
+                }
             } else {
                 $_SESSION["loi"] = "Không thể cập nhật trạng thái đơn hàng, vui lòng thử lại!";
             }
