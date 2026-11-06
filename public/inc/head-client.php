@@ -25,7 +25,6 @@ $gsFlash = gsLayThongBao();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/main.css?v=<?php echo file_exists(__DIR__ . '/../../assets/css/main.css') ? filemtime(__DIR__ . '/../../assets/css/main.css') : time(); ?>" rel="stylesheet">
 
-    <script src="../assets/js/main.js"></script>
     <?php if ($gsFlash) : ?>
         <script>
             window.gsFlash = <?php echo json_encode($gsFlash, JSON_UNESCAPED_UNICODE); ?>;

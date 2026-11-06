@@ -62,13 +62,22 @@
                     </div>
 
                     <!-- Flash Message Thông báo -->
-                    <?php if (isset($_SESSION["thongbao"])): ?>
-                        <div class="alert alert-<?= htmlspecialchars($_SESSION["thongbao"]["loai"]) ?> alert-dismissible fade show d-flex align-items-center gap-2 shadow-xs mb-4" role="alert">
-                            <i class="fa <?= $_SESSION["thongbao"]["loai"] === 'success' ? 'fa-circle-check text-success' : 'fa-circle-exclamation text-danger' ?> fs-5"></i>
-                            <div><?= htmlspecialchars($_SESSION["thongbao"]["noidung"]) ?></div>
+                    <?php 
+                    $flashMsg = null;
+                    if (isset($_SESSION["thongbao"])) {
+                        $flashMsg = is_array($_SESSION["thongbao"]) ? $_SESSION["thongbao"] : ["loai" => "success", "noidung" => $_SESSION["thongbao"]];
+                        unset($_SESSION["thongbao"]);
+                    } elseif (isset($_SESSION["loi"])) {
+                        $flashMsg = ["loai" => "danger", "noidung" => $_SESSION["loi"]];
+                        unset($_SESSION["loi"]);
+                    }
+                    ?>
+                    <?php if ($flashMsg): ?>
+                        <div class="alert alert-<?= $flashMsg["loai"] === 'success' ? 'success' : 'danger' ?> alert-dismissible fade show d-flex align-items-center gap-2 shadow-xs mb-4" role="alert">
+                            <i class="fa <?= $flashMsg["loai"] === 'success' ? 'fa-circle-check text-success' : 'fa-circle-exclamation text-danger' ?> fs-5"></i>
+                            <div><strong><?= $flashMsg["loai"] === 'success' ? 'Thành công:' : 'Lỗi:' ?></strong> <?= htmlspecialchars($flashMsg["noidung"]) ?></div>
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <?php unset($_SESSION["thongbao"]); ?>
                     <?php endif; ?>
 
                     <!-- Metric Cards (KPIs) -->
@@ -274,8 +283,8 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td class="text-center">
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button type="button" class="btn btn-outline-primary btn-sua-vc" 
+                                                        <div class="d-flex align-items-center justify-content-center gap-1">
+                                                            <button type="button" class="btn-action-icon btn-action-edit btn-sua-vc" 
                                                                     data-id="<?= $item['id'] ?>"
                                                                     data-ma="<?= htmlspecialchars($item['ma'], ENT_QUOTES) ?>"
                                                                     data-mota="<?= htmlspecialchars($item['mota'] ?? '', ENT_QUOTES) ?>"
@@ -287,15 +296,15 @@
                                                                     data-soluong="<?= $item['soluong'] ?>"
                                                                     data-tt="<?= $item['trangthai'] ?>"
                                                                     title="Chỉnh sửa voucher">
-                                                                <i class="fa fa-pen-to-square"></i>
+                                                                <i class="fa fa-pen"></i>
                                                             </button>
                                                             
                                                             <?php if ($isAdmin): ?>
                                                                 <a href="index.php?action=xoa&id=<?= $item['id'] ?>" 
-                                                                   class="btn btn-outline-danger" 
+                                                                   class="btn-action-icon btn-action-delete" 
                                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa voucher <?= htmlspecialchars($item['ma']) ?>?');"
                                                                    title="Xóa voucher">
-                                                                    <i class="fa fa-trash-can"></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </a>
                                                             <?php endif; ?>
                                                         </div>
