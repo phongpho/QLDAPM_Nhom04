@@ -33,11 +33,11 @@ if (empty($thongTinBmiKhach) || empty($dsSanPhamBmiGoiy)) {
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                    <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.82rem; font-weight: 700; padding: 6px 12px; border-radius: var(--gs-radius-pill);">
+                    <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.82rem; font-weight: 700; padding: 6px 14px; border-radius: var(--gs-radius-pill);">
                         <i class="fa-solid fa-heart-pulse me-1"></i> Gợi ý theo chỉ số BMI
                     </span>
-                    <span class="badge" style="background-color: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--gs-border); font-size: 0.82rem; font-weight: 600; padding: 6px 12px; border-radius: var(--gs-radius-pill);">
-                        Thể trạng: <strong class="text-warning"><?= htmlspecialchars($thongTinBmiKhach['phanloai']) ?></strong> (BMI: <?= number_format($thongTinBmiKhach['bmi'], 1) ?>)
+                    <span class="badge" style="background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); font-size: 0.85rem; font-weight: 700; padding: 6px 14px; border-radius: var(--gs-radius-pill);">
+                        <i class="fa-solid fa-gauge-high me-1"></i> Chỉ số BMI: <strong><?= number_format($thongTinBmiKhach['bmi'], 1) ?></strong> · Thể trạng: <strong class="text-white"><?= htmlspecialchars($thongTinBmiKhach['phanloai']) ?></strong>
                     </span>
                 </div>
                 <h2 class="gs-section__title mb-1" style="font-size: 1.8rem; font-weight: 800; color: #ffffff;">

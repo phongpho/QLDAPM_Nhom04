@@ -39,6 +39,39 @@ class BMI
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
             $dbcon->exec($sqlTable);
 
+            // 1. Tự động thêm dữ liệu 4 mốc BMI mẫu nếu bảng cauhinh_bmi đang trống
+            $countBmi = (int)$dbcon->query("SELECT COUNT(*) FROM cauhinh_bmi")->fetchColumn();
+            if ($countBmi === 0) {
+                $dbcon->exec("INSERT INTO cauhinh_bmi (id, phanloai, bmi_min, bmi_max, muctieu_khuyendung, khuyenghe, trangthai, thutu) VALUES
+                (1, 'Thiếu cân (Gầy)', 0.0, 18.4, 'tangcan', 'Bạn nên ưu tiên mục tiêu Tăng cân - Tăng cơ, kết hợp tập tạ và bổ sung Whey Protein, Mass Gainer cùng Creatine.', 1, 1),
+                (2, 'Bình thường (Chuẩn)', 18.5, 22.9, 'duytri', 'Thể trạng của bạn rất tốt! Hãy duy trì lịch tập đều đặn kết hợp trang phục thoáng khí và BCAA/Whey để giữ nét cơ.', 1, 2),
+                (3, 'Thừa cân', 23.0, 24.9, 'giamcan', 'Bạn nên hướng tới mục tiêu Giảm mỡ - Giữ cơ, tăng cường Cardio/HIIT với đồ tập thấm hút mồ hôi và TPBS đốt mỡ an toàn.', 1, 3),
+                (4, 'Béo phì', 25.0, 99.9, 'giamcan', 'Hãy ưu tiên chế độ Giảm cân, tập luyện cường độ vừa phải kết hợp bảo vệ khớp (đai lưng, băng gối) và kiểm soát calo.', 1, 4)");
+            }
+
+            // 2. Tự động gán sản phẩm vào các mốc BMI nếu bảng liên kết đang trống
+            $countLienKet = (int)$dbcon->query("SELECT COUNT(*) FROM cauhinh_bmi_sanpham")->fetchColumn();
+            if ($countLienKet === 0) {
+                $dsSp = $dbcon->query("SELECT id, muctieu FROM sanpham WHERE trangthai = 1 LIMIT 30")->fetchAll(PDO::FETCH_ASSOC);
+                if (!empty($dsSp)) {
+                    $stmtIns = $dbcon->prepare("INSERT IGNORE INTO cauhinh_bmi_sanpham (cauhinh_bmi_id, sanpham_id, uutien) VALUES (:bmi_id, :sp_id, 1)");
+                    foreach ($dsSp as $spItem) {
+                        $spId = (int)$spItem['id'];
+                        $mt = (string)$spItem['muctieu'];
+                        if (strpos($mt, 'tangcan') !== false) {
+                            $stmtIns->execute([':bmi_id' => 1, ':sp_id' => $spId]);
+                        }
+                        if (strpos($mt, 'duytri') !== false || strpos($mt, 'tangcan') !== false) {
+                            $stmtIns->execute([':bmi_id' => 2, ':sp_id' => $spId]);
+                        }
+                        if (strpos($mt, 'giamcan') !== false) {
+                            $stmtIns->execute([':bmi_id' => 3, ':sp_id' => $spId]);
+                            $stmtIns->execute([':bmi_id' => 4, ':sp_id' => $spId]);
+                        }
+                    }
+                }
+            }
+
             self::$migrated = true;
         } catch (Exception $e) {
             // Không ngắt tiến trình nếu CSDL chưa bật hoặc đã tồn tại
