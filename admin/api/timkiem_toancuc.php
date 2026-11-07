@@ -28,9 +28,11 @@ $ketqua = [
     'donhang'   => [],
     'sanpham'   => [],
     'khachhang' => [],
+    'nhansu'    => [],
     'danhmuc'   => [],
     'thuonghieu'=> [],
-    'voucher'   => []
+    'voucher'   => [],
+    'tintuc'    => []
 ];
 $total = 0;
 
@@ -156,6 +158,50 @@ try {
             'subtitle' => $giam . ' · ' . ($row['mota'] ?? 'Mã ưu đãi'),
             'url'      => '../qlvoucher/index.php?tukhoa=' . urlencode($row['ma']),
             'badge'    => 'Voucher'
+        ];
+        $total++;
+    }
+
+    // 7. Tìm nhân sự (Quản trị viên & Nhân viên: loai IN (1, 2))
+    $sqlNs = "SELECT id, hoten, gmail, sodienthoai, hinhanh, loai 
+              FROM nguoidung 
+              WHERE loai IN (1, 2) AND (hoten LIKE :kw OR gmail LIKE :kw OR sodienthoai LIKE :kw) 
+              ORDER BY id DESC LIMIT 4";
+    $cmdNs = $dbcon->prepare($sqlNs);
+    $cmdNs->bindValue(':kw', $kw);
+    $cmdNs->execute();
+    while ($row = $cmdNs->fetch(PDO::FETCH_ASSOC)) {
+        $img = !empty($row['hinhanh']) ? '../../assets/images/users/' . $row['hinhanh'] : '../../assets/images/users/user.png';
+        $roleName = ((int)$row['loai'] === 1) ? 'Quản trị viên' : 'Nhân sự';
+        $ketqua['nhansu'][] = [
+            'id'       => $row['id'],
+            'title'    => $row['hoten'],
+            'subtitle' => $roleName . ' · ' . ($row['gmail'] ?? '') . ' · ' . $row['sodienthoai'],
+            'image'    => $img,
+            'url'      => '../qlnhansu/index.php?action=sua&id=' . $row['id'],
+            'badge'    => $roleName
+        ];
+        $total++;
+    }
+
+    // 8. Tìm bài viết tin tức & cẩm nang
+    $sqlTt = "SELECT id, tieude, loai, hinhanh, ngaydang 
+              FROM tintuc 
+              WHERE tieude LIKE :kw OR noidung LIKE :kw 
+              ORDER BY id DESC LIMIT 4";
+    $cmdTt = $dbcon->prepare($sqlTt);
+    $cmdTt->bindValue(':kw', $kw);
+    $cmdTt->execute();
+    while ($row = $cmdTt->fetch(PDO::FETCH_ASSOC)) {
+        $img = !empty($row['hinhanh']) ? '../../assets/images/news/' . $row['hinhanh'] : null;
+        $loaiBai = ($row['loai'] === 'khuyenmai') ? 'Khuyến mãi' : (($row['loai'] === 'kienthuc') ? 'Kiến thức' : 'Cẩm nang');
+        $ketqua['tintuc'][] = [
+            'id'       => $row['id'],
+            'title'    => $row['tieude'],
+            'subtitle' => $loaiBai . ' · ' . date('d/m/Y', strtotime($row['ngaydang'])),
+            'image'    => $img,
+            'url'      => '../qltintuc/index.php?tukhoa=' . urlencode($row['tieude']),
+            'badge'    => 'Tin tức'
         ];
         $total++;
     }

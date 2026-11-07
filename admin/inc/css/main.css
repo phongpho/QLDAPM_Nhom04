@@ -1296,6 +1296,34 @@ body, .main, .content {
     padding: 0 !important;
 }
 
+/* Spotlight Category Filter Tabs */
+.gb-spotlight-tabs {
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+.gb-spotlight-tabs::-webkit-scrollbar {
+    height: 3px;
+}
+.gb-tab-btn {
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gb-slate-600);
+    border: 1px solid transparent;
+    padding: 0.2rem 0.65rem;
+    transition: all 0.15s ease;
+    background: transparent;
+}
+.gb-tab-btn:hover {
+    background-color: var(--gb-slate-200);
+    color: var(--gb-slate-900);
+}
+.gb-tab-btn.active {
+    background-color: var(--gb-primary);
+    color: var(--gb-white);
+    border-color: var(--gb-primary);
+}
+
 .gb-spotlight-results {
     max-height: 420px;
     overflow-y: auto;

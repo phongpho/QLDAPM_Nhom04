@@ -122,11 +122,23 @@ if (!empty($currentUser["hinhanh"])) {
             <div class="gb-spotlight-input-wrapper">
                 <i class="fa fa-search text-primary fs-5"></i>
                 <input type="text" id="globalSearchInput" class="form-control gb-spotlight-input" 
-                       placeholder="Tìm nhanh đơn hàng (GYM...), sản phẩm, khách hàng, danh mục..." 
+                       placeholder="Tìm nhanh đơn hàng (GYM...), sản phẩm, khách hàng, nhân sự, tin tức..." 
                        autocomplete="off">
                 <button type="button" class="btn btn-sm btn-light border px-2 py-1 text-muted" data-bs-dismiss="modal" title="Đóng (Esc)">
                     <kbd class="small" style="font-size: 0.7rem;">ESC</kbd>
                 </button>
+            </div>
+
+            <!-- Spotlight Filter Tabs -->
+            <div class="gb-spotlight-tabs px-3 py-1.5 border-bottom bg-light bg-opacity-75 d-flex gap-1 overflow-x-auto" id="spotlightCategoryTabs">
+                <button type="button" class="btn btn-sm gb-tab-btn active" data-cat="all">Tất cả</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="donhang"><i class="fa fa-receipt me-1"></i>Đơn hàng</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="sanpham"><i class="fa fa-box me-1"></i>Sản phẩm</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="khachhang"><i class="fa fa-users me-1"></i>Khách hàng</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="nhansu"><i class="fa fa-user-shield me-1"></i>Nhân sự</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="tintuc"><i class="fa fa-newspaper me-1"></i>Tin tức</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="voucher"><i class="fa fa-tag me-1"></i>Voucher</button>
+                <button type="button" class="btn btn-sm gb-tab-btn" data-cat="danhmuc"><i class="fa fa-folder me-1"></i>Danh mục</button>
             </div>
             <div class="gb-spotlight-results" id="globalSearchResults">
                 <div class="p-4 text-center text-muted">

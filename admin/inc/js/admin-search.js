@@ -1,12 +1,18 @@
 /**
- * GymBro Admin - Unified Search Engine
- * 1. Global Spotlight Search (Ctrl + K)
- * 2. In-table Live Search Debounce & Highlight
+ * GymBro Admin - Unified Search Engine 2.0
+ * 1. Global Spotlight Search (Ctrl + K) với Điều hướng bàn phím (ArrowUp/Down/Enter)
+ * 2. Phân nhóm & Tab lọc nhanh (Đơn hàng, Sản phẩm, Khách hàng, Nhân sự, Tin tức, Voucher...)
+ * 3. In-table Live Search Debounce & Tự động Highlight từ khóa trong bảng
  */
+
+let globalSearchData = null;
+let currentSearchQuery = '';
+let currentSearchCategory = 'all';
 
 document.addEventListener('DOMContentLoaded', function () {
     initGlobalSearch();
     initInTableLiveSearch();
+    highlightTableKeywordsOnLoad();
 });
 
 // --- PHẦN 1: GLOBAL COMMAND SEARCH (CTRL + K) ---
@@ -26,31 +32,83 @@ function initGlobalSearch() {
 
     input.addEventListener('input', function () {
         const query = this.value.trim();
+        currentSearchQuery = query;
         clearTimeout(debounceTimer);
 
         if (query.length === 0) {
+            globalSearchData = null;
             renderGlobalDefaultState();
             return;
         }
 
         debounceTimer = setTimeout(() => {
             fetchGlobalSearchResults(query);
-        }, 250);
+        }, 220);
     });
 
-    // Bấm phím Escape đóng modal
+    // Phím điều hướng kết quả: ArrowDown, ArrowUp, Enter, Escape
     input.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             closeGlobalSearch();
+            return;
+        }
+
+        const items = document.querySelectorAll('#globalSearchResults .gb-search-item');
+        if (items.length === 0) return;
+
+        let activeIndex = -1;
+        items.forEach((item, idx) => {
+            if (item.classList.contains('active')) {
+                activeIndex = idx;
+            }
+        });
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            let nextIndex = activeIndex + 1;
+            if (nextIndex >= items.length) nextIndex = 0;
+            updateActiveSearchItem(items, nextIndex);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            let prevIndex = activeIndex - 1;
+            if (prevIndex < 0) prevIndex = items.length - 1;
+            updateActiveSearchItem(items, prevIndex);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (activeIndex >= 0 && items[activeIndex]) {
+                window.location.href = items[activeIndex].href;
+            } else if (items.length > 0) {
+                window.location.href = items[0].href;
+            }
         }
     });
+
+    // Xử lý Click các Tab lọc danh mục bên trong Spotlight
+    const tabButtons = document.querySelectorAll('#spotlightCategoryTabs .gb-tab-btn');
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentSearchCategory = this.getAttribute('data-cat') || 'all';
+            if (globalSearchData && currentSearchQuery) {
+                renderGlobalResults(globalSearchData, currentSearchQuery);
+            }
+        });
+    });
+}
+
+function updateActiveSearchItem(items, newIndex) {
+    items.forEach(it => it.classList.remove('active'));
+    if (items[newIndex]) {
+        items[newIndex].classList.add('active');
+        items[newIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
 }
 
 function openGlobalSearch() {
     const modalEl = document.getElementById('globalSearchModal');
     if (!modalEl) return;
     
-    // Sử dụng Bootstrap Modal instance
     let modal = bootstrap.Modal.getInstance(modalEl);
     if (!modal) {
         modal = new bootstrap.Modal(modalEl);
@@ -63,7 +121,7 @@ function openGlobalSearch() {
             input.focus();
             input.select();
         }
-    }, 200);
+    }, 180);
 }
 
 function closeGlobalSearch() {
@@ -90,155 +148,166 @@ function fetchGlobalSearchResults(query) {
         .then(res => res.json())
         .then(res => {
             if (res.status === 'success') {
-                renderGlobalResults(res.data, query, res.total);
+                globalSearchData = res.data;
+                renderGlobalResults(res.data, query);
             } else {
                 resultsContainer.innerHTML = `<div class="text-danger p-3 small text-center">${res.message}</div>`;
             }
         })
-        .catch(err => {
+        .catch(() => {
             resultsContainer.innerHTML = `<div class="text-muted p-3 small text-center">Không thể kết nối đến máy chủ tra cứu.</div>`;
         });
 }
 
-function renderGlobalResults(data, query, total) {
+function renderGlobalResults(data, query) {
     const container = document.getElementById('globalSearchResults');
     if (!container) return;
 
-    if (total === 0) {
+    let groups = [];
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'donhang') {
+        if (data.donhang && data.donhang.length > 0) {
+            groups.push({
+                name: 'Đơn hàng',
+                icon: 'fa-receipt',
+                color: '#2563eb',
+                bg: '#eff6ff',
+                items: data.donhang
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'sanpham') {
+        if (data.sanpham && data.sanpham.length > 0) {
+            groups.push({
+                name: 'Hàng hóa & Sản phẩm',
+                icon: 'fa-box',
+                color: '#16a34a',
+                bg: '#f0fdf4',
+                items: data.sanpham
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'khachhang') {
+        if (data.khachhang && data.khachhang.length > 0) {
+            groups.push({
+                name: 'Khách hàng',
+                icon: 'fa-users',
+                color: '#7c3aed',
+                bg: '#f5f3ff',
+                items: data.khachhang
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'nhansu') {
+        if (data.nhansu && data.nhansu.length > 0) {
+            groups.push({
+                name: 'Nhân sự & Quản trị',
+                icon: 'fa-user-shield',
+                color: '#d97706',
+                bg: '#fffbeb',
+                items: data.nhansu
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'tintuc') {
+        if (data.tintuc && data.tintuc.length > 0) {
+            groups.push({
+                name: 'Bài viết & Tin tức',
+                icon: 'fa-newspaper',
+                color: '#0284c7',
+                bg: '#f0f9ff',
+                items: data.tintuc
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'voucher') {
+        if (data.voucher && data.voucher.length > 0) {
+            groups.push({
+                name: 'Mã giảm giá & Voucher',
+                icon: 'fa-tag',
+                color: '#db2777',
+                bg: '#fdf2f8',
+                items: data.voucher
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all' || currentSearchCategory === 'danhmuc') {
+        if (data.danhmuc && data.danhmuc.length > 0) {
+            groups.push({
+                name: 'Danh mục sản phẩm',
+                icon: 'fa-folder',
+                color: '#ea580c',
+                bg: '#fff7ed',
+                items: data.danhmuc
+            });
+        }
+    }
+
+    if (currentSearchCategory === 'all') {
+        if (data.thuonghieu && data.thuonghieu.length > 0) {
+            groups.push({
+                name: 'Thương hiệu đối tác',
+                icon: 'fa-award',
+                color: '#059669',
+                bg: '#ecfdf5',
+                items: data.thuonghieu
+            });
+        }
+    }
+
+    if (groups.length === 0) {
         container.innerHTML = `
             <div class="text-center py-4">
                 <div class="text-muted mb-2"><i class="fa fa-magnifying-glass fs-2 opacity-50"></i></div>
                 <div class="fw-semibold text-dark">Không tìm thấy kết quả nào</div>
-                <div class="text-muted small mt-1">Không có đơn hàng, sản phẩm hoặc khách hàng nào khớp với "<strong>${escapeHtml(query)}</strong>"</div>
+                <div class="text-muted small mt-1">Không có dữ liệu khớp với "<strong>${escapeHtml(query)}</strong>" trong mục đã chọn.</div>
             </div>
         `;
         return;
     }
 
     let html = '';
+    let isFirst = true;
 
-    // Nhóm 1: Đơn hàng
-    if (data.donhang && data.donhang.length > 0) {
-        html += `<div class="gb-search-group-header"><i class="fa fa-receipt me-1"></i> Đơn hàng (${data.donhang.length})</div>`;
-        data.donhang.forEach(item => {
+    groups.forEach(g => {
+        html += `<div class="gb-search-group-header mt-2"><i class="fa ${g.icon} me-1"></i> ${g.name} (${g.items.length})</div>`;
+        g.items.forEach(item => {
+            const activeClass = isFirst ? ' active' : '';
+            isFirst = false;
+
+            let thumbHtml = '';
+            if (item.image) {
+                const isRound = (g.name.includes('Khách') || g.name.includes('Nhân'));
+                const roundStyle = isRound ? 'border-radius: 50%;' : 'border-radius: 6px;';
+                thumbHtml = `<img src="${item.image}" alt="" style="width: 36px; height: 36px; object-fit: cover; ${roundStyle} border: 1px solid #e2e8f0; background: #fff;">`;
+            } else {
+                thumbHtml = `
+                    <div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: ${g.bg}; color: ${g.color};">
+                        <i class="fa ${g.icon}"></i>
+                    </div>
+                `;
+            }
+
             html += `
-                <a href="${item.url}" class="gb-search-item">
+                <a href="${item.url}" class="gb-search-item${activeClass}">
                     <div class="d-flex align-items-center gap-2.5">
-                        <div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #eff6ff; color: #2563eb;">
-                            <i class="fa fa-receipt"></i>
-                        </div>
+                        ${thumbHtml}
                         <div>
                             <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
                             <div class="gb-search-item-sub">${highlightKeyword(item.subtitle, query)}</div>
                         </div>
                     </div>
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">${item.badge}</span>
+                    <span class="badge border" style="background-color: ${g.bg}; color: ${g.color}; border-color: ${g.color}33 !important;">${item.badge}</span>
                 </a>
             `;
         });
-    }
-
-    // Nhóm 2: Sản phẩm
-    if (data.sanpham && data.sanpham.length > 0) {
-        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-box me-1"></i> Hàng hóa & Sản phẩm (${data.sanpham.length})</div>`;
-        data.sanpham.forEach(item => {
-            html += `
-                <a href="${item.url}" class="gb-search-item">
-                    <div class="d-flex align-items-center gap-2.5">
-                        <img src="${item.image}" alt="" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <div>
-                            <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
-                            <div class="gb-search-item-sub">${highlightKeyword(item.subtitle, query)}</div>
-                        </div>
-                    </div>
-                    <span class="badge bg-success-subtle text-success border border-success-subtle">${item.badge}</span>
-                </a>
-            `;
-        });
-    }
-
-    // Nhóm 3: Khách hàng
-    if (data.khachhang && data.khachhang.length > 0) {
-        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-users me-1"></i> Khách hàng (${data.khachhang.length})</div>`;
-        data.khachhang.forEach(item => {
-            html += `
-                <a href="${item.url}" class="gb-search-item">
-                    <div class="d-flex align-items-center gap-2.5">
-                        <img src="${item.image}" alt="" style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; border: 1px solid #e2e8f0;">
-                        <div>
-                            <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
-                            <div class="gb-search-item-sub">${highlightKeyword(item.subtitle, query)}</div>
-                        </div>
-                    </div>
-                    <span class="badge bg-purple-subtle text-purple border border-purple-subtle">${item.badge}</span>
-                </a>
-            `;
-        });
-    }
-
-    // Nhóm 4: Danh mục
-    if (data.danhmuc && data.danhmuc.length > 0) {
-        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-grid-2 me-1"></i> Danh mục hàng (${data.danhmuc.length})</div>`;
-        data.danhmuc.forEach(item => {
-            html += `
-                <a href="${item.url}" class="gb-search-item">
-                    <div class="d-flex align-items-center gap-2.5">
-                        <div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #fff7ed; color: #ea580c;">
-                            <i class="fa fa-folder"></i>
-                        </div>
-                        <div>
-                            <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
-                            <div class="gb-search-item-sub">${item.subtitle}</div>
-                        </div>
-                    </div>
-                    <span class="badge bg-slate-100 text-slate-700 border">${item.badge}</span>
-                </a>
-            `;
-        });
-    }
-
-    // Nhóm 5: Thương hiệu
-    if (data.thuonghieu && data.thuonghieu.length > 0) {
-        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-award me-1"></i> Thương hiệu (${data.thuonghieu.length})</div>`;
-        data.thuonghieu.forEach(item => {
-            const logoHtml = item.image 
-                ? `<img src="${item.image}" alt="" style="width: 34px; height: 34px; object-fit: contain; padding: 2px; border-radius: 6px; border: 1px solid #e2e8f0; background: #fff;">`
-                : `<div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #f0fdf4; color: #16a34a;"><i class="fa fa-award"></i></div>`;
-            html += `
-                <a href="${item.url}" class="gb-search-item">
-                    <div class="d-flex align-items-center gap-2.5">
-                        ${logoHtml}
-                        <div>
-                            <div class="gb-search-item-title">${highlightKeyword(item.title, query)}</div>
-                            <div class="gb-search-item-sub">${item.subtitle}</div>
-                        </div>
-                    </div>
-                    <span class="badge bg-success-subtle text-success border border-success-subtle">${item.badge}</span>
-                </a>
-            `;
-        });
-    }
-
-    // Nhóm 6: Voucher
-    if (data.voucher && data.voucher.length > 0) {
-        html += `<div class="gb-search-group-header mt-2"><i class="fa fa-tag me-1"></i> Mã giảm giá & Voucher (${data.voucher.length})</div>`;
-        data.voucher.forEach(item => {
-            html += `
-                <a href="${item.url}" class="gb-search-item">
-                    <div class="d-flex align-items-center gap-2.5">
-                        <div class="gb-icon-box" style="width: 34px; height: 34px; font-size: 0.85rem; background-color: #fdf2f8; color: #db2777;">
-                            <i class="fa fa-tag"></i>
-                        </div>
-                        <div>
-                            <div class="gb-search-item-title font-monospace">${highlightKeyword(item.title, query)}</div>
-                            <div class="gb-search-item-sub">${highlightKeyword(item.subtitle, query)}</div>
-                        </div>
-                    </div>
-                    <span class="badge bg-pink-subtle text-pink border border-pink-subtle">${item.badge}</span>
-                </a>
-            `;
-        });
-    }
+    });
 
     container.innerHTML = html;
 }
@@ -249,12 +318,15 @@ function renderGlobalDefaultState() {
 
     container.innerHTML = `
         <div class="p-3 text-center text-muted">
-            <div class="d-flex justify-content-center gap-2 mb-2">
-                <span class="badge bg-slate-100 text-slate-700 border">Mã đơn hàng</span>
-                <span class="badge bg-slate-100 text-slate-700 border">Tên sản phẩm</span>
-                <span class="badge bg-slate-100 text-slate-700 border">Số điện thoại khách</span>
+            <div class="d-flex justify-content-center gap-2 mb-2 flex-wrap">
+                <span class="badge bg-slate-100 text-slate-700 border">Mã đơn hàng (GYM...)</span>
+                <span class="badge bg-slate-100 text-slate-700 border">Sản phẩm & Quy cách</span>
+                <span class="badge bg-slate-100 text-slate-700 border">Khách hàng & SĐT</span>
+                <span class="badge bg-slate-100 text-slate-700 border">Nhân sự</span>
+                <span class="badge bg-slate-100 text-slate-700 border">Tin tức</span>
+                <span class="badge bg-slate-100 text-slate-700 border">Voucher</span>
             </div>
-            <div class="small">Nhập bất kỳ từ khóa nào để bắt đầu tìm kiếm tức thì trên GymBro Admin.</div>
+            <div class="small">Nhập bất kỳ từ khóa nào và dùng phím <kbd class="gb-kbd">↑</kbd> <kbd class="gb-kbd">↓</kbd> <kbd class="gb-kbd">Enter</kbd> để mở nhanh kết quả.</div>
         </div>
     `;
 }
@@ -284,7 +356,6 @@ function initInTableLiveSearch() {
                 input.value = '';
                 toggleClearBtn();
                 input.focus();
-                // Tự động submit form để khôi phục danh sách
                 if (input.form) {
                     input.form.submit();
                 }
@@ -293,7 +364,7 @@ function initInTableLiveSearch() {
             input.addEventListener('input', toggleClearBtn);
         }
 
-        // Tự động submit sau 450ms nếu người dùng dừng gõ
+        // Tự động submit sau 550ms khi người dùng dừng gõ
         let tableTimer = null;
         input.addEventListener('input', function () {
             clearTimeout(tableTimer);
@@ -302,6 +373,30 @@ function initInTableLiveSearch() {
                     input.form.submit();
                 }
             }, 550);
+        });
+    });
+}
+
+// --- PHẦN 3: TỰ ĐỘNG HIGHLIGHT TỪ KHÓA TRONG BẢNG KHI TẢI TRANG ---
+function highlightTableKeywordsOnLoad() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const kw = urlParams.get('tukhoa');
+    if (!kw || kw.trim().length === 0) return;
+
+    const query = kw.trim();
+    const rows = document.querySelectorAll('table.gb-table tbody tr');
+    if (rows.length === 0) return;
+
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+
+    rows.forEach(tr => {
+        const textElements = tr.querySelectorAll('td div, td span, td a:not(.btn-action-icon)');
+        textElements.forEach(el => {
+            // Không highlight các badge hay nút thao tác
+            if (el.classList.contains('btn') || el.classList.contains('badge') || el.closest('.btn-action-icon')) return;
+            if (el.children.length === 0 && el.textContent.toLowerCase().includes(query.toLowerCase())) {
+                el.innerHTML = el.textContent.replace(regex, '<mark class="gb-search-highlight">$1</mark>');
+            }
         });
     });
 }
@@ -326,4 +421,3 @@ function highlightKeyword(text, keyword) {
     const regex = new RegExp(`(${escapedKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
     return escapedText.replace(regex, '<mark class="gb-search-highlight">$1</mark>');
 }
-
