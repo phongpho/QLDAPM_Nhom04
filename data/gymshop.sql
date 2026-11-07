@@ -274,9 +274,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- Mật khẩu mặc định: "password"
 INSERT INTO nguoidung (gmail, sodienthoai, matkhau, hoten, loai, trangthai) VALUES
-('pbphong@gmail.com', '0900000001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Phó Bảo Phong', 1, 1),
-('nhanvien@gymshop.vn', '0900000002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Nhân viên bán hàng', 2, 1),
-('an.nguyen@gmail.com', '0900000003', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Nguyễn Văn An', 3, 1);
+('admin@gmail.com', '0900000001', '$2y$12$HL45OzIINkvJrMn6b5cHXeMdDPxAdiG3tlC1KVJFOoaVxopLGbXvy', 'Phó Bảo Phong', 1, 1),
+('nhanvien@gymshop.vn', '0900000002', '$2y$12$HL45OzIINkvJrMn6b5cHXeMdDPxAdiG3tlC1KVJFOoaVxopLGbXvy', 'Nhân viên bán hàng', 2, 1),
+('an.nguyen@gmail.com', '0900000003', '$2y$12$HL45OzIINkvJrMn6b5cHXeMdDPxAdiG3tlC1KVJFOoaVxopLGbXvy', 'Nguyễn Văn An', 3, 1);
 
 INSERT INTO danhmuc (tendanhmuc, loai, trangthai) VALUES
 ('Áo tập Gym', 'quanao', 1),
@@ -337,9 +337,4 @@ INSERT INTO voucher (ma, mota, loai, giatri, donhang_toithieu, giamtoida, ngayhe
 ('GIAM50K', 'Giảm trực tiếp 50.000đ cho đơn từ 500.000đ', 'sotien', 50000, 500000, NULL, '2027-12-31 23:59:59', 50, 0, 1),
 ('TANBINH', 'Ưu đãi 20% tối đa 150.000đ cho hội viên mới', 'phantram', 20, 200000, 150000, '2027-12-31 23:59:59', 200, 0, 1);
 
--- Gợi ý đồ dùng / sản phẩm mẫu theo từng mốc BMI
-INSERT INTO cauhinh_bmi_sanpham (cauhinh_bmi_id, sanpham_id, uutien) VALUES
-(1, 1, 1), (1, 6, 1), (1, 30, 1), (1, 5, 0),
-(2, 1, 1), (2, 2, 1), (2, 6, 1), (2, 4, 0),
-(3, 2, 1), (3, 7, 1), (3, 20, 1), (3, 22, 0),
-(4, 7, 1), (4, 20, 1), (4, 22, 1), (4, 4, 0);
+
