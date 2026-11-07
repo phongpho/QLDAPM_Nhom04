@@ -193,6 +193,29 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId);
                             include(__DIR__ . '/inc/bmi-form.php'); 
                             ?>
+
+                            <?php if (!empty($dsSanPhamBmiGoiy)) : ?>
+                                <div class="mt-5 pt-4 border-top border-secondary border-opacity-25">
+                                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                                        <div>
+                                            <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--gs-radius-pill);">
+                                                <i class="fa-solid fa-sparkles me-1"></i> Đề xuất riêng cho thể trạng của bạn
+                                            </span>
+                                            <h4 class="text-white fw-bold mb-0 mt-2" style="font-family: var(--gs-font-display);">
+                                                SẢN PHẨM PHÙ HỢP VỚI BẠN (THEO CHỈ SỐ BMI)
+                                            </h4>
+                                        </div>
+                                        <a href="index.php?action=goy" class="btn btn-sm btn-outline-warning" style="border-radius: 8px; font-weight: 600;">
+                                            Xem chi tiết gợi ý &amp; combo <i class="fa-solid fa-arrow-right-long ms-1"></i>
+                                        </a>
+                                    </div>
+                                    <div class="row g-3">
+                                        <?php foreach ($dsSanPhamBmiGoiy as $card) : ?>
+                                            <?php include(__DIR__ . '/inc/product-card.php'); ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="tab-pane fade <?= ($tabActive === 'password') ? 'show active' : '' ?>" id="pane-password" role="tabpanel">

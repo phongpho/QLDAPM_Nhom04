@@ -55,9 +55,41 @@ include(__DIR__ . '/inc/carousel.php');
         </div>
     </section>
 
-    <?php
-    include('inc/recommendation.php');
-    ?>
+    <!-- ================================================================= -->
+    <!-- CTA BANNER: GỢI Ý SIZE & COMBO ĐỒ TẬP THEO CHỈ SỐ BMI (CHUYỂN TRANG RIÊNG) -->
+    <!-- ================================================================= -->
+    <section class="gs-section py-4">
+        <div class="container">
+            <div class="p-4 p-lg-5 rounded-4 position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, rgba(20, 28, 43, 0.95) 0%, rgba(11, 15, 23, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.45);">
+                <div class="row align-items-center g-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                            <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--gs-radius-pill);">
+                                <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Tính năng cá nhân hóa
+                            </span>
+                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle small px-3 py-1 rounded-pill">
+                                Tiêu chuẩn WHO &amp; GymBro
+                            </span>
+                        </div>
+                        <h3 class="text-white fw-bold mb-2" style="font-family: var(--gs-font-display); letter-spacing: -0.01em; font-size: clamp(1.4rem, 2.5vw, 1.9rem);">
+                            BẠN CHƯA BIẾT CHỌN SIZE ĐỒ TẬP HAY LOẠI DINH DƯỠNG NÀO?
+                        </h3>
+                        <p class="text-secondary small mb-0" style="max-width: 640px; line-height: 1.6;">
+                            Chỉ cần 30 giây đo chỉ số thể trạng BMI để hệ thống tự động tính điểm số thể hình, phân loại vóc dáng, tra cứu size chuẩn form và tuyển chọn combo sản phẩm phù hợp nhất cho bạn.
+                        </p>
+                    </div>
+                    <div class="col-12 col-lg-4 text-lg-end">
+                        <a href="index.php?action=goy" class="btn-gs btn-gs--primary btn-gs--md px-4 py-3 d-inline-flex align-items-center gap-2" style="font-size: 0.95rem; border-radius: var(--gs-radius-pill);">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>ĐO BMI &amp; XEM GỢI Ý NGAY</span>
+                            <i class="fa-solid fa-arrow-right-long ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <?php
     $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';

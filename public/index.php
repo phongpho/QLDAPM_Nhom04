@@ -124,6 +124,9 @@ switch ($action) {
             gsThongBao('warning', 'Vui lòng đăng nhập để xem thông tin tài khoản!');
             gsChuyenTrang('index.php?action=dangnhap');
         }
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
         include('taikhoan.php');
         break;
 
@@ -335,6 +338,24 @@ switch ($action) {
         $muctieu  = isset($_GET['muctieu']) ? trim($_GET['muctieu']) : null;
 
         $gsGoiy = gsTinhGoiyChiSo($sp, $gsNguoidungId, $chieucao, $cannang, $gioitinh, $tuoi, $muctieu);
+        $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
+        $thongTinBmiKhach = $bmiGoiyData['thongtin'];
+        $dsSanPhamBmiGoiy = $bmiGoiyData['sanpham'];
+
+        if ((empty($dsSanPhamBmiGoiy) || empty($thongTinBmiKhach)) && $chieucao && $cannang) {
+            $bmiTam = gsTinhBmi($chieucao, $cannang);
+            $cauhinhTam = $bmiModel->laycauhinhchiso($bmiTam);
+            if ($cauhinhTam) {
+                $thongTinBmiKhach = array(
+                    'hoso'      => array('chieucao' => $chieucao, 'cannang' => $cannang, 'bmi' => $bmiTam),
+                    'cauhinh'   => $cauhinhTam,
+                    'bmi'       => $bmiTam,
+                    'phanloai'  => $cauhinhTam['phanloai'],
+                    'khuyenghe' => $cauhinhTam['khuyenghe']
+                );
+                $dsSanPhamBmiGoiy = $bmiModel->laysanphamchitietbycauhinh($cauhinhTam['id'], 8);
+            }
+        }
         include('goiy.php');
         break;
 
@@ -358,8 +379,9 @@ switch ($action) {
 
         $bmi = gsTinhBmi($chieucao, $cannang);
         $sp->luuhosothetrang($gsNguoidungId, $chieucao, $cannang, $gioitinh, $tuoi, $muctieu, $bmi);
-        gsThongBao('success', 'Đã lưu chỉ số cơ thể! Xem gợi ý size và combo dành riêng cho bạn.');
-        gsChuyenTrang('index.php?action=goy');
+        $redirect = !empty($_POST['redirect']) ? $_POST['redirect'] : 'index.php?action=taikhoan&tab=thetrang';
+        gsThongBao('success', 'Đã lưu chỉ số cơ thể thành công! Chỉ số BMI của bạn là ' . $bmi . '.');
+        gsChuyenTrang($redirect);
         break;
 
     case 'giohang':
