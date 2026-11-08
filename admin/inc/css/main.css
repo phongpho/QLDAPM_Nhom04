@@ -349,7 +349,7 @@ body, .wrapper {
 }
 
 /* ==========================================================================
-   Frosted Pearl White Glass Cards & Stat Cards
+   True Frosted Glass Cards (Transparent Glassmorphism)
    ========================================================================== */
 .card,
 .gb-card,
@@ -364,22 +364,26 @@ body, .wrapper {
 .ns-edit-card,
 .dm-form-card,
 .ns-form-card,
-.gb-chart-card {
-    background: rgba(255, 255, 255, 0.94) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+.gb-chart-card,
+.gb-quick-card {
+    background: rgba(255, 255, 255, 0.07) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 20px !important;
-    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
     overflow: hidden;
     position: relative;
+    color: #e2e8f0 !important;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
 .card:hover,
 .gb-table-card:hover,
-.gb-chart-card:hover {
-    box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.22), 0 0 18px rgba(14, 165, 233, 0.12) !important;
+.gb-chart-card:hover,
+.gb-quick-card:hover {
+    box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.45), 0 0 20px rgba(14, 165, 233, 0.18) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
 }
 
 .gb-stat-card, .dm-stat-card, .ns-stat-card {
@@ -389,8 +393,8 @@ body, .wrapper {
 
 .gb-stat-card:hover, .dm-stat-card:hover, .ns-stat-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 22px 46px -8px rgba(0, 0, 0, 0.22), 0 0 24px rgba(14, 165, 233, 0.2) !important;
-    border-color: rgba(56, 189, 248, 0.7) !important;
+    box-shadow: 0 22px 46px -8px rgba(0, 0, 0, 0.45), 0 0 24px rgba(14, 165, 233, 0.25) !important;
+    border-color: rgba(56, 189, 248, 0.5) !important;
 }
 
 .gb-icon-box, .dm-icon-box, .ns-icon-box {
@@ -402,13 +406,13 @@ body, .wrapper {
     justify-content: center;
     font-size: 1.35rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .gb-stat-number, .dm-stat-number, .ns-stat-number {
     font-size: 1.625rem;
     font-weight: 800;
-    color: var(--gb-slate-900);
+    color: #ffffff !important;
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
     margin-top: 0.25rem;
@@ -416,14 +420,14 @@ body, .wrapper {
 
 .gb-stat-label, .dm-stat-label, .ns-stat-label {
     font-size: 0.775rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--gb-slate-500);
+    letter-spacing: 0.05em;
+    color: #94a3b8 !important;
 }
 
 /* ==========================================================================
-   Forms, Cards & Inputs
+   Forms, Cards & Inputs (Transparent Glass)
    ========================================================================== */
 .card-header,
 .gb-card-header,
@@ -435,44 +439,80 @@ body, .wrapper {
 .gb-edit-header,
 .dm-edit-header,
 .ns-edit-header {
-    background: transparent !important;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 1.15rem 1.5rem !important;
+    color: #ffffff !important;
+}
+
+/* Card Typography & High-Contrast Readability */
+.card-title,
+.card-header h1, .card-header h2, .card-header h3, .card-header h4, .card-header h5, .card-header h6,
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.gb-edit-title, .dm-edit-title, .ns-edit-title,
+.gb-quick-title,
+.main .text-dark,
+.card .text-dark,
+.table .text-dark,
+.gb-stat-card .text-dark,
+.gb-chart-card .text-dark {
+    color: #ffffff !important;
+}
+
+.main .text-muted,
+.card .text-muted,
+.table .text-muted,
+.card-body .text-muted,
+.gb-quick-desc {
+    color: #94a3b8 !important;
+}
+
+.card p,
+.card span,
+.card div,
+.card label {
+    color: #e2e8f0;
 }
 
 .form-label {
     font-size: 0.825rem;
     font-weight: 700;
-    color: var(--gb-slate-700);
+    color: #e2e8f0 !important;
     letter-spacing: 0.02em;
     margin-bottom: 0.4rem;
 }
 
 .form-control, .form-select {
-    border: 1px solid #cbd5e1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
     border-radius: var(--gb-radius-md) !important;
     padding: 0.6rem 0.95rem !important;
     font-size: 0.9rem !important;
-    color: var(--gb-slate-800) !important;
+    color: #ffffff !important;
     transition: var(--gb-transition) !important;
-    background-color: var(--gb-white);
+    background-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--gb-primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+    border-color: #38bdf8 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.3) !important;
+    color: #ffffff !important;
     outline: none !important;
+}
+
+.form-control::placeholder {
+    color: #64748b !important;
 }
 
 .form-text {
     font-size: 0.775rem;
-    color: var(--gb-slate-500);
+    color: #94a3b8 !important;
     margin-top: 0.35rem;
 }
 
 /* Radio Card Selection (Status Choices) */
 .gb-radio-card, .dm-radio-card, .ns-radio-card {
-    border: 1px solid var(--gb-slate-200);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: var(--gb-radius-md);
     padding: 0.85rem 1rem;
     cursor: pointer;
@@ -481,26 +521,29 @@ body, .wrapper {
     align-items: center;
     gap: 0.75rem;
     height: 100%;
-    background-color: var(--gb-white);
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #e2e8f0 !important;
 }
 
 .gb-radio-card:hover, .dm-radio-card:hover, .ns-radio-card:hover {
-    border-color: #94a3b8;
-    background-color: #f8fafc;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    background-color: rgba(255, 255, 255, 0.09) !important;
 }
 
 .gb-radio-card.active, .dm-radio-card.active, .ns-radio-card.active {
-    border-color: var(--gb-primary);
-    background-color: var(--gb-primary-subtle);
+    border-color: #0ea5e9 !important;
+    background-color: rgba(14, 165, 233, 0.18) !important;
+    color: #ffffff !important;
 }
 
 /* Avatar Preview Box */
 .gb-avatar-preview-box, .ns-avatar-preview-box {
-    background-color: #f8fafc;
-    border: 1px dashed #cbd5e1;
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.2) !important;
     border-radius: var(--gb-radius-lg);
     padding: 1.5rem;
     text-align: center;
+    color: #e2e8f0 !important;
 }
 
 .gb-avatar-preview-img, .ns-avatar-preview-img {
@@ -508,69 +551,67 @@ body, .wrapper {
     height: 130px;
     border-radius: var(--gb-radius-pill);
     object-fit: cover;
-    border: 4px solid var(--gb-white);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    border: 3px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
     margin-bottom: 0.75rem;
 }
 
 /* Profile Summary Box */
 .gb-summary-box, .dm-summary-box, .ns-summary-box {
-    background: #f8fafc;
-    border: 1px solid var(--gb-slate-200);
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: var(--gb-radius-md);
     padding: 1rem 1.25rem;
+    color: #e2e8f0 !important;
 }
 
 /* ==========================================================================
-   Table Presentation & Empty State
+   Table Presentation & Empty State (Transparent Glass)
    ========================================================================== */
-.gb-table-card, .dm-table-card, .ns-table-card {
-    background: var(--gb-white);
-    border: 1px solid var(--gb-slate-200);
-    border-radius: var(--gb-radius-lg);
-    box-shadow: var(--gb-shadow-sm);
-    overflow: hidden;
-}
-
-.gb-table-header, .dm-table-header, .ns-table-header {
-    background: var(--gb-white);
-    border-bottom: 1px solid var(--gb-slate-200);
-    padding: 1rem 1.25rem;
-}
-
-.gb-table, .dm-table, .ns-table {
+.gb-table, .dm-table, .ns-table, .table {
     margin-bottom: 0;
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
 }
 
-.gb-table thead th, .dm-table thead th, .ns-table thead th {
-    background-color: var(--gb-slate-50);
-    color: var(--gb-slate-600);
-    font-size: 0.725rem;
+.table thead.table-light,
+.table thead.table-light th,
+.table-light,
+.table-light th,
+.table-light td,
+.gb-table thead th, .dm-table thead th, .ns-table thead th, .table thead th {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #cbd5e1 !important;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--gb-slate-200);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
     white-space: nowrap;
 }
 
-.gb-table tbody td, .dm-table tbody td, .ns-table tbody td {
+.gb-table tbody td, .dm-table tbody td, .ns-table tbody td, .table tbody td {
     padding: 0.95rem 1rem;
     vertical-align: middle;
-    border-bottom: 1px solid #f1f5f9;
-    color: var(--gb-slate-700);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
     font-size: 0.875rem;
     transition: var(--gb-transition);
 }
 
-.gb-table tbody tr:hover td, .dm-table tbody tr:hover td, .ns-table tbody tr:hover td {
-    background-color: #f8fafc;
+.gb-table tbody tr:hover td, .dm-table tbody tr:hover td, .ns-table tbody tr:hover td, .table tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
 }
 
-.gb-table tbody tr:last-child td, .dm-table tbody tr:last-child td, .ns-table tbody tr:last-child td {
+.gb-table tbody tr:last-child td, .dm-table tbody tr:last-child td, .ns-table tbody tr:last-child td, .table tbody tr:last-child td {
     border-bottom: none;
 }
 
@@ -578,19 +619,21 @@ body, .wrapper {
 .gb-empty-state, .dm-empty-state, .ns-empty-state {
     padding: 3.5rem 1.5rem;
     text-align: center;
+    color: #94a3b8 !important;
 }
 
 .gb-empty-icon, .dm-empty-icon, .ns-empty-icon {
     width: 64px;
     height: 64px;
     border-radius: var(--gb-radius-xl);
-    background-color: #f1f5f9;
-    color: #94a3b8;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #38bdf8 !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 1.75rem;
     margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ==========================================================================
@@ -691,16 +734,16 @@ body, .wrapper {
 }
 
 /* ==========================================================================
-   Shell Overhauls: Frosted Glass Sidebar, Navbar & Footer
+   Shell Overhauls: Frosted Glass Sidebar, Navbar & Footer (40% Translucent)
    ========================================================================== */
 
 /* 1. Sidebar Frosted Dark Glass */
 .sidebar,
 .sidebar-content {
-    background: rgba(9, 21, 37, 0.92) !important;
-    backdrop-filter: blur(25px) !important;
-    -webkit-backdrop-filter: blur(25px) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .sidebar-brand,
@@ -810,12 +853,12 @@ body, .wrapper {
 
 /* 2. Top Header / Translucent Glass Navbar */
 .navbar-bg {
-    background: rgba(11, 27, 47, 0.8) !important;
-    backdrop-filter: blur(25px) !important;
-    -webkit-backdrop-filter: blur(25px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 0.75rem 1.5rem !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 .navbar .sidebar-toggle {
@@ -897,12 +940,12 @@ body, .wrapper {
 
 /* Translucent Glass Dropdown Menus */
 .dropdown-menu {
-    background: rgba(15, 23, 42, 0.95) !important;
-    backdrop-filter: blur(25px) !important;
-    -webkit-backdrop-filter: blur(25px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 16px !important;
-    box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.6) !important;
     color: #ffffff;
     padding: 0.5rem !important;
 }
@@ -962,10 +1005,10 @@ body, .wrapper {
 
 /* 3. Translucent Glass Footer */
 .footer {
-    background: rgba(9, 21, 37, 0.8) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    background: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 1.15rem 1.75rem !important;
     color: #94a3b8 !important;
     font-size: 0.8125rem;
@@ -985,66 +1028,7 @@ body, .wrapper {
     color: #38bdf8 !important;
 }
 
-/* ==========================================================================
-   4. Form Components: Radio Cards & Avatar Previews
-   ========================================================================== */
 
-/* Radio Card Selection for Status */
-.gb-radio-card,
-.dm-radio-card,
-.ns-radio-card {
-    border: 1px solid var(--gb-slate-200);
-    border-radius: var(--gb-radius-md);
-    padding: 0.85rem 1rem;
-    cursor: pointer;
-    transition: var(--gb-transition);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    height: 100%;
-    background-color: #ffffff;
-}
-
-.gb-radio-card:hover,
-.dm-radio-card:hover,
-.ns-radio-card:hover {
-    border-color: #94a3b8;
-    background-color: #f8fafc;
-}
-
-.gb-radio-card input[type="radio"]:checked + .gb-radio-content,
-.dm-radio-card input[type="radio"]:checked + .dm-radio-content,
-.ns-radio-card input[type="radio"]:checked + .ns-radio-content {
-    color: var(--gb-slate-900);
-}
-
-.gb-radio-card.active,
-.dm-radio-card.active,
-.ns-radio-card.active {
-    border-color: var(--gb-primary);
-    background-color: var(--gb-primary-subtle);
-}
-
-/* Avatar Preview Box */
-.gb-avatar-preview-box,
-.ns-avatar-preview-box {
-    background-color: #f8fafc;
-    border: 1px dashed #cbd5e1;
-    border-radius: var(--gb-radius-lg);
-    padding: 1.75rem 1.25rem;
-    text-align: center;
-}
-
-.gb-avatar-preview-img,
-.ns-avatar-preview-img {
-    width: 140px;
-    height: 140px;
-    border-radius: var(--gb-radius-pill);
-    object-fit: cover;
-    border: 4px solid #ffffff;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
-    margin-bottom: 0.75rem;
-}
 
 /* ==========================================================================
    5. Dashboard & Profile Components (ktnguoidung)
@@ -1052,10 +1036,10 @@ body, .wrapper {
 
 /* Welcome Banner */
 .gb-welcome-banner {
-    background: linear-gradient(135deg, rgba(15, 33, 58, 0.88) 0%, rgba(9, 21, 37, 0.95) 100%) !important;
-    border: 1px solid rgba(56, 189, 248, 0.22) !important;
-    backdrop-filter: blur(25px) !important;
-    -webkit-backdrop-filter: blur(25px) !important;
+    background: rgba(15, 23, 42, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
     border-radius: var(--gb-radius-xl) !important;
     padding: 2.25rem 2.5rem !important;
     color: #ffffff !important;
@@ -1072,7 +1056,7 @@ body, .wrapper {
     bottom: -50px;
     width: 280px;
     height: 280px;
-    background: radial-gradient(circle, rgba(14, 165, 233, 0.3) 0%, rgba(20, 184, 166, 0.15) 50%, transparent 70%);
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(20, 184, 166, 0.12) 50%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -1120,25 +1104,25 @@ body, .wrapper {
 
 /* Quick Action Cards */
 .gb-quick-card {
-    background: #ffffff;
-    border: 1px solid var(--gb-slate-200);
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: var(--gb-radius-lg);
     padding: 1.35rem;
     text-decoration: none;
-    color: var(--gb-slate-800);
+    color: #e2e8f0 !important;
     display: flex;
     align-items: center;
     gap: 1.15rem;
     transition: var(--gb-transition);
-    box-shadow: var(--gb-shadow-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
     height: 100%;
 }
 
 .gb-quick-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--gb-shadow-lg);
-    border-color: #cbd5e1;
-    color: var(--gb-primary);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35), 0 0 16px rgba(14, 165, 233, 0.2) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    color: #38bdf8 !important;
 }
 
 .gb-quick-icon {
@@ -1160,13 +1144,13 @@ body, .wrapper {
 .gb-quick-title {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--gb-slate-900);
+    color: #ffffff !important;
     margin-bottom: 0.15rem;
 }
 
 .gb-quick-desc {
     font-size: 0.8125rem;
-    color: var(--gb-slate-500);
+    color: #94a3b8 !important;
     margin-bottom: 0;
 }
 
@@ -1176,8 +1160,8 @@ body, .wrapper {
     height: 120px;
     border-radius: var(--gb-radius-pill);
     object-fit: cover;
-    border: 4px solid #ffffff;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+    border: 3px solid rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 .gb-profile-list {
@@ -1191,8 +1175,9 @@ body, .wrapper {
     align-items: center;
     gap: 0.75rem;
     padding: 0.6rem 0;
-    border-bottom: 1px solid var(--gb-slate-100);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     font-size: 0.875rem;
+    color: #e2e8f0 !important;
 }
 
 .gb-profile-list li:last-child {
@@ -1203,8 +1188,8 @@ body, .wrapper {
     width: 28px;
     height: 28px;
     border-radius: var(--gb-radius-sm);
-    background-color: var(--gb-slate-100);
-    color: var(--gb-slate-600);
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #38bdf8 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1220,7 +1205,7 @@ body, .wrapper {
 .dm-breadcrumb,
 .ns-breadcrumb {
     font-size: 0.8125rem;
-    color: var(--gb-slate-500);
+    color: #94a3b8 !important;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1230,7 +1215,7 @@ body, .wrapper {
 .gb-breadcrumb a,
 .dm-breadcrumb a,
 .ns-breadcrumb a {
-    color: var(--gb-slate-500);
+    color: #cbd5e1 !important;
     text-decoration: none;
     transition: var(--gb-transition);
 }
@@ -1238,24 +1223,25 @@ body, .wrapper {
 .gb-breadcrumb a:hover,
 .dm-breadcrumb a:hover,
 .ns-breadcrumb a:hover {
-    color: var(--gb-primary);
+    color: #38bdf8 !important;
 }
 
 .gb-edit-card,
 .dm-edit-card,
 .ns-edit-card {
-    background: #ffffff;
-    border: 1px solid var(--gb-slate-200);
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: var(--gb-radius-lg);
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.35) !important;
     overflow: hidden;
+    color: #e2e8f0 !important;
 }
 
 .gb-edit-header,
 .dm-edit-header,
 .ns-edit-header {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    border-bottom: 1px solid var(--gb-slate-200);
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 1.25rem 1.75rem;
 }
 
@@ -1265,7 +1251,7 @@ body, .wrapper {
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: var(--gb-slate-900);
+    color: #ffffff !important;
     margin-bottom: 0.25rem;
 }
 
@@ -1478,10 +1464,23 @@ body, .wrapper {
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--gb-slate-600);
+    color: #94a3b8 !important;
     border: 1px solid transparent;
     padding: 0.2rem 0.65rem;
     transition: all 0.15s ease;
+}
+
+.gb-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.gb-tab-btn.active {
+    background: #0ea5e9 !important;
+    color: #ffffff !important;
+    border-color: #0ea5e9 !important;
+}
+
 /* ==========================================================================
    Chart & Visual Dashboard Elements (Frosted Glassmorphism)
    ========================================================================== */
@@ -1538,15 +1537,16 @@ body, .wrapper {
     justify-content: space-between;
     padding: 0.45rem 0.75rem;
     border-radius: 10px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     font-size: 0.825rem;
+    color: #e2e8f0 !important;
     transition: all 0.15s ease;
 }
 
 .gb-legend-item:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
 }
 
 .gb-legend-color {
@@ -1555,6 +1555,45 @@ body, .wrapper {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+}
+
+/* Universal Glassmorphism Text & Background Overrides */
+.card .bg-white,
+.card .bg-light,
+.gb-glass-card .bg-white,
+.gb-glass-card .bg-light,
+.gb-table-card .bg-white,
+.gb-table-card .bg-light,
+.card-header.bg-white,
+.card-body.bg-white,
+.main .bg-white {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+.main .bg-light,
+.card .bg-light {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.main .text-dark,
+.card .text-dark,
+.table .text-dark,
+.gb-stat-card .text-dark,
+.gb-chart-card .text-dark,
+.card-title,
+.card-header,
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6 {
+    color: #ffffff !important;
+}
+
+.main .text-muted,
+.card .text-muted,
+.table .text-muted,
+.card-body .text-muted {
+    color: #94a3b8 !important;
 }
 
 /* In-table Live Highlight & Clear Button */
