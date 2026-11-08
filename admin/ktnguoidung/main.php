@@ -709,6 +709,7 @@ try {
                             position: 'top',
                             labels: {
                                 font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600', size: 12 },
+                                color: '#e2e8f0',
                                 usePointStyle: true,
                                 boxWidth: 8
                             }
@@ -734,17 +735,17 @@ try {
                             grid: { display: false },
                             ticks: {
                                 font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600' },
-                                color: '#64748b'
+                                color: '#cbd5e1'
                             }
                         },
                         y: {
                             type: 'linear',
                             display: true,
                             position: 'left',
-                            grid: { color: 'rgba(226, 232, 240, 0.6)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
                             ticks: {
                                 font: { family: "'Plus Jakarta Sans', sans-serif" },
-                                color: '#64748b',
+                                color: '#cbd5e1',
                                 callback: function(val) {
                                     if (val >= 1000000) return (val / 1000000).toFixed(1) + 'Tr';
                                     if (val >= 1000) return (val / 1000).toFixed(0) + 'k';
@@ -759,7 +760,7 @@ try {
                             grid: { drawOnChartArea: false },
                             ticks: {
                                 font: { family: "'Plus Jakarta Sans', sans-serif" },
-                                color: '#10b981',
+                                color: '#34d399',
                                 stepSize: 1
                             }
                         }
@@ -790,8 +791,8 @@ try {
                             '#10b981',
                             '#ef4444'
                         ],
-                        borderWidth: 3,
-                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        borderColor: 'rgba(15, 23, 42, 0.6)',
                         hoverOffset: 6
                     }]
                 },
