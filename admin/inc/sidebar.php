@@ -107,5 +107,17 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
                 </a>
             </li>
         </ul>
+
+        <!-- Enterprise System Status Widget (Frosted Glass) -->
+        <div class="gb-sidebar-widget">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+                <span class="d-inline-flex align-items-center gap-2" style="font-size: 0.72rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <span class="gb-pulse-dot"></span> GymBro Core
+                </span>
+                <span class="badge" style="background: rgba(14, 165, 233, 0.2); color: #38bdf8; font-size: 0.65rem; border: 1px solid rgba(56, 189, 248, 0.35); padding: 0.2rem 0.45rem;">v2.5 Pro</span>
+            </div>
+            <div style="font-size: 0.775rem; color: #cbd5e1; font-weight: 600;">MySQL Database: <span class="text-success">Connected</span></div>
+            <div class="text-muted" style="font-size: 0.7rem; margin-top: 2px;">Protected & Isolated Env</div>
+        </div>
     </div>
 </nav>

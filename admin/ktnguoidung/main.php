@@ -82,6 +82,32 @@ try {
                  ORDER BY dg.id DESC LIMIT 4";
     $danhGiaMoiNhat = $dbcon->query($sqlTopDg)->fetchAll(PDO::FETCH_ASSOC);
 
+    // 7. Thống kê 7 ngày gần nhất cho biểu đồ doanh thu & đơn hàng
+    $chartDates = [];
+    $chartRevenueData = [];
+    $chartOrdersData = [];
+    $tongDoanhThu7Ngay = 0;
+
+    for ($i = 6; $i >= 0; $i--) {
+        $curDate = date('Y-m-d', strtotime("-$i days"));
+        $curLabel = date('d/m', strtotime("-$i days"));
+        $chartDates[] = $curLabel;
+
+        $stmtRev = $dbcon->prepare("SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND DATE(ngay) = ?");
+        $stmtRev->execute([$curDate]);
+        $revVal = (float)$stmtRev->fetchColumn();
+        $chartRevenueData[] = $revVal;
+        $tongDoanhThu7Ngay += $revVal;
+
+        $stmtCnt = $dbcon->prepare("SELECT COUNT(*) FROM donhang WHERE DATE(ngay) = ?");
+        $stmtCnt->execute([$curDate]);
+        $chartOrdersData[] = (int)$stmtCnt->fetchColumn();
+    }
+
+    $totalOrders = (int)$tkDonHang['tong_don'];
+    $completedOrders = (int)$tkDonHang['don_hoanthanh'];
+    $tyLeHoanThanh = ($totalOrders > 0) ? round(($completedOrders / $totalOrders) * 100, 1) : 0;
+
 } catch (Exception $e) {
     error_log("Lỗi tải dữ liệu Dashboard: " . $e->getMessage());
 }
@@ -107,6 +133,9 @@ try {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
+    <!-- Chart.js for High Performance Data Visuals -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Unified Admin Design System -->
     <link href="../inc/css/main.css" rel="stylesheet">
 </head>
@@ -121,30 +150,37 @@ try {
             <main class="content">
                 <div class="container-fluid p-0">
 
-                    <!-- Welcome Banner -->
+                    <!-- Atmospheric Frosted Welcome Banner -->
                     <div class="gb-welcome-banner mb-4">
                         <div class="row align-items-center">
-                            <div class="col-12 col-lg-8">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1 mb-2 fw-semibold">
-                                    <i class="fa fa-shield-halved me-1"></i> <?= $roleName ?>
-                                </span>
+                            <div class="col-12 col-lg-7">
+                                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill" style="background: rgba(14, 165, 233, 0.18); border: 1px solid rgba(56, 189, 248, 0.35);">
+                                    <span class="gb-pulse-dot"></span>
+                                    <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">
+                                        <?= $roleName ?> &bull; GymBro v2.5
+                                    </span>
+                                </div>
                                 <h1 class="gb-welcome-title">Xin chào, <?= htmlspecialchars($user["hoten"]) ?>!</h1>
                                 <p class="gb-welcome-subtitle">
-                                    Tổng quan hoạt động kinh doanh, tình trạng đơn hàng và cảnh báo tồn kho của GymBro hôm nay.
+                                    Tổng quan hoạt động kinh doanh, đồ thị doanh thu và giám sát vận hành GymBro hôm nay.
                                 </p>
                             </div>
-                            <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+                            <div class="col-12 col-lg-5 text-lg-end mt-3 mt-lg-0">
                                 <div class="d-inline-flex flex-wrap gap-2 justify-content-lg-end">
-                                    <a href="../qldonhang/index.php" class="btn btn-primary fw-semibold shadow-sm d-inline-flex align-items-center gap-2">
+                                    <a href="../qldonhang/index.php" class="gb-pill-btn gb-pill-btn-cyan">
                                         <i class="fa fa-receipt"></i>
                                         <span>Duyệt đơn hàng</span>
                                         <?php if ($tkDonHang['don_moi'] > 0): ?>
-                                            <span class="badge bg-danger rounded-pill"><?= $tkDonHang['don_moi'] ?></span>
+                                            <span class="badge bg-danger rounded-pill ms-1 px-2"><?= $tkDonHang['don_moi'] ?></span>
                                         <?php endif; ?>
                                     </a>
-                                    <a href="../../public/index.php" target="_blank" class="btn btn-light fw-semibold shadow-sm d-inline-flex align-items-center gap-1">
+                                    <a href="../qlsanpham/index.php?action=them" class="gb-pill-btn gb-pill-btn-glass">
+                                        <i class="fa fa-plus"></i>
+                                        <span>Thêm sản phẩm</span>
+                                    </a>
+                                    <a href="../../public/index.php" target="_blank" class="gb-pill-btn gb-pill-btn-glass" title="Mở trang chủ shop khách hàng">
                                         <i class="fa fa-arrow-up-right-from-square"></i>
-                                        <span>Xem Web Shop</span>
+                                        <span>Shop</span>
                                     </a>
                                 </div>
                             </div>
@@ -234,6 +270,97 @@ try {
                                     </div>
                                     <div class="gb-icon-box" style="background-color: #f3e8ff; color: #7e22ce;">
                                         <i class="fa fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HÀNG BIỂU ĐỒ TƯƠNG TÁC (CHART.JS - FROSTED GLASS CARDS) -->
+                    <div class="row g-4 mb-4">
+                        <!-- Biểu đồ cột: Doanh thu & Giao dịch 7 ngày -->
+                        <div class="col-12 col-xl-8">
+                            <div class="gb-chart-card h-100">
+                                <div class="card-header bg-transparent py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="gb-icon-box" style="width: 36px; height: 36px; font-size: 0.95rem; background: #e0f2fe; color: #0284c7;">
+                                            <i class="fa fa-chart-column"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title mb-0 fw-bold text-dark">Xu hướng Doanh thu & Đơn hàng</h5>
+                                            <small class="text-muted">7 ngày gần nhất (Thời gian thực)</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1.5 fw-bold rounded-pill">
+                                        <i class="fa fa-wallet me-1"></i> 7 ngày: <?= number_format($tongDoanhThu7Ngay, 0, ',', '.') ?>đ
+                                    </span>
+                                </div>
+                                <div class="card-body p-3 p-md-4">
+                                    <div style="position: relative; height: 285px; width: 100%;">
+                                        <canvas id="revenueBarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Biểu đồ tròn: Trạng thái Đơn hàng -->
+                        <div class="col-12 col-xl-4">
+                            <div class="gb-chart-card h-100">
+                                <div class="card-header bg-transparent py-3 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="gb-icon-box" style="width: 36px; height: 36px; font-size: 0.95rem; background: #fef3c7; color: #d97706;">
+                                            <i class="fa fa-chart-pie"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title mb-0 fw-bold text-dark">Phân bố Đơn hàng</h5>
+                                            <small class="text-muted">Tổng <?= number_format($totalOrders) ?> đơn</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1 fw-bold rounded-pill">
+                                        <?= $tyLeHoanThanh ?>% Hoàn thành
+                                    </span>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div style="position: relative; height: 180px; width: 100%;">
+                                        <canvas id="orderStatusDonutChart"></canvas>
+                                    </div>
+                                    <!-- Legend Pills Grid -->
+                                    <div class="d-flex flex-column gap-1.5 mt-3">
+                                        <div class="gb-legend-item">
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="gb-legend-color" style="background-color: #f59e0b;"></span>
+                                                <span class="text-dark fw-medium">Mới đặt</span>
+                                            </span>
+                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill"><?= (int)$tkDonHang['don_moi'] ?></span>
+                                        </div>
+                                        <div class="gb-legend-item">
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="gb-legend-color" style="background-color: #0ea5e9;"></span>
+                                                <span class="text-dark fw-medium">Đã xác nhận</span>
+                                            </span>
+                                            <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill"><?= (int)$tkDonHang['don_xacnhan'] ?></span>
+                                        </div>
+                                        <div class="gb-legend-item">
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="gb-legend-color" style="background-color: #6366f1;"></span>
+                                                <span class="text-dark fw-medium">Đang giao</span>
+                                            </span>
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill"><?= (int)$tkDonHang['don_vanchuyen'] ?></span>
+                                        </div>
+                                        <div class="gb-legend-item">
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="gb-legend-color" style="background-color: #10b981;"></span>
+                                                <span class="text-dark fw-bold">Hoàn tất</span>
+                                            </span>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill"><?= (int)$tkDonHang['don_hoanthanh'] ?></span>
+                                        </div>
+                                        <div class="gb-legend-item">
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="gb-legend-color" style="background-color: #ef4444;"></span>
+                                                <span class="text-dark fw-medium">Đã hủy</span>
+                                            </span>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill"><?= (int)$tkDonHang['don_huy'] ?></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -522,6 +649,179 @@ try {
             <?php include('../inc/footer.php'); ?>
         </div>
     </div>
+
+    <!-- Chart.js Modern Initializer -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 1. Biểu đồ cột: Doanh thu & Đơn hàng 7 ngày qua
+        const ctxBar = document.getElementById('revenueBarChart');
+        if (ctxBar) {
+            const labels = <?= json_encode($chartDates) ?>;
+            const revData = <?= json_encode($chartRevenueData) ?>;
+            const ordData = <?= json_encode($chartOrdersData) ?>;
+
+            const barGradient = ctxBar.getContext('2d').createLinearGradient(0, 0, 0, 260);
+            barGradient.addColorStop(0, 'rgba(14, 165, 233, 0.95)');
+            barGradient.addColorStop(1, 'rgba(2, 132, 199, 0.35)');
+
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Doanh thu',
+                            data: revData,
+                            backgroundColor: barGradient,
+                            borderColor: '#0284c7',
+                            borderWidth: 1.5,
+                            borderRadius: 8,
+                            borderSkipped: false,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Số đơn hoàn tất',
+                            data: ordData,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            tension: 0.35,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600', size: 12 },
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleFont: { family: "'Plus Jakarta Sans', sans-serif", weight: '700' },
+                            bodyFont: { family: "'Plus Jakarta Sans', sans-serif" },
+                            padding: 12,
+                            cornerRadius: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.dataset.type === 'bar') {
+                                        return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.raw) + ' đ';
+                                    }
+                                    return 'Số đơn hoàn tất: ' + context.raw + ' đơn';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600' },
+                                color: '#64748b'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            grid: { color: 'rgba(226, 232, 240, 0.6)' },
+                            ticks: {
+                                font: { family: "'Plus Jakarta Sans', sans-serif" },
+                                color: '#64748b',
+                                callback: function(val) {
+                                    if (val >= 1000000) return (val / 1000000).toFixed(1) + 'Tr';
+                                    if (val >= 1000) return (val / 1000).toFixed(0) + 'k';
+                                    return val;
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: {
+                                font: { family: "'Plus Jakarta Sans', sans-serif" },
+                                color: '#10b981',
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Biểu đồ tròn: Trạng thái Đơn hàng
+        const ctxDonut = document.getElementById('orderStatusDonutChart');
+        if (ctxDonut) {
+            new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mới đặt', 'Đã xác nhận', 'Đang giao', 'Hoàn tất', 'Đã hủy'],
+                    datasets: [{
+                        data: [
+                            <?= (int)$tkDonHang['don_moi'] ?>,
+                            <?= (int)$tkDonHang['don_xacnhan'] ?>,
+                            <?= (int)$tkDonHang['don_vanchuyen'] ?>,
+                            <?= (int)$tkDonHang['don_hoanthanh'] ?>,
+                            <?= (int)$tkDonHang['don_huy'] ?>
+                        ],
+                        backgroundColor: [
+                            '#f59e0b',
+                            '#0ea5e9',
+                            '#6366f1',
+                            '#10b981',
+                            '#ef4444'
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#ffffff',
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '72%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleFont: { family: "'Plus Jakarta Sans', sans-serif", weight: '700' },
+                            bodyFont: { family: "'Plus Jakarta Sans', sans-serif" },
+                            padding: 10,
+                            cornerRadius: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const val = context.raw;
+                                    const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+                                    return `${context.label}: ${val} đơn (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
 </body>
 
 </html>
