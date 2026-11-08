@@ -3,14 +3,14 @@
         <div class="row text-muted align-items-center">
             <div class="col-12 col-sm-6 text-center text-sm-start mb-2 mb-sm-0">
                 <p class="mb-0">
-                    <strong class="text-dark">GymBro Admin</strong> &copy; <?= date('Y') ?>. Hệ thống quản trị nội bộ.
+                    <strong class="text-white">GymBro Admin</strong> &copy; <?= date('Y') ?>. Hệ thống quản trị nội bộ.
                 </p>
             </div>
             <div class="col-12 col-sm-6 text-center text-sm-end">
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item me-3">
-                        <span class="text-success small d-inline-flex align-items-center gap-1">
-                            <span class="d-inline-block rounded-circle bg-success" style="width: 7px; height: 7px;"></span>
+                        <span class="text-success small d-inline-flex align-items-center gap-2">
+                            <span class="gb-pulse-dot"></span>
                             Máy chủ vận hành ổn định
                         </span>
                     </li>
