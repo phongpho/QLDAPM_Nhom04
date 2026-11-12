@@ -183,20 +183,20 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                         <div class="gs-freeship-banner mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1 small">
                                 <?php if ($gsConThieuFreeship > 0) : ?>
-                                    <span class="text-white-50">
-                                        Mua thêm <strong class="text-warning"><?php echo gsTien($gsConThieuFreeship); ?></strong> để được <strong>FREESHIP</strong>
+                                    <span class="text-muted">
+                                        Mua thêm <strong class="text-danger"><?php echo gsTien($gsConThieuFreeship); ?></strong> để được <strong>FREESHIP</strong>
                                     </span>
                                 <?php else : ?>
                                     <span class="text-success fw-bold">
                                         Đơn hàng đã đủ điều kiện FREESHIP!
                                     </span>
                                 <?php endif; ?>
-                                <span class="fw-bold <?php echo ($gsPhantramFreeship >= 100) ? 'text-success' : 'text-warning'; ?>">
+                                <span class="fw-bold <?php echo ($gsPhantramFreeship >= 100) ? 'text-success' : 'text-danger'; ?>">
                                     <?php echo $gsPhantramFreeship; ?>%
                                 </span>
                             </div>
                             <div class="progress gs-freeship-progress">
-                                <div class="progress-bar <?php echo ($gsPhantramFreeship >= 100) ? 'bg-success' : 'bg-warning'; ?>"
+                                <div class="progress-bar <?php echo ($gsPhantramFreeship >= 100) ? 'bg-success' : 'bg-danger'; ?>"
                                     role="progressbar"
                                     style="width: <?php echo $gsPhantramFreeship; ?>%"
                                     aria-valuenow="<?php echo $gsPhantramFreeship; ?>"
@@ -292,13 +292,13 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
 
                         <?php if (!$gh->dadangnhap()) : ?>
                             <div class="gs-cart-login-hint mt-2 text-center">
-                                <span class="small text-white-50">
-                                    Bạn cần <a href="index.php?action=dangnhap" class="text-warning text-decoration-underline">đăng nhập</a> để thanh toán.
+                                <span class="small text-muted">
+                                    Bạn cần <a href="index.php?action=dangnhap" class="text-danger text-decoration-underline">đăng nhập</a> để thanh toán.
                                 </span>
                             </div>
                         <?php endif; ?>
 
-                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-secondary border-opacity-25 text-center small text-white-50">
+                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top text-center small text-muted">
                             Chính hãng 100% · Đổi trả 7 ngày · Giao nhanh 2h
                         </div>
                     </div>
@@ -318,7 +318,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                         <?php if ($gsGoiy) : ?>
                             Sản phẩm tối ưu cho mục tiêu <?php echo htmlspecialchars(gsTenMuctieu($gsGoiy['muctieu'])); ?> mà bạn chưa có trong giỏ hàng.
                         <?php else : ?>
-                            Nhập <a href="index.php?action=goy" class="text-warning text-decoration-underline">chỉ số cơ thể</a> để nhận gợi ý chuẩn xác theo thể trạng của bạn.
+                            Nhập <a href="index.php?action=goy" class="text-danger text-decoration-underline">chỉ số cơ thể</a> để nhận gợi ý chuẩn xác theo thể trạng của bạn.
                         <?php endif; ?>
                     </span>
                 </div>

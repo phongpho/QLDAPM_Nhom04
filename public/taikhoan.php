@@ -37,7 +37,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
         <div class="row g-4">
             <div class="col-12 col-lg-3">
                 <div class="gs-checkout__box p-3">
-                    <div class="d-flex align-items-center gap-3 pb-3 border-bottom border-secondary border-opacity-25">
+                    <div class="d-flex align-items-center gap-3 pb-3 border-bottom border-opacity-10">
                         <?php
                         $avatar = !empty($user['hinhanh']) && file_exists('../assets/images/users/' . $user['hinhanh'])
                             ? '../assets/images/users/' . htmlspecialchars($user['hinhanh'])
@@ -45,8 +45,8 @@ $tabActive = $_GET['tab'] ?? 'profile';
                         ?>
                         <img src="<?= $avatar ?>" alt="Avatar" width="56" height="56" class="rounded-circle object-fit-cover gs-account-avatar">
                         <div class="overflow-hidden">
-                            <span class="text-white-50 small d-block">Tài khoản của</span>
-                            <strong class="text-white text-truncate d-block fs-6"><?= htmlspecialchars($user['hoten']) ?></strong>
+                            <span class="text-muted small d-block">Tài khoản của</span>
+                            <strong class="text-dark text-truncate d-block fs-6"><?= htmlspecialchars($user['hoten']) ?></strong>
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             Đổi mật khẩu
                         </button>
 
-                        <div class="border-top border-secondary border-opacity-25 my-2 pt-2"></div>
+                        <div class="border-top border-opacity-10 my-2 pt-2"></div>
 
                         <a href="index.php?action=donhang" class="gs-account-nav__item">
                             Đơn mua của tôi
@@ -91,7 +91,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                         <div class="tab-pane fade <?= ($tabActive === 'profile') ? 'show active' : '' ?>" id="pane-profile" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Hồ sơ cá nhân</h3>
-                                <span class="small text-white-50">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
+                                <span class="small text-muted">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
                             </div>
 
                             <form action="index.php" method="post" enctype="multipart/form-data">
@@ -103,7 +103,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                                         <div class="mb-3">
                                             <label class="gs-form-label">Email đăng nhập</label>
                                             <input type="email" class="form-control gs-input" name="txtemail" value="<?= htmlspecialchars($user['email']) ?>" readonly style="opacity: 0.6; cursor: not-allowed;">
-                                            <span class="small text-white-50 mt-1 d-block">Email không thể thay đổi sau khi đăng ký</span>
+                                            <span class="small text-muted mt-1 d-block">Email không thể thay đổi sau khi đăng ký</span>
                                         </div>
 
                                         <div class="mb-3">
@@ -121,7 +121,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                                         </button>
                                     </div>
 
-                                    <div class="col-12 col-md-4 text-center border-start-md border-secondary border-opacity-25 ps-md-4">
+                                    <div class="col-12 col-md-4 text-center border-start-md border-opacity-10 ps-md-4">
                                         <div class="mb-3">
                                             <img src="<?= $avatar ?>" id="previewAvatar" alt="Avatar" width="120" height="120" class="rounded-circle object-fit-cover gs-account-avatar-large mb-3">
                                         </div>
@@ -129,7 +129,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                                             Chọn ảnh mới
                                         </label>
                                         <input type="file" id="inputAvatar" name="fhinh" accept="image/*" class="d-none" onchange="previewImg(this)">
-                                        <div class="text-white-50 small">Dung lượng file tối đa 2MB<br>Định dạng: JPG, PNG, WEBP</div>
+                                        <div class="text-muted small">Dung lượng file tối đa 2MB<br>Định dạng: JPG, PNG, WEBP</div>
                                     </div>
                                 </div>
                             </form>
@@ -139,7 +139,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             <div class="d-flex flex-wrap justify-content-between align-items-center gs-checkout__box-head mb-4 gap-2">
                                 <div>
                                     <h3 class="gs-checkout__title mb-1">Địa chỉ của tôi</h3>
-                                    <span class="small text-white-50">Địa chỉ nhận hàng phục vụ việc giao nhận sản phẩm</span>
+                                    <span class="small text-muted">Địa chỉ nhận hàng phục vụ việc giao nhận sản phẩm</span>
                                 </div>
                                 <button type="button" class="btn-gs btn-gs--primary btn-gs--sm" data-bs-toggle="modal" data-bs-target="#modalThemDiaChi">
                                     + Thêm địa chỉ mới
@@ -147,24 +147,24 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             </div>
 
                             <?php if (count($dsDiachi) === 0): ?>
-                                <div class="text-center py-4 text-white-50">
+                                <div class="text-center py-4 text-muted">
                                     <p class="mb-0">Bạn chưa lưu địa chỉ nào. Hãy thêm địa chỉ để thanh toán nhanh hơn!</p>
                                 </div>
                             <?php else: ?>
                                 <div class="d-flex flex-column gap-3">
                                     <?php foreach ($dsDiachi as $dcItem): ?>
-                                        <div class="p-3 rounded-3" style="background: var(--gs-dark-850); border: 1px solid var(--gs-border);">
+                                        <div class="p-3 rounded-3" style="background: #FAFAFA; border: 1px solid var(--gs-border);">
                                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                                                 <div>
                                                     <div class="d-flex align-items-center gap-2 mb-1">
-                                                        <strong class="text-white fs-6"><?= htmlspecialchars($dcItem['tennguoinhan']) ?></strong>
-                                                        <span class="text-white-50">•</span>
-                                                        <span class="text-warning small"><?= htmlspecialchars($dcItem['sodienthoai']) ?></span>
+                                                        <strong class="text-dark fs-6"><?= htmlspecialchars($dcItem['tennguoinhan']) ?></strong>
+                                                        <span class="text-muted">•</span>
+                                                        <span class="text-danger small"><?= htmlspecialchars($dcItem['sodienthoai']) ?></span>
                                                         <?php if ((int) $dcItem['macdinh'] === 1): ?>
                                                             <span class="gs-badge gs-badge--soft ms-2">Mặc định</span>
                                                         <?php endif; ?>
                                                     </div>
-                                                    <div class="text-white-50 small"><?= htmlspecialchars($dcItem['diachi']) ?></div>
+                                                    <div class="text-muted small"><?= htmlspecialchars($dcItem['diachi']) ?></div>
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <?php if ((int) $dcItem['macdinh'] !== 1): ?>
@@ -186,7 +186,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                         <div class="tab-pane fade <?= ($tabActive === 'thetrang') ? 'show active' : '' ?>" id="pane-thetrang" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Hồ sơ thể trạng &amp; BMI</h3>
-                                <span class="small text-white-50">Cập nhật chỉ số để hệ thống gợi ý size đồ tập và combo dinh dưỡng phù hợp</span>
+                                <span class="small text-muted">Cập nhật chỉ số để hệ thống gợi ý size đồ tập và combo dinh dưỡng phù hợp</span>
                             </div>
 
                             <?php 
@@ -195,17 +195,17 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             ?>
 
                             <?php if (!empty($dsSanPhamBmiGoiy)) : ?>
-                                <div class="mt-5 pt-4 border-top border-secondary border-opacity-25">
+                                <div class="mt-5 pt-4 border-top border-opacity-10">
                                     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
                                         <div>
-                                            <span class="badge" style="background-color: rgba(249, 115, 22, 0.15); color: var(--gs-primary); border: 1px solid rgba(249, 115, 22, 0.35); font-size: 0.8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--gs-radius-pill);">
+                                            <span class="badge" style="background-color: #FFECF3; color: var(--gs-primary); border: 1px solid rgba(208, 37, 69, 0.25); font-size: 0.8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--gs-radius-pill);">
                                                 <i class="fa-solid fa-sparkles me-1"></i> Đề xuất riêng cho thể trạng của bạn
                                             </span>
-                                            <h4 class="text-white fw-bold mb-0 mt-2" style="font-family: var(--gs-font-display);">
+                                            <h4 class="text-dark fw-bold mb-0 mt-2" style="font-family: var(--gs-font-display);">
                                                 SẢN PHẨM PHÙ HỢP VỚI BẠN (THEO CHỈ SỐ BMI)
                                             </h4>
                                         </div>
-                                        <a href="index.php?action=goy" class="btn btn-sm btn-outline-warning" style="border-radius: 8px; font-weight: 600;">
+                                        <a href="index.php?action=goy" class="btn btn-sm btn-outline-dark" style="border-radius: 8px; font-weight: 600;">
                                             Xem chi tiết gợi ý &amp; combo <i class="fa-solid fa-arrow-right-long ms-1"></i>
                                         </a>
                                     </div>
@@ -221,7 +221,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                         <div class="tab-pane fade <?= ($tabActive === 'password') ? 'show active' : '' ?>" id="pane-password" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Đổi mật khẩu</h3>
-                                <span class="small text-white-50">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</span>
+                                <span class="small text-muted">Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</span>
                             </div>
 
                             <form action="index.php" method="post" style="max-width: 480px;">
@@ -255,11 +255,11 @@ $tabActive = $_GET['tab'] ?? 'profile';
     </div>
 </section>
 
-<div class="modal fade" id="modalThemDiaChi" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+<div class="modal fade" id="modalThemDiaChi" tabindex="-1" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: var(--gs-dark-800); border: 1px solid var(--gs-border); border-radius: var(--gs-radius-lg);">
-            <div class="modal-header border-secondary border-opacity-25">
-                <h5 class="modal-title text-white fw-bold">Thêm địa chỉ nhận hàng</h5>
+        <div class="modal-content" style="background-color: #FFFFFF; border: 1px solid var(--gs-border); border-radius: var(--gs-radius-lg);">
+            <div class="modal-header border-opacity-10">
+                <h5 class="modal-title text-dark fw-bold">Thêm địa chỉ nhận hàng</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="index.php" method="post">
@@ -279,12 +279,12 @@ $tabActive = $_GET['tab'] ?? 'profile';
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="macdinh" value="1" id="chkMacdinh" checked>
-                        <label class="form-check-label small text-white" for="chkMacdinh">
+                        <label class="form-check-label small text-dark" for="chkMacdinh">
                             Đặt làm địa chỉ mặc định
                         </label>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary border-opacity-25">
+                <div class="modal-footer border-opacity-10">
                     <button type="button" class="btn-gs btn-gs--outline btn-gs--sm" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn-gs btn-gs--primary btn-gs--sm px-3">Lưu địa chỉ</button>
                 </div>
