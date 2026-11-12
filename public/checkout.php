@@ -41,7 +41,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <div class="gs-checkout__box">
                         <div class="gs-checkout__box-head mb-3">
                             <h3 class="gs-checkout__title mb-1">1. Thông tin nhận hàng</h3>
-                            <span class="small text-white-50">Địa chỉ giao hàng tận nơi cho đơn hàng của bạn.</span>
+                            <span class="small text-muted">Địa chỉ giao hàng tận nơi cho đơn hàng của bạn.</span>
                         </div>
 
                         <?php if (count($dsDiachi) > 0) : ?>
@@ -59,13 +59,13 @@ include(__DIR__ . '/inc/head-client.php');
                                                 onchange="gsChonDiachi(this)">
                                             <div class="gs-address-card__content">
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
-                                                    <strong class="text-white"><?php echo htmlspecialchars($dc['tennguoinhan']); ?></strong>
+                                                    <strong class="text-dark"><?php echo htmlspecialchars($dc['tennguoinhan']); ?></strong>
                                                     <?php if ($isMacdinh) : ?>
                                                         <span class="gs-badge gs-badge--soft">Mặc định</span>
                                                     <?php endif; ?>
                                                 </div>
-                                                <div class="small text-warning mb-1">Số điện thoại: <?php echo htmlspecialchars($dc['sodienthoai']); ?></div>
-                                                <div class="small text-white-50"><?php echo htmlspecialchars($dc['diachi']); ?></div>
+                                                <div class="small text-danger mb-1">Số điện thoại: <?php echo htmlspecialchars($dc['sodienthoai']); ?></div>
+                                                <div class="small text-muted"><?php echo htmlspecialchars($dc['diachi']); ?></div>
                                             </div>
                                         </label>
                                     <?php endforeach; ?>
@@ -73,9 +73,9 @@ include(__DIR__ . '/inc/head-client.php');
                                         <input type="radio" name="id_diachi" value="0" onchange="gsChonDiachi(this)">
                                         <div class="gs-address-card__content">
                                             <div class="d-flex align-items-center gap-2">
-                                                <strong class="text-white">+ Giao đến địa chỉ khác</strong>
+                                                <strong class="text-dark">+ Giao đến địa chỉ khác</strong>
                                             </div>
-                                            <div class="small text-white-50 mt-1">Nhập thông tin người nhận mới ở biểu mẫu phía dưới</div>
+                                            <div class="small text-muted mt-1">Nhập thông tin người nhận mới ở biểu mẫu phía dưới</div>
                                         </div>
                                     </label>
                                 </div>
@@ -132,7 +132,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <div class="gs-checkout__box mt-4">
                         <div class="gs-checkout__box-head mb-3">
                             <h3 class="gs-checkout__title mb-1">2. Phương thức thanh toán</h3>
-                            <span class="small text-white-50">Chọn hình thức thanh toán thuận tiện nhất với bạn.</span>
+                            <span class="small text-muted">Chọn hình thức thanh toán thuận tiện nhất với bạn.</span>
                         </div>
 
                         <div class="gs-paymethod-list mb-3">
@@ -140,10 +140,10 @@ include(__DIR__ . '/inc/head-client.php');
                                 <input type="radio" name="phuongthuc_tt" value="cod" checked onchange="gsChonPhuongthuc(this)">
                                 <div class="gs-paymethod-card__info">
                                     <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <strong class="text-white">Thanh toán khi nhận hàng (COD)</strong>
+                                        <strong class="text-dark">Thanh toán khi nhận hàng (COD)</strong>
                                         <span class="gs-badge gs-badge--soft">Tiền mặt</span>
                                     </div>
-                                    <div class="small text-white-50">Thanh toán tiền mặt cho bưu tá khi nhận và đồng kiểm sản phẩm.</div>
+                                    <div class="small text-muted">Thanh toán tiền mặt cho bưu tá khi nhận và đồng kiểm sản phẩm.</div>
                                 </div>
                             </label>
 
@@ -151,10 +151,10 @@ include(__DIR__ . '/inc/head-client.php');
                                 <input type="radio" name="phuongthuc_tt" value="chuyenkhoan" onchange="gsChonPhuongthuc(this)">
                                 <div class="gs-paymethod-card__info">
                                     <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <strong class="text-white">Chuyển khoản ngân hàng (VietQR)</strong>
+                                        <strong class="text-dark">Chuyển khoản ngân hàng (VietQR)</strong>
                                         <span class="gs-badge gs-badge--size">Quét QR</span>
                                     </div>
-                                    <div class="small text-white-50">Hệ thống tạo mã VietQR tự động, thanh toán qua mọi app ngân hàng.</div>
+                                    <div class="small text-muted">Hệ thống tạo mã VietQR tự động, thanh toán qua mọi app ngân hàng.</div>
                                 </div>
                             </label>
 
@@ -162,28 +162,28 @@ include(__DIR__ . '/inc/head-client.php');
                                 <input type="radio" name="phuongthuc_tt" value="vnpay" onchange="gsChonPhuongthuc(this)">
                                 <div class="gs-paymethod-card__info">
                                     <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <strong class="text-white">Cổng thanh toán VNPay Sandbox</strong>
+                                        <strong class="text-dark">Cổng thanh toán VNPay Sandbox</strong>
                                         <span class="gs-badge gs-badge--cat">ATM / Thẻ QT</span>
                                     </div>
-                                    <div class="small text-white-50">Thẻ test NCB: <strong>9704198526191432198</strong> · Tên: <strong>NGUYEN VAN A</strong> · <strong>07/15</strong> · OTP: <strong>123456</strong></div>
+                                    <div class="small text-muted">Thẻ test NCB: <strong>9704198526191432198</strong> · Tên: <strong>NGUYEN VAN A</strong> · <strong>07/15</strong> · OTP: <strong>123456</strong></div>
                                 </div>
                             </label>
                         </div>
 
                         <div class="gs-bankinfo-box" id="gsBankInfoBox">
-                            <div class="fw-bold text-white small text-uppercase mb-2">Tài khoản thanh toán GYMBRO</div>
+                            <div class="fw-bold text-dark small text-uppercase mb-2">Tài khoản thanh toán GYMBRO</div>
                             <div class="row g-2 small">
                                 <div class="col-12 col-md-4">
-                                    <div class="text-white-50">Ngân hàng:</div>
-                                    <div class="text-white fw-bold">Vietcombank</div>
+                                    <div class="text-muted">Ngân hàng:</div>
+                                    <div class="text-dark fw-bold">Vietcombank</div>
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <div class="text-white-50">Số tài khoản:</div>
-                                    <div class="text-warning fw-bold font-monospace">1234567890</div>
+                                    <div class="text-muted">Số tài khoản:</div>
+                                    <div class="text-danger fw-bold font-monospace">1234567890</div>
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <div class="text-white-50">Chủ tài khoản:</div>
-                                    <div class="text-white fw-bold">GYMBRO STORE</div>
+                                    <div class="text-muted">Chủ tài khoản:</div>
+                                    <div class="text-dark fw-bold">GYMBRO STORE</div>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +220,7 @@ include(__DIR__ . '/inc/head-client.php');
                                         </a>
                                         <div class="gs-checkout-item__meta mt-1">
                                             <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
-                                            <span class="small text-white-50 ms-1"><?php echo gsTien($dongGia); ?></span>
+                                            <span class="small text-muted ms-1"><?php echo gsTien($dongGia); ?></span>
                                         </div>
                                     </div>
                                     <div class="gs-checkout-item__total">
@@ -270,7 +270,7 @@ include(__DIR__ . '/inc/head-client.php');
                             Quay lại giỏ hàng
                         </a>
 
-                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-secondary border-opacity-25 text-center small text-white-50">
+                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-opacity-10 text-center small text-muted">
                             Chính hãng 100% · Bảo mật SSL · Đổi trả 7 ngày
                         </div>
                     </div>

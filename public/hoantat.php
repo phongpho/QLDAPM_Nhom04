@@ -49,7 +49,7 @@ include(__DIR__ . '/inc/head-client.php');
                             <h3 class="gs-checkout__title mb-1">
                                 Sản phẩm trong đơn (<?php echo count($chitiet); ?> món)
                             </h3>
-                            <span class="small text-white-50">Danh sách các món đồ bạn đã đặt mua.</span>
+                            <span class="small text-muted">Danh sách các món đồ bạn đã đặt mua.</span>
                         </div>
 
                         <div class="gs-checkout-items-list mb-3">
@@ -72,7 +72,7 @@ include(__DIR__ . '/inc/head-client.php');
                                         </span>
                                         <div class="gs-checkout-item__meta mt-1">
                                             <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
-                                            <span class="small text-white-50 ms-1">Số lượng: <?php echo $dongSoluong; ?></span>
+                                            <span class="small text-muted ms-1">Số lượng: <?php echo $dongSoluong; ?></span>
                                         </div>
                                     </div>
                                     <div class="gs-checkout-item__total">
@@ -115,7 +115,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="gs-checkout__box mt-4">
                             <div class="gs-checkout__box-head mb-3">
                                 <h3 class="gs-checkout__title mb-1">Quét mã VietQR chuyển khoản</h3>
-                                <span class="small text-white-50">Sử dụng app ngân hàng quét mã QR để chuyển khoản nhanh.</span>
+                                <span class="small text-muted">Sử dụng app ngân hàng quét mã QR để chuyển khoản nhanh.</span>
                             </div>
 
                             <div class="d-flex flex-wrap align-items-center gap-4">
@@ -129,11 +129,11 @@ include(__DIR__ . '/inc/head-client.php');
                                     <div class="gs-info-list">
                                         <div class="gs-info-row">
                                             <span class="gs-info-label">Số tiền:</span>
-                                            <span class="gs-info-value text-warning fs-5 fw-bold"><?php echo gsTien($donhang['tongtien']); ?></span>
+                                            <span class="gs-info-value text-danger fs-5 fw-bold"><?php echo gsTien($donhang['tongtien']); ?></span>
                                         </div>
                                         <div class="gs-info-row">
                                             <span class="gs-info-label">Nội dung chuyển khoản:</span>
-                                            <span class="gs-info-value font-monospace text-warning"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
+                                            <span class="gs-info-value font-monospace text-danger"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
                                         </div>
                                         <div class="gs-info-row">
                                             <span class="gs-info-label">Ngân hàng:</span>
@@ -148,7 +148,7 @@ include(__DIR__ . '/inc/head-client.php');
                                             <span class="gs-info-value">GYMBRO STORE</span>
                                         </div>
                                     </div>
-                                    <div class="small text-white-50 mt-2">
+                                    <div class="small text-muted mt-2">
                                         Đơn hàng sẽ được chuyển sang trạng thái <em>Đã thanh toán</em> sau khi hệ thống ghi nhận giao dịch.
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="gs-checkout__box mt-4">
                             <div class="gs-checkout__box-head mb-3">
                                 <h3 class="gs-checkout__title mb-1">Chưa hoàn tất thanh toán VNPay</h3>
-                                <span class="small text-white-50">Đơn hàng đã được tạo nhưng chưa hoàn tất thanh toán.</span>
+                                <span class="small text-muted">Đơn hàng đã được tạo nhưng chưa hoàn tất thanh toán.</span>
                             </div>
                             <a class="btn-gs btn-gs--primary btn-gs--lg" href="index.php?action=thanhtoanlai_vnpay&madonhang=<?php echo urlencode($donhang['madonhang']); ?>">
                                 THANH TOÁN LẠI QUA VNPAY
@@ -178,7 +178,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="gs-info-list mb-3">
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Mã đơn hàng</span>
-                                <span class="gs-info-value font-monospace text-warning"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
+                                <span class="gs-info-value font-monospace text-danger"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
                             </div>
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Trạng thái xử lý</span>
@@ -234,7 +234,7 @@ include(__DIR__ . '/inc/head-client.php');
                             Tiếp tục mua sắm
                         </a>
 
-                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-secondary border-opacity-25 text-center small text-white-50">
+                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-opacity-10 text-center small text-muted">
                             Chính hãng 100% · Bảo mật SSL · Đổi trả 7 ngày
                         </div>
                     </div>

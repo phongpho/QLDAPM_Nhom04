@@ -19,6 +19,9 @@ $conhang = ((int) $card['soluongton'] > 0);
 $tendanhmuc = isset($card['tendanhmuc']) ? $card['tendanhmuc'] : (isset($card['loai']) ? gsTenLoai($card['loai']) : '');
 $hinhanh = isset($card['hinhanh']) ? trim((string) $card['hinhanh']) : '';
 $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
+$hinhanhPhu = isset($card['hinhanh_phu']) ? trim((string) $card['hinhanh_phu']) : '';
+$duongdananhPhu = ($hinhanhPhu !== '') ? '../assets/images/products/' . $hinhanhPhu : '';
+$danhSachMauCard = !empty($card['mausac']) ? array_slice(explode(',', (string)$card['mausac']), 0, 4) : array();
 ?>
 <div class="col-6 col-md-4 col-lg-3">
     <div class="gs-product-card" data-id="<?php echo (int) $card['id']; ?>"
@@ -27,6 +30,10 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
             <a class="gs-product-card__link" href="index.php?action=chitiet&id=<?php echo (int) $card['id']; ?>">
                 <img class="gs-product-card__img" src="<?php echo htmlspecialchars($duongdananh); ?>"
                     alt="<?php echo htmlspecialchars($card['tensanpham']); ?>" loading="lazy" onerror="gsOnErrorImg(this)">
+                <?php if ($duongdananhPhu !== '') : ?>
+                    <img class="gs-product-card__img--secondary" src="<?php echo htmlspecialchars($duongdananhPhu); ?>"
+                        alt="<?php echo htmlspecialchars($card['tensanpham']); ?>" loading="lazy" onerror="this.style.display='none'">
+                <?php endif; ?>
                 <span class="gs-product-card__badges">
                     <?php if ($phantramgiam > 0) : ?>
                         <span class="badge-gs badge-gs--sale">-<?php echo $phantramgiam; ?>%</span>
@@ -45,19 +52,19 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
             $daSosanhCard = in_array((int)$card['id'], $_SESSION['gs_sosanh'] ?? array(), true);
             ?>
             <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2" style="z-index: 5;">
-                <button type="button" class="btn btn-sm gs-btn-wishlist rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
-                        style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);"
+                <button type="button" class="btn btn-sm gs-btn-wishlist rounded-circle d-flex align-items-center justify-content-center p-0" 
+                        style="width: 32px; height: 32px;"
                         data-id="<?php echo (int) $card['id']; ?>" 
                         onclick="event.preventDefault(); event.stopPropagation(); gsToggleYeuThich(this, <?php echo (int) $card['id']; ?>);"
                         title="<?php echo $daThichCard ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'; ?>">
-                    <i class="<?php echo $daThichCard ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart text-white'; ?>"></i>
+                    <i class="<?php echo $daThichCard ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart text-dark'; ?>"></i>
                 </button>
-                <button type="button" class="btn btn-sm gs-btn-compare rounded-circle border-0 d-flex align-items-center justify-content-center p-0" 
-                        style="width: 32px; height: 32px; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);"
+                <button type="button" class="btn btn-sm gs-btn-compare rounded-circle d-flex align-items-center justify-content-center p-0" 
+                        style="width: 32px; height: 32px;"
                         data-id="<?php echo (int) $card['id']; ?>" 
                         onclick="event.preventDefault(); event.stopPropagation(); gsToggleSoSanh(this, <?php echo (int) $card['id']; ?>);"
                         title="<?php echo $daSosanhCard ? 'Bỏ so sánh' : 'Thêm vào so sánh'; ?>">
-                    <i class="fa-solid fa-code-compare <?php echo $daSosanhCard ? 'text-warning' : 'text-white'; ?>"></i>
+                    <i class="fa-solid fa-code-compare <?php echo $daSosanhCard ? 'text-danger' : 'text-dark'; ?>"></i>
                 </button>
             </div>
 
@@ -85,7 +92,7 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
                         <input type="hidden" name="sanpham_id" value="<?php echo (int) $card['id']; ?>">
                         <input type="hidden" name="size" value="">
                         <input type="hidden" name="soluong" value="1">
-                        <button type="submit" class="gs-add-btn"><i class="fa-solid fa-bag-shopping"></i> Thêm vào giỏ</button>
+                        <button type="submit" class="gs-add-btn">Thêm vào giỏ</button>
                     </form>
                 <?php endif; ?>
             </div>
@@ -97,10 +104,30 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
                 <?php echo htmlspecialchars($card['tensanpham']); ?>
             </a>
 
+            <?php if (!empty($danhSachMauCard)) : ?>
+                <div class="gs-card-swatches">
+                    <?php foreach ($danhSachMauCard as $mRaw) :
+                        $mt = mb_strtolower(trim($mRaw), 'UTF-8');
+                        $hex = '#475569';
+                        if (strpos($mt, 'đen') !== false) $hex = '#18181b';
+                        elseif (strpos($mt, 'trắng') !== false) $hex = '#ffffff';
+                        elseif (strpos($mt, 'xám') !== false) $hex = '#71717a';
+                        elseif (strpos($mt, 'navy') !== false || strpos($mt, 'than') !== false) $hex = '#1e3a8a';
+                        elseif (strpos($mt, 'xanh') !== false) $hex = '#2563eb';
+                        elseif (strpos($mt, 'hồng') !== false) $hex = '#f472b6';
+                        elseif (strpos($mt, 'đỏ') !== false) $hex = '#D02545';
+                        elseif (strpos($mt, 'tím') !== false) $hex = '#a855f7';
+                        elseif (strpos($mt, 'cam') !== false) $hex = '#f97316';
+                    ?>
+                        <span class="gs-card-swatch" style="background-color: <?php echo $hex; ?>;" title="<?php echo htmlspecialchars(trim($mRaw)); ?>"></span>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <div class="gs-product-card__meta">
-                <span><i class="fa-solid fa-fire-flame-curved"></i> Đã bán <?php echo (int) $card['luotmua']; ?></span>
+                <span>Đã bán <?php echo (int) $card['luotmua']; ?></span>
                 <?php if (!empty($card['tenthuonghieu'])) : ?>
-                    <span><i class="fa-solid fa-tag"></i> <?php echo htmlspecialchars($card['tenthuonghieu']); ?></span>
+                    <span>· <?php echo htmlspecialchars($card['tenthuonghieu']); ?></span>
                 <?php endif; ?>
             </div>
 
@@ -112,7 +139,7 @@ $duongdananh = ($hinhanh !== '') ? '../assets/images/products/' . $hinhanh : '';
             </div>
 
             <a class="gs-card-link" href="index.php?action=chitiet&id=<?php echo (int) $card['id']; ?>">
-                Xem chi tiết <i class="fa-solid fa-arrow-right-long"></i>
+                Xem chi tiết &rarr;
             </a>
         </div>
     </div>
