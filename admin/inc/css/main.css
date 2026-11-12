@@ -853,6 +853,8 @@ body, .wrapper {
 
 /* 2. Top Header / Translucent Glass Navbar */
 .navbar-bg {
+    position: relative !important;
+    z-index: 1050 !important;
     background: rgba(15, 23, 42, 0.4) !important;
     backdrop-filter: blur(16px) saturate(140%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
@@ -940,6 +942,7 @@ body, .wrapper {
 
 /* Translucent Glass Dropdown Menus */
 .dropdown-menu {
+    z-index: 1060 !important;
     background: rgba(15, 23, 42, 0.75) !important;
     backdrop-filter: blur(16px) saturate(140%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(140%) !important;

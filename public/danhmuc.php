@@ -85,7 +85,7 @@ include(__DIR__ . '/inc/head-client.php');
 
             <div class="col-12 col-lg-3">
                 <div class="gs-filter">
-                    <form method="get" action="index.php" class="gs-filter__search mb-4">
+                    <form method="get" action="index.php" class="gs-filter__search mb-4 position-relative" id="gsFilterSearchForm" autocomplete="off">
                         <input type="hidden" name="action" value="sanpham">
                         <input type="hidden" name="loai" value="<?php echo htmlspecialchars($loai); ?>">
                         <input type="hidden" name="doituong" value="<?php echo htmlspecialchars($doituong); ?>">
@@ -94,12 +94,13 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="gia" value="<?php echo htmlspecialchars($khoanggia); ?>">
                         <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..."
-                                value="<?php echo htmlspecialchars($tukhoa); ?>">
+                            <input type="text" class="form-control" name="q" id="gsSidebarSearchInput" placeholder="Tìm sản phẩm..."
+                                value="<?php echo htmlspecialchars($tukhoa); ?>" autocomplete="off">
                             <button class="btn text-white fw-bold" style="background-color: #D02545; border-color: #D02545;" type="submit" aria-label="Tìm kiếm">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
+                        <div id="gsSidebarSearchDropdown" class="gs-live-search-dropdown" style="display: none; min-width: 100%; max-width: 100%; max-height: 420px; overflow-y: auto; z-index: 9999;"></div>
                     </form>
 
                     <div class="gs-filter__group mt-3 pt-2">
@@ -359,5 +360,82 @@ include(__DIR__ . '/inc/head-client.php');
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('gsSidebarSearchInput');
+    const dropdown = document.getElementById('gsSidebarSearchDropdown');
+    const form = document.getElementById('gsFilterSearchForm');
+    let timer = null;
+
+    if (!input || !dropdown) return;
+
+    input.addEventListener('input', function () {
+        const query = input.value.trim();
+        clearTimeout(timer);
+
+        if (query.length < 2) {
+            dropdown.innerHTML = '';
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        timer = setTimeout(function () {
+            fetch('index.php?action=ajax_timkiem&q=' + encodeURIComponent(query))
+                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok || !res.data || res.data.length === 0) {
+                        dropdown.innerHTML = '<div class="p-3 text-center text-muted small">Không tìm thấy sản phẩm phù hợp</div>';
+                        dropdown.style.display = 'block';
+                        return;
+                    }
+
+                    let html = '';
+                    res.data.forEach(item => {
+                        html += `
+                            <a href="index.php?action=chitiet&id=${item.id}" class="gs-live-search-item">
+                                <img src="${item.hinhanh}" alt="" class="gs-live-search-img" onerror="this.src='../assets/images/systems/logo.png'">
+                                <div class="gs-live-search-info">
+                                    <span class="gs-live-search-title">${item.tensanpham}</span>
+                                    <div class="gs-live-search-meta">
+                                        <span class="gs-live-search-price">${item.giaban_format}</span>
+                                        ${item.tenthuonghieu ? '<span class="badge bg-light border text-dark">' + item.tenthuonghieu + '</span>' : ''}
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-muted small"></i>
+                            </a>
+                        `;
+                    });
+
+                    html += `
+                        <div class="gs-live-search-footer">
+                            <a href="index.php?action=sanpham&q=${encodeURIComponent(query)}">
+                                Xem tất cả kết quả cho "${query}" <i class="fa-solid fa-arrow-right-long ms-1"></i>
+                            </a>
+                        </div>
+                    `;
+
+                    dropdown.innerHTML = html;
+                    dropdown.style.display = 'block';
+                })
+                .catch(() => {
+                    dropdown.style.display = 'none';
+                });
+        }, 250);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (form && !form.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    input.addEventListener('focus', function () {
+        if (dropdown.innerHTML.trim() !== '' && input.value.trim().length >= 2) {
+            dropdown.style.display = 'block';
+        }
+    });
+});
+</script>
 
 <?php include(__DIR__ . '/inc/footer.php'); ?>
