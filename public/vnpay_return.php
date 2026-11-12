@@ -55,13 +55,13 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                     <div class="gs-checkout__box">
                         <div class="gs-checkout__box-head mb-3">
                             <h3 class="gs-checkout__title mb-1">Thông tin giao dịch VNPay</h3>
-                            <span class="small text-white-50">Chi tiết đối soát giao dịch cổng thanh toán điện tử.</span>
+                            <span class="small text-muted">Chi tiết đối soát giao dịch cổng thanh toán điện tử.</span>
                         </div>
 
                         <div class="gs-info-list">
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Mã đơn hàng</span>
-                                <span class="gs-info-value font-monospace text-warning"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
+                                <span class="gs-info-value font-monospace text-danger"><?php echo htmlspecialchars($donhang['madonhang']); ?></span>
                             </div>
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Mã giao dịch VNPay</span>
@@ -69,7 +69,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             </div>
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Số tiền thanh toán</span>
-                                <span class="gs-info-value text-white"><?php echo gsTien($sotienvnpay > 0 ? $sotienvnpay : $donhang['tongtien']); ?></span>
+                                <span class="gs-info-value text-dark"><?php echo gsTien($sotienvnpay > 0 ? $sotienvnpay : $donhang['tongtien']); ?></span>
                             </div>
                             <div class="gs-info-row">
                                 <span class="gs-info-label">Mã phản hồi</span>
@@ -111,7 +111,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             <h3 class="gs-checkout__title mb-1">
                                 Sản phẩm trong đơn (<?php echo count($chitiet); ?> món)
                             </h3>
-                            <span class="small text-white-50">Danh sách sản phẩm bạn đã đặt mua.</span>
+                            <span class="small text-muted">Danh sách sản phẩm bạn đã đặt mua.</span>
                         </div>
 
                         <div class="gs-checkout-items-list mb-3">
@@ -134,7 +134,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                                         </span>
                                         <div class="gs-checkout-item__meta mt-1">
                                             <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
-                                            <span class="small text-white-50 ms-1">Số lượng: <?php echo $dongSoluong; ?></span>
+                                            <span class="small text-muted ms-1">Số lượng: <?php echo $dongSoluong; ?></span>
                                         </div>
                                     </div>
                                     <div class="gs-checkout-item__total">
@@ -230,7 +230,7 @@ $sotienvnpay = isset($_GET['vnp_Amount']) ? ((float) $_GET['vnp_Amount'] / 100) 
                             Tiếp tục mua sắm
                         </a>
 
-                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-secondary border-opacity-25 text-center small text-white-50">
+                        <div class="gs-cart-guarantee-line mt-3 pt-3 border-top border-opacity-10 text-center small text-muted">
                             Chính hãng 100% · Bảo mật SSL · Đổi trả 7 ngày
                         </div>
                     </div>

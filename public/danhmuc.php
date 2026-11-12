@@ -96,7 +96,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="input-group">
                             <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..."
                                 value="<?php echo htmlspecialchars($tukhoa); ?>">
-                            <button class="btn btn-warning text-dark fw-bold" style="background-color: var(--gs-primary, #f97316); border-color: var(--gs-primary, #f97316); color: #fff !important;" type="submit" aria-label="Tìm kiếm">
+                            <button class="btn text-white fw-bold" style="background-color: #D02545; border-color: #D02545;" type="submit" aria-label="Tìm kiếm">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
@@ -118,7 +118,6 @@ include(__DIR__ . '/inc/head-client.php');
                         </a>
                     </div>
 
-                    <!-- bo loc khoang gia -->
                     <div class="gs-filter__group">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h3 class="gs-filter__title mb-0">Khoảng giá</h3>
@@ -145,7 +144,6 @@ include(__DIR__ . '/inc/head-client.php');
                         </a>
                     </div>
 
-                    <!-- bo loc kich co size -->
                     <div class="gs-filter__group">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h3 class="gs-filter__title mb-0">Kích cỡ (Size)</h3>
@@ -166,7 +164,7 @@ include(__DIR__ . '/inc/head-client.php');
 
                                     <?php echo $sItem; ?>
                                     <?php if ($laSizeGoiy) : ?>
-                                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-dark rounded-circle" title="Size gợi ý theo vóc dáng của bạn"></span>
+                                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-white rounded-circle" title="Size gợi ý theo vóc dáng của bạn"></span>
                                     <?php endif; ?>
                                 </a>
                             <?php endforeach; ?>
@@ -197,24 +195,22 @@ include(__DIR__ . '/inc/head-client.php');
                                 aspect-ratio: 1 / 1 !important;
                                 padding: 8px !important;
                                 background: #ffffff !important;
-                                border: 1.5px solid #dcdcdc !important;
+                                border: 1.5px solid #e5e7eb !important;
                                 border-radius: 50% !important;
                                 text-decoration: none !important;
                                 transition: all 0.22s ease-in-out !important;
                                 box-sizing: border-box !important;
                                 cursor: pointer !important;
                                 overflow: hidden !important;
-                                box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
                             }
                             .gs-brand-tile:hover {
-                                border-color: #111111 !important;
+                                border-color: #141414 !important;
                                 transform: translateY(-2px) scale(1.05) !important;
-                                box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
                             }
                             .gs-brand-tile.is-active {
-                                border-color: #e53935 !important;
+                                border-color: #D02545 !important;
                                 border-width: 2px !important;
-                                box-shadow: 0 0 0 3px rgba(229,57,53,0.25) !important;
+                                box-shadow: 0 0 0 3px rgba(208, 37, 69, 0.2) !important;
                                 transform: scale(1.04) !important;
                             }
                             .gs-brand-tile__logo {
@@ -224,68 +220,29 @@ include(__DIR__ . '/inc/head-client.php');
                                 height: auto !important;
                                 object-fit: contain !important;
                                 display: block !important;
-                                filter: none !important;
-                                opacity: 0.95 !important;
-                                transition: transform 0.2s ease !important;
-                            }
-                            .gs-brand-tile:hover .gs-brand-tile__logo,
-                            .gs-brand-tile.is-active .gs-brand-tile__logo {
-                                opacity: 1 !important;
-                                transform: scale(1.08) !important;
                             }
                             .gs-pagination .page-link {
-                                color: #e5e5e5 !important;
-                                background: #1c1c1c !important;
-                                border-color: #333333 !important;
-                                font-weight: 700 !important;
+                                color: #1A1A1A !important;
+                                background: #FFFFFF !important;
+                                border-color: #E5E7EB !important;
+                                font-weight: 600 !important;
                                 font-size: 0.85rem !important;
-                                box-shadow: none !important;
-                                transition: all 0.2s ease !important;
                             }
-                            .gs-pagination .page-link:hover,
-                            .gs-pagination .page-link:focus {
-                                color: #ffffff !important;
-                                background: #2a2a2a !important;
-                                border-color: #555555 !important;
-                                box-shadow: none !important;
+                            .gs-pagination .page-link:hover {
+                                color: #D02545 !important;
+                                background: #FFECF3 !important;
+                                border-color: #D02545 !important;
                             }
                             .gs-pagination .page-item.active .page-link {
-                                background: #ffffff !important;
-                                border-color: #ffffff !important;
-                                color: #000000 !important;
-                                font-weight: 800 !important;
-                                box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+                                background: #141414 !important;
+                                border-color: #141414 !important;
+                                color: #FFFFFF !important;
+                                font-weight: 700 !important;
                             }
                             .gs-pagination .page-item.disabled .page-link {
-                                background: #141414 !important;
-                                color: #666666 !important;
-                                border-color: #2a2a2a !important;
-                            }
-                            .gs-size-btn {
-                                display: inline-flex !important;
-                                align-items: center !important;
-                                justify-content: center !important;
-                                min-width: 44px !important;
-                                padding: 5px 12px !important;
-                                font-size: 0.875rem !important;
-                                font-weight: 700 !important;
-                                color: #111111 !important;
-                                background-color: #ffffff !important;
-                                border: 1.5px solid #d1d5db !important;
-                                border-radius: 6px !important;
-                                text-decoration: none !important;
-                                transition: all 0.2s ease-in-out !important;
-                            }
-                            .gs-size-btn:hover {
-                                color: #111111 !important;
-                                background-color: #f3f4f6 !important;
-                                border-color: #9ca3af !important;
-                            }
-                            .gs-size-btn.is-active {
-                                color: #ffffff !important;
-                                background-color: var(--gs-primary, #f97316) !important;
-                                border-color: var(--gs-primary, #f97316) !important;
-                                box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.35) !important;
+                                background: #FAFAFA !important;
+                                color: #9CA3AF !important;
+                                border-color: #E5E7EB !important;
                             }
                         </style>
                         <div class="gs-brand-grid">

@@ -51,8 +51,8 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="gs-order-card__head">
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <span class="gs-order-card__code"><?php echo htmlspecialchars($od['madonhang']); ?></span>
-                                <span class="text-white-50 small">•</span>
-                                <span class="text-white-50 small"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($od['ngay']))); ?></span>
+                                <span class="text-muted small">•</span>
+                                <span class="text-muted small"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($od['ngay']))); ?></span>
                             </div>
                             <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-0">
                                 <span class="badge <?php echo $dh->laymautrangthai($od['trangthai']); ?>">
@@ -63,7 +63,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php else : ?>
                                     <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Chưa thanh toán</span>
                                 <?php endif; ?>
-                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                                <span class="badge bg-secondary-subtle text-secondary border -subtle">
                                     <?php echo htmlspecialchars($dh->laytenphuongthuc($od['phuongthuc_tt'])); ?>
                                 </span>
                             </div>
@@ -91,7 +91,7 @@ include(__DIR__ . '/inc/head-client.php');
                                             </a>
                                             <div class="gs-order-item__meta mt-1">
                                                 <span class="gs-badge gs-badge--size"><?php echo $sizeText; ?></span>
-                                                <span class="small text-white-50 ms-1"><?php echo gsTien($dongDongia); ?> × <?php echo $dongSoluong; ?></span>
+                                                <span class="small text-muted ms-1"><?php echo gsTien($dongDongia); ?> × <?php echo $dongSoluong; ?></span>
                                             </div>
                                         </div>
                                         <div class="gs-order-item__total">
@@ -103,15 +103,15 @@ include(__DIR__ . '/inc/head-client.php');
 
                             <div class="gs-order-card__foot">
                                 <div class="gs-order-recipient">
-                                    <div class="small text-white fw-bold mb-1">Thông tin giao hàng:</div>
-                                    <div class="small text-white-50">
+                                    <div class="small text-dark fw-bold mb-1">Thông tin giao hàng:</div>
+                                    <div class="small text-muted">
                                         <strong><?php echo htmlspecialchars($od['tennguoinhan']); ?></strong> · <?php echo htmlspecialchars($od['sdtnhan']); ?>
                                     </div>
-                                    <div class="small text-white-50">
+                                    <div class="small text-muted">
                                         <?php echo htmlspecialchars($od['diachinhan']); ?>
                                     </div>
                                     <?php if (!empty($od['ghichu'])) : ?>
-                                        <div class="small text-warning mt-1">
+                                        <div class="small text-danger mt-1">
                                             Ghi chú: <?php echo htmlspecialchars($od['ghichu']); ?>
                                         </div>
                                     <?php endif; ?>
@@ -163,33 +163,33 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
-<!-- Modal Đánh Giá Sản Phẩm -->
+
 <div class="modal fade" id="modalDanhGia" tabindex="-1" aria-labelledby="modalDanhGiaLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark border-secondary text-white shadow-lg">
-            <div class="modal-header border-secondary">
+        <div class="modal-content bg-white border text-dark shadow-lg">
+            <div class="modal-header ">
                 <h5 class="modal-title fw-bold" id="modalDanhGiaLabel">
-                    <i class="fa-solid fa-star text-warning me-2"></i>Đánh giá sản phẩm
+                    <i class="fa-solid fa-star text-danger me-2"></i>Đánh giá sản phẩm
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="index.php?action=danhgiasanpham" method="POST" id="formModalDanhGia">
                 <div class="modal-body">
                     <input type="hidden" name="sanpham_id" id="modalSpId" value="0">
                     <input type="hidden" name="sao" id="modalRatingStar" value="5">
 
-                    <!-- Thông tin sản phẩm đang đánh giá -->
-                    <div class="d-flex align-items-center gap-3 p-2 mb-3 bg-black rounded border border-secondary border-opacity-50">
+                    
+                    <div class="d-flex align-items-center gap-3 p-2 mb-3 bg-light rounded border border">
                         <img src="" id="modalSpImg" alt="Sản phẩm" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="gsOnErrorImg(this)">
                         <div>
                             <h6 class="mb-0 fw-semibold text-truncate" id="modalSpName" style="max-width: 320px;"></h6>
-                            <span class="small text-white-50">Đơn hàng đã hoàn thành</span>
+                            <span class="small text-muted">Đơn hàng đã hoàn thành</span>
                         </div>
                     </div>
 
-                    <!-- Chọn số sao -->
-                    <div class="mb-3 text-center py-2 bg-black bg-opacity-50 rounded">
-                        <label class="form-label d-block text-white-50 small mb-2">Chạm để chọn số sao:</label>
+                    
+                    <div class="mb-3 text-center py-2 bg-light border rounded">
+                        <label class="form-label d-block text-muted small mb-2">Chạm để chọn số sao:</label>
                         <div class="gs-modal-star-picker" id="modalStarPicker">
                             <i class="fa-solid fa-star modal-star-node" data-val="1"></i>
                             <i class="fa-solid fa-star modal-star-node" data-val="2"></i>
@@ -200,17 +200,17 @@ include(__DIR__ . '/inc/head-client.php');
                         <div class="mt-2"><span id="modalStarLabel" class="gs-star-badge">5 sao - Sản phẩm tốt mà shop còn đẹp trai nữa</span></div>
                     </div>
 
-                    <!-- Nội dung đánh giá -->
+                    
                     <div class="mb-3">
-                        <label for="modalNoidung" class="form-label small text-white-50">Nhận xét của bạn (không bắt buộc):</label>
-                        <textarea class="form-control bg-black text-white border-secondary" 
+                        <label for="modalNoidung" class="form-label small text-muted">Nhận xét của bạn (không bắt buộc):</label>
+                        <textarea class="form-control " 
                                   id="modalNoidung" 
                                   name="noidung" 
                                   rows="3" 
                                   placeholder="Hãy chia sẻ trải nghiệm của bạn về sản phẩm này nhé (chất lượng, độ bền, size vừa vặn...)..."></textarea>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer ">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
                     <button type="submit" class="btn btn-danger px-4 fw-semibold" id="modalBtnSubmit">
                         <i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá
@@ -293,10 +293,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (dadanhgia === '1') {
             modalBtnSubmit.innerHTML = '<i class="fa-solid fa-pen-to-square me-1"></i> Cập nhật đánh giá';
-            document.getElementById('modalDanhGiaLabel').innerHTML = '<i class="fa-solid fa-star text-warning me-2"></i>Cập nhật đánh giá sản phẩm';
+            document.getElementById('modalDanhGiaLabel').innerHTML = '<i class="fa-solid fa-star text-danger me-2"></i>Cập nhật đánh giá sản phẩm';
         } else {
             modalBtnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane me-1"></i> Gửi đánh giá';
-            document.getElementById('modalDanhGiaLabel').innerHTML = '<i class="fa-solid fa-star text-warning me-2"></i>Đánh giá sản phẩm';
+            document.getElementById('modalDanhGiaLabel').innerHTML = '<i class="fa-solid fa-star text-danger me-2"></i>Đánh giá sản phẩm';
         }
     });
 });
