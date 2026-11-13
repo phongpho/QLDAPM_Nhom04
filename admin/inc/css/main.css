@@ -852,6 +852,7 @@ body, .wrapper {
 }
 
 /* 2. Top Header / Translucent Glass Navbar */
+.navbar,
 .navbar-bg {
     position: relative !important;
     z-index: 1050 !important;
@@ -940,23 +941,60 @@ body, .wrapper {
     color: #94a3b8 !important;
 }
 
-/* Translucent Glass Dropdown Menus */
+/* Translucent Glass Dropdown Menus - High Z-Index to Float Over All Cards */
+.navbar-nav .nav-item.dropdown,
+.navbar .dropdown {
+    position: relative !important;
+}
+
 .dropdown-menu {
-    z-index: 1060 !important;
     background: rgba(15, 23, 42, 0.75) !important;
     backdrop-filter: blur(16px) saturate(140%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 16px !important;
-    box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.75), 0 0 20px rgba(14, 165, 233, 0.15) !important;
     color: #ffffff;
     padding: 0.5rem !important;
 }
 
+/* Dropdown Menu specifically inside Navbar (Alerts & User) */
+.navbar .dropdown-menu,
+.navbar-nav .dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    margin-top: 0.5rem !important;
+    z-index: 1060 !important;
+}
+
+.navbar .dropdown-menu-end,
+.navbar-nav .dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
+}
+
+/* Alert Dropdown (Dropdown Menu Large) */
+.navbar .dropdown-menu-lg,
+.navbar-nav .dropdown-menu-lg {
+    min-width: 320px !important;
+    max-width: 380px !important;
+    width: 340px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
 .dropdown-menu-header {
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: #ffffff !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 0.75rem 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+}
+
+.dropdown-menu-header.text-dark,
+.dropdown-menu-header .text-dark {
+    color: #ffffff !important;
 }
 
 .dropdown-item {
@@ -978,28 +1016,35 @@ body, .wrapper {
 
 .dropdown-menu .list-group-item {
     background: transparent !important;
-    border-color: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
     color: #cbd5e1 !important;
+    padding: 0.85rem 1rem !important;
+    transition: background 0.15s ease;
 }
 
 .dropdown-menu .list-group-item:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(14, 165, 233, 0.12) !important;
 }
 
 .dropdown-menu .list-group-item .text-dark {
     color: #ffffff !important;
+    font-weight: 600 !important;
 }
 
 .dropdown-menu .list-group-item .text-muted {
     color: #94a3b8 !important;
+    font-size: 0.785rem !important;
 }
 
 .dropdown-menu-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 0.65rem 1rem !important;
 }
 
 .dropdown-menu-footer a {
     color: #94a3b8 !important;
+    transition: color 0.15s ease;
 }
 
 .dropdown-menu-footer a:hover {
