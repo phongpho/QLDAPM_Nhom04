@@ -55,37 +55,7 @@ include(__DIR__ . '/inc/carousel.php');
         </div>
     </section>
 
-    <section class="gs-section py-4">
-        <div class="container">
-            <div class="p-4 p-lg-5 rounded-3 position-relative overflow-hidden" 
-                 style="background: #F7F4EC; border: 1px solid rgba(26, 26, 26, 0.08);">
-                <div class="row align-items-center g-3">
-                    <div class="col-12 col-lg-8">
-                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                            <span class="badge" style="background-color: #FFECF3; color: #D02545; border: 1px solid rgba(208, 37, 69, 0.25); font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: var(--gs-radius-pill);">
-                                Tính năng cá nhân hóa
-                            </span>
-                            <span class="badge bg-white text-dark border small px-3 py-1 rounded-pill">
-                                Tiêu chuẩn WHO &amp; GymBro
-                            </span>
-                        </div>
-                        <h3 class="text-dark fw-bold mb-2" style="font-size: clamp(1.3rem, 2.3vw, 1.75rem); text-transform: uppercase;">
-                            BẠN CHƯA BIẾT CHỌN SIZE ĐỒ TẬP HAY LOẠI DINH DƯỠNG NÀO?
-                        </h3>
-                        <p class="text-muted small mb-0" style="max-width: 640px; line-height: 1.6;">
-                            Chỉ cần 30 giây đo chỉ số thể trạng BMI để hệ thống tự động tính điểm số thể hình, phân loại vóc dáng, tra cứu size chuẩn form và tuyển chọn combo sản phẩm phù hợp nhất cho bạn.
-                        </p>
-                    </div>
-                    <div class="col-12 col-lg-4 text-lg-end">
-                        <a href="index.php?action=goy" class="btn-gs btn-gs--primary btn-gs--md px-4 py-3 d-inline-flex align-items-center gap-2">
-                            <span>ĐO BMI &amp; XEM GỢI Ý NGAY</span>
-                            <i class="fa-solid fa-arrow-right-long ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <?php
     $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';

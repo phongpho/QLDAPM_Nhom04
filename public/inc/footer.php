@@ -306,5 +306,7 @@ $dockCount = count($dsDockIds);
     </div>
 </div>
 
+<?php include(__DIR__ . '/bmi-popup.php'); ?>
+
 </body>
 </html>
