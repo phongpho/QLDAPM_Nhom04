@@ -162,79 +162,98 @@
 
 <?php if (!isset($_SESSION['nguoidung'])): ?>
 <div class="modal fade" id="gsAuthModal" tabindex="-1" aria-labelledby="gsAuthModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0 pt-4 px-4">
-                <div class="d-flex align-items-center gap-2">
-                    <img src="../assets/images/systems/logo.png?v=<?= file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="36" style="height: 36px; width: auto; object-fit: contain; filter: brightness(0);">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 860px;">
+        <div class="modal-content overflow-hidden border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="row g-0">
+                <div class="col-lg-5 d-none d-lg-block position-relative" style="background: linear-gradient(135deg, #141414 0%, #201015 100%); min-height: 480px;">
+                    <img src="../assets/images/banners/tieuvy_bmi_popup.jpg?v=<?= file_exists(__DIR__ . '/../../assets/images/banners/tieuvy_bmi_popup.jpg') ? filemtime(__DIR__ . '/../../assets/images/banners/tieuvy_bmi_popup.jpg') : time(); ?>" 
+                         alt="Hoa hậu Trần Tiểu Vy - GymBro Ambassador" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg, rgba(20,20,20,0.1) 0%, rgba(20,20,20,0.3) 50%, rgba(20,20,20,0.92) 100%);"></div>
+                    <div class="position-absolute bottom-0 start-0 w-100 p-4 text-white" style="z-index: 2;">
+                        <span class="badge text-uppercase px-2 py-1 mb-2" style="background: #D02545; font-size: 0.7rem; letter-spacing: 0.08em; font-weight: 700;">
+                            GYMBRO AMBASSADOR
+                        </span>
+                        <h5 class="fw-bold mb-1 text-white" style="font-size: 1.15rem;">HOA HẬU TRẦN TIỂU VY</h5>
+                        <p class="small text-white-50 mb-0" style="line-height: 1.45; font-size: 0.8rem;">
+                            Đồng hành kiến tạo vóc dáng &amp; tư vấn chỉ số thể hình BMI chuẩn form cùng GymBro.
+                        </p>
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-            </div>
-            <div class="modal-body p-4">
-                <ul class="nav nav-pills nav-fill mb-3 gb-auth-nav" id="modalAuthTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active py-2" id="modal-login-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-login" type="button" role="tab">
-                            Đăng nhập
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link py-2" id="modal-register-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-register" type="button" role="tab">
-                            Đăng ký
-                        </button>
-                    </li>
-                </ul>
 
-                <div class="tab-content" id="modalAuthTabContent">
-                    <div class="tab-pane fade show active" id="modal-tab-login" role="tabpanel">
-                        <form action="index.php" method="post">
-                            <input type="hidden" name="action" value="xldangnhap">
-                            <div class="mb-3">
-                                <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-medium text-dark">Mật khẩu</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                                    <input type="password" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" required>
-                                </div>
-                            </div>
-                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
-                                Đăng nhập
-                            </button>
-                        </form>
+                <div class="col-12 col-lg-7 d-flex flex-column justify-content-center p-4 p-sm-5 position-relative bg-white">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Đóng" style="z-index: 5;"></button>
+
+                    <div class="text-center mb-3">
+                        <img src="../assets/images/systems/logo.png?v=<?= file_exists(__DIR__ . '/../../assets/images/systems/logo.png') ? filemtime(__DIR__ . '/../../assets/images/systems/logo.png') : time(); ?>" alt="GYMBRO" height="36" style="height: 36px; width: auto; object-fit: contain; filter: brightness(0);">
+                        <p class="small text-muted mt-2 mb-0">Đồng hành cùng mục tiêu tập luyện của bạn</p>
                     </div>
 
-                    <div class="tab-pane fade" id="modal-tab-register" role="tabpanel">
-                        <form action="index.php" method="post">
-                            <input type="hidden" name="action" value="xldangky">
-                            <div class="mb-2">
-                                <label class="form-label small fw-medium text-dark">Họ và tên</label>
-                                <input type="text" class="form-control" name="txthoten" placeholder="Nguyễn Văn A" required>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
-                                <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small fw-medium text-dark">Số điện thoại</label>
-                                <input type="tel" class="form-control" name="txtsodt" placeholder="0901234567" pattern="[0-9]{10}" required>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small fw-medium text-dark">Mật khẩu</label>
-                                <input type="password" class="form-control" name="txtmatkhau" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-medium text-dark">Xác nhận mật khẩu</label>
-                                <input type="password" class="form-control" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu" required>
-                            </div>
-                            <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
-                                Đăng ký tài khoản
+                    <ul class="nav nav-pills nav-fill mb-3 gb-auth-nav" id="modalAuthTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-2" id="modal-login-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-login" type="button" role="tab">
+                                Đăng nhập
                             </button>
-                        </form>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-2" id="modal-register-tab" data-bs-toggle="pill" data-bs-target="#modal-tab-register" type="button" role="tab">
+                                Đăng ký
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="modalAuthTabContent">
+                        <div class="tab-pane fade show active" id="modal-tab-login" role="tabpanel">
+                            <form action="index.php" method="post">
+                                <input type="hidden" name="action" value="xldangnhap">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
+                                        <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Mật khẩu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                        <input type="password" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" required>
+                                    </div>
+                                </div>
+                                <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
+                                    Đăng nhập
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="modal-tab-register" role="tabpanel">
+                            <form action="index.php" method="post">
+                                <input type="hidden" name="action" value="xldangky">
+                                <div class="mb-2">
+                                    <label class="form-label small fw-medium text-dark">Họ và tên</label>
+                                    <input type="text" class="form-control" name="txthoten" placeholder="Nguyễn Văn A" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
+                                    <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small fw-medium text-dark">Số điện thoại</label>
+                                    <input type="tel" class="form-control" name="txtsodt" placeholder="0901234567" pattern="[0-9]{10}" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small fw-medium text-dark">Mật khẩu</label>
+                                    <input type="password" class="form-control" name="txtmatkhau" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-dark">Xác nhận mật khẩu</label>
+                                    <input type="password" class="form-control" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu" required>
+                                </div>
+                                <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
+                                    Đăng ký tài khoản
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
