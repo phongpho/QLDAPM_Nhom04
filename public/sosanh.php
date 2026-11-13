@@ -196,7 +196,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if (!empty($p['tenthuonghieu'])) : ?>
-                                            <span class="badge bg-light border text-dark px-3 py-2 fw-semibold">
+                                            <span class="text-dark fw-semibold">
                                                 <?php echo htmlspecialchars($p['tenthuonghieu']); ?>
                                             </span>
                                         <?php else : ?>
@@ -216,11 +216,11 @@ include(__DIR__ . '/inc/head-client.php');
                                 ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if ($dt === 'nam') : ?>
-                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">Dành cho Nam</span>
+                                            <span class="text-dark">Nam</span>
                                         <?php elseif ($dt === 'nu') : ?>
-                                            <span class="badge px-2 py-1" style="background: #FFECF3; color: #D02545;">Dành cho Nữ</span>
+                                            <span class="text-dark">Nữ</span>
                                         <?php else : ?>
-                                            <span class="badge bg-light text-dark border px-2 py-1">Unisex (Nam &amp; Nữ)</span>
+                                            <span class="text-dark">Unisex (Nam &amp; Nữ)</span>
                                         <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
@@ -235,21 +235,23 @@ include(__DIR__ . '/inc/head-client.php');
                                     $muctieuArr = !empty($p['muctieu']) ? explode(',', $p['muctieu']) : array();
                                 ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
-                                        <div class="d-flex flex-wrap gap-1">
+                                        <div>
                                             <?php 
                                             if (empty($muctieuArr)) {
-                                                echo '<span class="text-muted small">Mọi mục tiêu tập luyện</span>';
+                                                echo '<span class="text-muted">Mọi mục tiêu</span>';
                                             } else {
+                                                $tenMuctieuArr = array();
                                                 foreach ($muctieuArr as $mt) {
                                                     $mt = trim($mt);
                                                     if ($mt === 'tangcan') {
-                                                        echo '<span class="badge bg-success-subtle text-success border border-success-subtle">Tăng cơ / Tăng cân</span>';
+                                                        $tenMuctieuArr[] = 'Tăng cơ / Tăng cân';
                                                     } elseif ($mt === 'giamcan') {
-                                                        echo '<span class="badge bg-danger-subtle text-danger border border-danger-subtle">Giảm mỡ / Siết cân</span>';
+                                                        $tenMuctieuArr[] = 'Giảm mỡ / Siết cân';
                                                     } elseif ($mt === 'duytri') {
-                                                        echo '<span class="badge bg-info-subtle text-info border border-info-subtle">Duy trì vóc dáng</span>';
+                                                        $tenMuctieuArr[] = 'Duy trì vóc dáng';
                                                     }
                                                 }
+                                                echo '<span class="text-dark">' . implode(', ', $tenMuctieuArr) . '</span>';
                                             }
                                             ?>
                                         </div>
@@ -265,7 +267,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if (!empty($p['chatlieu'])) : ?>
-                                            <span class="text-dark fw-semibold"><?php echo htmlspecialchars($p['chatlieu']); ?></span>
+                                            <span class="text-dark"><?php echo htmlspecialchars($p['chatlieu']); ?></span>
                                         <?php else : ?>
                                             <span class="text-muted">Không áp dụng</span>
                                         <?php endif; ?>
@@ -281,7 +283,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if (!empty($p['thanhphan'])) : ?>
-                                            <div class="small p-2 rounded-2 text-dark" style="background: #F7F4EC; border-left: 3px solid #D02545;">
+                                            <div class="text-dark">
                                                 <?php echo nl2br(htmlspecialchars($p['thanhphan'])); ?>
                                             </div>
                                         <?php else : ?>
@@ -301,11 +303,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if (!empty($sizes)) : ?>
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <?php foreach ($sizes as $s) : ?>
-                                                    <span class="badge bg-light border text-dark px-2 py-1"><?php echo htmlspecialchars($s); ?></span>
-                                                <?php endforeach; ?>
-                                            </div>
+                                            <span class="text-dark"><?php echo implode(', ', $sizes); ?></span>
                                         <?php else : ?>
                                             <span class="text-muted">Free size / Tiêu chuẩn</span>
                                         <?php endif; ?>
@@ -337,7 +335,7 @@ include(__DIR__ . '/inc/head-client.php');
                                 <?php foreach ($dsSosanh as $p) : ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <?php if (!empty($p['hansudung'])) : ?>
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                            <span class="text-dark">
                                                 <?php echo date('d/m/Y', strtotime($p['hansudung'])); ?>
                                             </span>
                                         <?php else : ?>
