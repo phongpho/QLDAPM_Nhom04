@@ -12,7 +12,7 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
         </a>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
+            <li class="sidebar-header">  
                 TỔNG QUAN
             </li>
 
@@ -108,7 +108,6 @@ $isAdmin = isset($_SESSION["nguoidung"]) && (int)$_SESSION["nguoidung"]["loai"] 
             </li>
         </ul>
 
-        <!-- Enterprise System Status Widget (Frosted Glass) -->
         <div class="gb-sidebar-widget">
             <div class="d-flex align-items-center justify-content-between mb-1">
                 <span class="d-inline-flex align-items-center gap-2" style="font-size: 0.72rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
