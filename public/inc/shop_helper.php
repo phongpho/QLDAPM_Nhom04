@@ -123,7 +123,8 @@ if (!function_exists('gsThongBao')) {
         if (!$cauhinh || (int)$cauhinh['trangthai'] !== 1) {
             return array('thongtin' => null, 'sanpham' => null);
         }
-        $sanphamList = $bmiModel->laysanphamchitietbycauhinh($cauhinh['id'], 8);
+        $gioitinh = isset($hoso['gioitinh']) ? $hoso['gioitinh'] : '';
+        $sanphamList = $bmiModel->laysanphamchitietbycauhinh($cauhinh['id'], 8, $gioitinh);
         if (empty($sanphamList)) {
             return array('thongtin' => null, 'sanpham' => null);
         }

@@ -94,7 +94,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <input type="hidden" name="gia" value="<?php echo htmlspecialchars($khoanggia); ?>">
                         <input type="hidden" name="size" value="<?php echo htmlspecialchars($size); ?>">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="q" id="gsSidebarSearchInput" placeholder="Tìm sản phẩm..."
+                            <input type="text" class="form-control" name="q" id="gsSidebarSearchInput" placeholder="Tìm sản phẩm..." aria-label="Tìm sản phẩm"
                                 value="<?php echo htmlspecialchars($tukhoa); ?>" autocomplete="off">
                             <button class="btn text-white fw-bold" style="background-color: #D02545; border-color: #D02545;" type="submit" aria-label="Tìm kiếm">
                                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -106,7 +106,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <div class="gs-filter__group mt-3 pt-2">
                         <h3 class="gs-filter__title">Nhóm sản phẩm</h3>
                         <a class="gs-filter__link<?php echo ($loai === '') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('loai' => '', 'trang' => ''))); ?>">
-                            Tất cả <span><?php echo (int) $tongsp; ?></span>
+                            Tất cả <span><?php echo isset($tongNhomTatCa) ? (int) $tongNhomTatCa : (int) $tongsp; ?></span>
                         </a>
                         <a class="gs-filter__link<?php echo ($loai === 'quanao') ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars($taourl(array('loai' => 'quanao', 'trang' => ''))); ?>">
                             Đồ tập <span><?php echo (int) $soluongnhom['quanao']; ?></span>

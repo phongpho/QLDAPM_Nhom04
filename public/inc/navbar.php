@@ -35,7 +35,7 @@
                         aria-labelledby="fashionDropdown">
                         <li>
                             <a class="dropdown-item gs-dropdown-item d-flex align-items-center gap-2"
-                                href="index.php?action=sanpham&doituong=nam">
+                                href="index.php?action=sanpham&loai=quanao&doituong=nam">
                                 Nam
                             </a>
                         </li>
@@ -44,7 +44,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item gs-dropdown-item d-flex align-items-center gap-2"
-                                href="index.php?action=sanpham&doituong=nu">
+                                href="index.php?action=sanpham&loai=quanao&doituong=nu">
                                 Nữ
                             </a>
                         </li>
@@ -69,6 +69,7 @@
                         <input type="text" name="q" id="gsNavSearchInput"
                             class="form-control gs-nav-search-input"
                             placeholder="Tìm sản phẩm..."
+                            aria-label="Tìm sản phẩm"
                             value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
                             autocomplete="off"
                             required>
@@ -207,17 +208,17 @@
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="xldangnhap">
                                 <div class="mb-3">
-                                    <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
+                                    <label for="modal-login-email" class="form-label small fw-medium text-dark">Địa chỉ Email</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
-                                        <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                                        <input type="email" id="modal-login-email" class="form-control" name="txtemail" placeholder="name@example.com" autocomplete="email" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label small fw-medium text-dark">Mật khẩu</label>
+                                    <label for="modal-login-pass" class="form-label small fw-medium text-dark">Mật khẩu</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                                        <input type="password" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" required>
+                                        <input type="password" id="modal-login-pass" class="form-control" name="txtmatkhau" placeholder="Nhập mật khẩu" autocomplete="current-password" required>
                                     </div>
                                 </div>
                                 <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
@@ -230,24 +231,24 @@
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="xldangky">
                                 <div class="mb-2">
-                                    <label class="form-label small fw-medium text-dark">Họ và tên</label>
-                                    <input type="text" class="form-control" name="txthoten" placeholder="Nguyễn Văn A" required>
+                                    <label for="modal-reg-name" class="form-label small fw-medium text-dark">Họ và tên</label>
+                                    <input type="text" id="modal-reg-name" class="form-control" name="txthoten" placeholder="Nguyễn Văn A" autocomplete="name" required>
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small fw-medium text-dark">Địa chỉ Email</label>
-                                    <input type="email" class="form-control" name="txtemail" placeholder="name@example.com" required>
+                                    <label for="modal-reg-email" class="form-label small fw-medium text-dark">Địa chỉ Email</label>
+                                    <input type="email" id="modal-reg-email" class="form-control" name="txtemail" placeholder="name@example.com" autocomplete="email" required>
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small fw-medium text-dark">Số điện thoại</label>
-                                    <input type="tel" class="form-control" name="txtsodt" placeholder="0901234567" pattern="[0-9]{10}" required>
+                                    <label for="modal-reg-phone" class="form-label small fw-medium text-dark">Số điện thoại</label>
+                                    <input type="tel" id="modal-reg-phone" class="form-control" name="txtsodt" placeholder="0901234567" pattern="[0-9]{10}" autocomplete="tel" required>
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small fw-medium text-dark">Mật khẩu</label>
-                                    <input type="password" class="form-control" name="txtmatkhau" placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+                                    <label for="modal-reg-pass" class="form-label small fw-medium text-dark">Mật khẩu</label>
+                                    <input type="password" id="modal-reg-pass" class="form-control" name="txtmatkhau" placeholder="Tối thiểu 6 ký tự" minlength="6" autocomplete="new-password" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label small fw-medium text-dark">Xác nhận mật khẩu</label>
-                                    <input type="password" class="form-control" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu" required>
+                                    <label for="modal-reg-repass" class="form-label small fw-medium text-dark">Xác nhận mật khẩu</label>
+                                    <input type="password" id="modal-reg-repass" class="form-control" name="txtxacnhanmatkhau" placeholder="Nhập lại mật khẩu" autocomplete="new-password" required>
                                 </div>
                                 <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
                                     Đăng ký tài khoản
@@ -294,7 +295,7 @@
                 <form action="index.php" method="get">
                     <input type="hidden" name="action" value="sanpham">
                     <div class="input-group input-group-lg mb-3">
-                        <input type="text" name="q" class="form-control"
+                        <input type="text" name="q" id="gsModalSearchInput" class="form-control" aria-label="Tìm kiếm sản phẩm"
                             placeholder="Tìm kiếm sản phẩm, thương hiệu, mục tiêu tập luyện..." autocomplete="off">
                         <button class="btn-gs btn-gs--primary px-4" type="submit">Tìm kiếm</button>
                     </div>
@@ -304,8 +305,8 @@
                     <a href="index.php?action=sanpham&q=whey" class="badge bg-light text-dark border text-decoration-none me-1">Whey Protein</a>
                     <a href="index.php?action=sanpham&q=legging" class="badge bg-light text-dark border text-decoration-none me-1">Legging</a>
                     <a href="index.php?action=sanpham&q=creatine" class="badge bg-light text-dark border text-decoration-none me-1">Creatine</a>
-                    <a href="index.php?action=sanpham&doituong=nam" class="badge bg-light text-dark border text-decoration-none me-1">Đồ tập nam</a>
-                    <a href="index.php?action=sanpham&doituong=nu" class="badge bg-light text-dark border text-decoration-none">Đồ tập nữ</a>
+                    <a href="index.php?action=sanpham&loai=quanao&doituong=nam" class="badge bg-light text-dark border text-decoration-none me-1">Đồ tập nam</a>
+                    <a href="index.php?action=sanpham&loai=quanao&doituong=nu" class="badge bg-light text-dark border text-decoration-none">Đồ tập nữ</a>
                 </div>
             </div>
         </div>
@@ -316,17 +317,30 @@
     document.addEventListener('DOMContentLoaded', function () {
         const dropdownWrap = document.getElementById('gsFashionDropdownWrap');
         const dropdownBtn = document.getElementById('fashionDropdown');
+        const userMenuBtn = document.getElementById('menuNguoiDung');
         if (dropdownWrap && dropdownBtn) {
             dropdownBtn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                if (userMenuBtn && typeof bootstrap !== 'undefined') {
+                    const userDd = bootstrap.Dropdown.getInstance(userMenuBtn);
+                    if (userDd) userDd.hide();
+                }
                 dropdownWrap.classList.toggle('show');
+                dropdownBtn.setAttribute('aria-expanded', dropdownWrap.classList.contains('show') ? 'true' : 'false');
             });
             document.addEventListener('click', function (e) {
                 if (!dropdownWrap.contains(e.target)) {
                     dropdownWrap.classList.remove('show');
+                    dropdownBtn.setAttribute('aria-expanded', 'false');
                 }
             });
+            if (userMenuBtn) {
+                userMenuBtn.addEventListener('show.bs.dropdown', function () {
+                    dropdownWrap.classList.remove('show');
+                    dropdownBtn.setAttribute('aria-expanded', 'false');
+                });
+            }
         }
 
         const input = document.getElementById('gsNavSearchInput');

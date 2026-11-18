@@ -296,23 +296,30 @@ class BMI
         }
     }
 
-    // Lấy chi tiết thông tin các sản phẩm gợi ý cho mốc BMI (tuân thủ quy tắc s.trangthai = 1 và d.trangthai = 1)
-    public function laysanphamchitietbycauhinh($cauhinh_bmi_id, $limit = 0)
+    public function laysanphamchitietbycauhinh($cauhinh_bmi_id, $limit = 0, $gioitinh = '')
     {
         $dbcon = DATABASE::connect();
         try {
+            $whereGender = '';
+            $gioitinh = ($gioitinh === 'nam' || $gioitinh === 'nu') ? $gioitinh : '';
+            if ($gioitinh !== '') {
+                $whereGender = " AND (d.loai <> 'quanao' OR s.doituong IN (:gioitinh, 'unisex'))";
+            }
             $sql = "SELECT s.*, d.tendanhmuc, d.loai, t.tenthuonghieu
                     FROM cauhinh_bmi_sanpham bs
                     JOIN sanpham s ON s.id = bs.sanpham_id
                     JOIN danhmuc d ON d.id = s.danhmuc_id
                     LEFT JOIN thuonghieu t ON t.id = s.thuonghieu_id
-                    WHERE bs.cauhinh_bmi_id = :id AND s.trangthai = 1 AND d.trangthai = 1
+                    WHERE bs.cauhinh_bmi_id = :id AND s.trangthai = 1 AND d.trangthai = 1" . $whereGender . "
                     ORDER BY bs.uutien DESC, s.noibat DESC, s.luotmua DESC";
             if ($limit > 0) {
                 $sql .= " LIMIT " . (int)$limit;
             }
             $cmd = $dbcon->prepare($sql);
             $cmd->bindValue(":id", (int)$cauhinh_bmi_id, PDO::PARAM_INT);
+            if ($gioitinh !== '') {
+                $cmd->bindValue(":gioitinh", $gioitinh, PDO::PARAM_STR);
+            }
             $cmd->execute();
             return $cmd->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

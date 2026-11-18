@@ -228,18 +228,18 @@ $tabActive = $_GET['tab'] ?? 'profile';
                                 <input type="hidden" name="action" value="xldoimatkhau">
 
                                 <div class="mb-3">
-                                    <label class="gs-form-label">Mật khẩu hiện tại <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control gs-input" name="txtmatkhaucu" required>
+                                    <label for="gsMatKhauCu" class="gs-form-label">Mật khẩu hiện tại <span class="text-danger">*</span></label>
+                                    <input type="password" id="gsMatKhauCu" class="form-control gs-input" name="txtmatkhaucu" autocomplete="current-password" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="gs-form-label">Mật khẩu mới <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control gs-input" name="txtmatkhaumoi" minlength="6" placeholder="Tối thiểu 6 ký tự" required>
+                                    <label for="gsMatKhauMoi" class="gs-form-label">Mật khẩu mới <span class="text-danger">*</span></label>
+                                    <input type="password" id="gsMatKhauMoi" class="form-control gs-input" name="txtmatkhaumoi" minlength="6" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="gs-form-label">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control gs-input" name="txtxacnhanmatkhau" required>
+                                    <label for="gsXacNhanMatKhauMoi" class="gs-form-label">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
+                                    <input type="password" id="gsXacNhanMatKhauMoi" class="form-control gs-input" name="txtxacnhanmatkhau" autocomplete="new-password" required>
                                 </div>
 
                                 <button type="submit" class="btn-gs btn-gs--primary btn-gs--md">

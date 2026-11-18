@@ -15,17 +15,25 @@ $popGioi    = ($gsHosoThetrang && !empty($gsHosoThetrang['gioitinh'])) ? $gsHoso
 $popTuoi    = ($gsHosoThetrang && !empty($gsHosoThetrang['tuoi'])) ? (int)$gsHosoThetrang['tuoi'] : 22;
 $popMuctieu = ($gsHosoThetrang && !empty($gsHosoThetrang['muctieu'])) ? $gsHosoThetrang['muctieu'] : 'tangcan';
 $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHosoThetrang['bmi'] : 0;
+$hasHosoBmi = ($popCao > 0 && $popNang > 0 && $popBmi > 0);
 ?>
 
-<div id="gsBmiFloatingDock" class="gs-bmi-floating-dock shadow-lg" style="display: none;" onclick="gsMoBmiPopup()">
+<div id="gsBmiFloatingDock" class="gs-bmi-floating-dock shadow-lg" style="display: none;" onclick="gsMoBmiPopup()" role="button" tabindex="0" aria-label="Mở biểu mẫu đo chỉ số BMI">
     <div class="gs-bmi-dock-pill d-flex align-items-center gap-2 px-3 py-2">
-        <span class="gs-bmi-dock-pulse"></span>
+        <?php if (!$hasHosoBmi) : ?>
+            <span class="gs-bmi-dock-pulse"></span>
+        <?php endif; ?>
         <div class="gs-bmi-dock-icon">
             <i class="fa-solid fa-heart-pulse"></i>
         </div>
         <div class="text-start pe-1">
-            <div class="fw-bold text-uppercase lh-1 text-white" style="font-size: 0.72rem; letter-spacing: 0.05em;">Hồ sơ BMI</div>
-            <small class="text-white-50" style="font-size: 0.68rem;">Đo thể trạng ngay</small>
+            <?php if ($hasHosoBmi) : ?>
+                <div class="fw-bold text-uppercase lh-1 text-white" style="font-size: 0.72rem; letter-spacing: 0.05em;">BMI: <?php echo number_format($popBmi, 1); ?></div>
+                <small class="text-white-50" style="font-size: 0.66rem;">Cập nhật &amp; xem gợi ý</small>
+            <?php else : ?>
+                <div class="fw-bold text-uppercase lh-1 text-white" style="font-size: 0.72rem; letter-spacing: 0.05em;">Hồ sơ BMI</div>
+                <small class="text-white-50" style="font-size: 0.66rem;">Đo thể trạng ngay</small>
+            <?php endif; ?>
         </div>
         <div class="gs-bmi-dock-avatar ms-1">
             <img src="../assets/images/banners/tieuvy_bmi_popup.jpg" alt="Tiểu Vy" onerror="this.style.display='none'">
@@ -34,7 +42,7 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 </div>
 
 <div id="gsBmiPopupOverlay" class="gs-bmi-popup-overlay" style="display: none;">
-    <div class="gs-bmi-popup-card shadow-lg" id="gsBmiPopupCard" role="dialog" aria-modal="true">
+    <div class="gs-bmi-popup-card shadow-lg" id="gsBmiPopupCard" role="dialog" aria-modal="true" aria-labelledby="gsBmiPopupHeading">
         <div class="row g-0 align-items-stretch">
             <div class="col-lg-5 d-none d-lg-block position-relative gs-bmi-popup-hero">
                 <img src="../assets/images/banners/tieuvy_bmi_popup.jpg" 
@@ -65,7 +73,7 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
                         </span>
                     </div>
 
-                    <h4 class="fw-bold text-dark text-uppercase mb-1" style="font-size: 1.15rem; letter-spacing: -0.01em;">
+                    <h4 id="gsBmiPopupHeading" class="fw-bold text-dark text-uppercase mb-1" style="font-size: 1.15rem; letter-spacing: -0.01em;">
                         ĐO CHỈ SỐ THỂ TRẠNG BMI
                     </h4>
                     <p class="text-muted small mb-3" style="line-height: 1.45; font-size: 0.8rem;">
@@ -74,11 +82,11 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 
                     <form method="post" action="index.php" id="gsBmiPopupForm">
                         <input type="hidden" name="action" value="luuhoso">
-                        <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? 'index.php'); ?>">
+                        <input type="hidden" name="redirect" value="index.php?action=goy">
 
                         <div class="row g-2 mb-2">
                             <div class="col-6">
-                                <label class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">
+                                <label for="gsPopChieuCao" class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">
                                     Chiều cao (cm) <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group input-group-sm">
@@ -89,7 +97,7 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
                                 </div>
                             </div>
                             <div class="col-6">
-                                <label class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">
+                                <label for="gsPopCanNang" class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">
                                     Cân nặng (kg) <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group input-group-sm">
@@ -103,14 +111,14 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 
                         <div class="row g-2 mb-2">
                             <div class="col-6">
-                                <label class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Giới tính</label>
+                                <label for="gsPopGioiTinh" class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Giới tính</label>
                                 <select class="form-select form-select-sm" name="gioitinh" id="gsPopGioiTinh">
                                     <option value="nam" <?php echo ($popGioi === 'nam') ? 'selected' : ''; ?>>Nam</option>
                                     <option value="nu" <?php echo ($popGioi === 'nu') ? 'selected' : ''; ?>>Nữ</option>
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Tuổi</label>
+                                <label for="gsPopTuoi" class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Tuổi</label>
                                 <input type="number" class="form-control form-control-sm" name="tuoi" id="gsPopTuoi"
                                        min="10" max="100" placeholder="VD: 22" required
                                        value="<?php echo htmlspecialchars($popTuoi); ?>">
@@ -118,7 +126,7 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Mục tiêu tập luyện</label>
+                            <label for="gsPopMucTieu" class="form-label small fw-semibold text-dark mb-1" style="font-size: 0.78rem;">Mục tiêu tập luyện</label>
                             <select class="form-select form-select-sm" name="muctieu" id="gsPopMucTieu">
                                 <option value="tangcan" <?php echo ($popMuctieu === 'tangcan') ? 'selected' : ''; ?>>Tăng cân / Tăng cơ bắp</option>
                                 <option value="giamcan" <?php echo ($popMuctieu === 'giamcan') ? 'selected' : ''; ?>>Giảm cân / Đốt mỡ thừa</option>
@@ -186,12 +194,15 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 }
 .gs-bmi-floating-dock {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9990;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
     cursor: pointer;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    transition: bottom 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
     animation: gsPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.has-compare-dock .gs-bmi-floating-dock {
+    bottom: 84px;
 }
 .gs-bmi-floating-dock:hover {
     transform: translateY(-4px) scale(1.03);
@@ -216,19 +227,19 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
     animation: gsPulse 1.8s infinite;
 }
 .gs-bmi-dock-icon {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #D02545;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #FFFFFF;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
 }
 .gs-bmi-dock-avatar {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     overflow: hidden;
     border: 1.5px solid #D02545;
@@ -262,9 +273,21 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 (function() {
     var STORAGE_KEY_MINIMIZED = 'gs_bmi_dock_minimized';
     var isUserLoggedIn = <?php echo ($gsNguoidungHienTai ? 'true' : 'false'); ?>;
-    var hasHoso = <?php echo (($popCao > 0 && $popNang > 0) ? 'true' : 'false'); ?>;
+    var hasHoso = <?php echo ($hasHosoBmi ? 'true' : 'false'); ?>;
+
+    function syncFloatingClasses() {
+        var compareDock = document.getElementById('gsCompareDock');
+        var bmiDock = document.getElementById('gsBmiFloatingDock');
+        var compareVisible = !!(compareDock && compareDock.style.display !== 'none');
+        var bmiVisible = !!(bmiDock && bmiDock.style.display !== 'none');
+        document.body.classList.toggle('has-compare-dock', compareVisible);
+        document.body.classList.toggle('has-bmi-dock', bmiVisible);
+    }
+
+    window.gsDongBoViTriNoi = syncFloatingClasses;
 
     function init() {
+        syncFloatingClasses();
         if (!isUserLoggedIn) {
             return;
         }
@@ -275,13 +298,14 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
 
         var isMinimized = sessionStorage.getItem(STORAGE_KEY_MINIMIZED) === '1';
 
-        if (isMinimized) {
+        if (hasHoso || isMinimized) {
             dock.style.display = 'block';
             overlay.style.display = 'none';
         } else {
             overlay.style.display = 'flex';
             dock.style.display = 'none';
         }
+        syncFloatingClasses();
     }
 
     window.gsThuNhoBmiPopup = function() {
@@ -290,6 +314,7 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
         if (overlay) overlay.style.display = 'none';
         if (dock) dock.style.display = 'block';
         sessionStorage.setItem(STORAGE_KEY_MINIMIZED, '1');
+        syncFloatingClasses();
     };
 
     window.gsMoBmiPopup = function() {
@@ -297,7 +322,10 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
         var dock = document.getElementById('gsBmiFloatingDock');
         if (overlay) overlay.style.display = 'flex';
         if (dock) dock.style.display = 'none';
-        sessionStorage.removeItem(STORAGE_KEY_MINIMIZED);
+        if (!hasHoso) {
+            sessionStorage.removeItem(STORAGE_KEY_MINIMIZED);
+        }
+        syncFloatingClasses();
     };
 
     if (document.readyState === 'loading') {
@@ -307,4 +335,3 @@ $popBmi     = ($gsHosoThetrang && !empty($gsHosoThetrang['bmi'])) ? (float)$gsHo
     }
 })();
 </script>
-

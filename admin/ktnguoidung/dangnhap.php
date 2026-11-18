@@ -13,11 +13,8 @@
     <link href="../inc/css/app.css" rel="stylesheet">
     <script src="../inc/js/app.js"></script>
 
-    <!-- Bootstrap 5 & FontAwesome 6 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-
-    <!-- Unified Admin Design System -->
     <link href="../inc/css/main.css" rel="stylesheet">
 </head>
 
@@ -32,7 +29,7 @@
                                 <i class="fa fa-dumbbell fs-3"></i>
                             </div>
                             <h1 class="h3 fw-bold text-white mb-1">GymBro Admin</h1>
-                            <p class="text-muted small">Cổng thông tin quản trị và vận hành nội bộ</p>
+                            <p class="small mb-0" style="color: rgba(255, 255, 255, 0.72);">Cổng thông tin quản trị và vận hành nội bộ</p>
                         </div>
 
                         <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
@@ -52,18 +49,18 @@
                                     <input type="hidden" name="action" value="xldangnhap">
 
                                     <div class="mb-3">
-                                        <label class="form-label">Email tài khoản</label>
+                                        <label for="admin-login-email" class="form-label">Email tài khoản</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light text-muted border-end-0"><i class="fa fa-envelope"></i></span>
-                                            <input class="form-control border-start-0" type="email" name="txtemail" placeholder="name@gymbro.vn" required autofocus />
+                                            <input id="admin-login-email" class="form-control border-start-0" type="email" name="txtemail" placeholder="name@gymbro.vn" autocomplete="email" required autofocus />
                                         </div>
                                     </div>
 
                                     <div class="mb-4">
-                                        <label class="form-label">Mật khẩu</label>
+                                        <label for="admin-login-pass" class="form-label">Mật khẩu</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light text-muted border-end-0"><i class="fa fa-lock"></i></span>
-                                            <input class="form-control border-start-0" type="password" name="txtmatkhau" placeholder="Nhập mật khẩu" required />
+                                            <input id="admin-login-pass" class="form-control border-start-0" type="password" name="txtmatkhau" placeholder="Nhập mật khẩu" autocomplete="current-password" required />
                                         </div>
                                     </div>
 
@@ -76,7 +73,7 @@
                             </div>
                         </div>
 
-                        <div class="text-center mt-3 text-muted small">
+                        <div class="text-center mt-3 small" style="color: rgba(255, 255, 255, 0.65);">
                             GymBro Admin &copy; <?= date('Y') ?>. Hệ thống quản trị an toàn.
                         </div>
                     </div>

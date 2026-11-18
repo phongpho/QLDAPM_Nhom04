@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 include ('../model/database.php');
 include ('../model/sanpham.php');
 
@@ -49,6 +50,22 @@ switch ($action) {
     case 'dangnhap':
         if ($gsNguoidungId > 0) {
             gsChuyenTrang('index.php');
+        }
+        if (isset($_SESSION['gs_reg_success'])) {
+            $thongbao_thanhcong = $_SESSION['gs_reg_success'];
+            unset($_SESSION['gs_reg_success']);
+        }
+        if (isset($_SESSION['gs_reg_email'])) {
+            $loginEmail = $_SESSION['gs_reg_email'];
+            unset($_SESSION['gs_reg_email']);
+        }
+        $flashAuth = gsLayThongBao();
+        if ($flashAuth && !empty($flashAuth['noidung'])) {
+            if ($flashAuth['loai'] === 'success') {
+                $thongbao_thanhcong = $flashAuth['noidung'];
+            } else {
+                $thongbao_loi = $flashAuth['noidung'];
+            }
         }
         include('dangnhap.php');
         break;
@@ -104,10 +121,9 @@ switch ($action) {
             include('dangnhap.php');
         } else {
             $nd->themnguoidung($email, $matkhau, $sodt, $hoten, 3);
-            $thongbao_thanhcong = 'Đăng ký thành công! Hãy đăng nhập để bắt đầu mua sắm.';
-            $tabActive = 'login';
-            $loginEmail = $email;
-            include('dangnhap.php');
+            $_SESSION['gs_reg_success'] = 'Đăng ký thành công! Hãy đăng nhập để bắt đầu mua sắm.';
+            $_SESSION['gs_reg_email'] = $email;
+            gsChuyenTrang('index.php?action=dangnhap');
         }
         break;
 
@@ -270,10 +286,11 @@ switch ($action) {
         $dsSanpham = $sp->timkiemsanpham($tukhoa, $loai, $doituong, $muctieu, $sapxep, $motrang, ($trang - 1) * $motrang, $thuonghieu_id, $khoanggia, $size);
 
         $soluongnhom = array(
-            'quanao'  => $dm36->laysoluongsanphamtheoloai('quanao'),
-            'phukien' => $dm36->laysoluongsanphamtheoloai('phukien'),
-            'tpbs'    => $dm36->laysoluongsanphamtheoloai('tpbs')
+            'quanao'  => $sp->demtimkiemsanpham($tukhoa, 'quanao', $doituong, $muctieu, $thuonghieu_id, $khoanggia, $size),
+            'phukien' => $sp->demtimkiemsanpham($tukhoa, 'phukien', $doituong, $muctieu, $thuonghieu_id, $khoanggia, $size),
+            'tpbs'    => $sp->demtimkiemsanpham($tukhoa, 'tpbs', $doituong, $muctieu, $thuonghieu_id, $khoanggia, $size)
         );
+        $tongNhomTatCa = $soluongnhom['quanao'] + $soluongnhom['phukien'] + $soluongnhom['tpbs'];
 
         $dsThuonghieu = $sp->laydanhsachthuonghieu();
         $bmiGoiyData = gsLayGoiYTheoBmi($bmiModel, $sp, $gsNguoidungId);
@@ -353,7 +370,7 @@ switch ($action) {
                     'phanloai'  => $cauhinhTam['phanloai'],
                     'khuyenghe' => $cauhinhTam['khuyenghe']
                 );
-                $dsSanPhamBmiGoiy = $bmiModel->laysanphamchitietbycauhinh($cauhinhTam['id'], 8);
+                $dsSanPhamBmiGoiy = $bmiModel->laysanphamchitietbycauhinh($cauhinhTam['id'], 8, $gioitinh ?? '');
             }
         }
         include('goiy.php');
