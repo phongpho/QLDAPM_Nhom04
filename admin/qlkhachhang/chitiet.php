@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra quyền Admin (1) hoặc Nhân viên (2)
 if (!isset($_SESSION["nguoidung"]) || !in_array((int)$_SESSION["nguoidung"]["loai"], [1, 2])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
@@ -18,7 +17,6 @@ $hinhHienTai = (!empty($khachhang["hinhanh"]) && file_exists("../../assets/image
     ? "../../assets/images/users/" . $khachhang["hinhanh"] 
     : "../../assets/images/users/user.png";
 
-// Tính toán BMI đánh giá nếu có dữ liệu thể trạng
 $bmiValue = null;
 $bmiCategory = "";
 $bmiBadgeClass = "";

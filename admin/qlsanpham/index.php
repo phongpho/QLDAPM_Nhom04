@@ -18,17 +18,14 @@ require_once("../../model/danhmuc.php");
 $sp = new SANPHAM();
 $dm = new DANHMUC();
 
-// 2. Xác định action
 $action = $_REQUEST["action"] ?? "macdinh";
 
-// 3. Điều hướng xử lý theo action
 switch ($action) {
     case "macdinh":
         $sanpham = $sp->laysanphamquantri();
         $danhmuc = $dm->laydanhmuc();
         $thuonghieu = $sp->laytatcathuonghieu();
 
-        // Tính toán các chỉ số thống kê kho
         $tongSanPham = count($sanpham);
         $demSapHetHang = 0;
         $demNoiBat = 0;

@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Phân quyền: Cả Admin (1) và Nhân viên (2) đều được quản lý khách hàng
 if (!isset($_SESSION["nguoidung"])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
@@ -17,10 +16,8 @@ require_once("../../model/nguoidung.php");
 
 $nd = new NGUOIDUNG();
 
-// 2. Xác định action
 $action = $_REQUEST["action"] ?? "macdinh";
 
-// 3. Điều hướng xử lý theo action
 switch ($action) {
     case "macdinh":
         $khachhang = $nd->laydanhsachkhachhangquantri();
