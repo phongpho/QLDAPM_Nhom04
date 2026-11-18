@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Phân quyền: Cả Admin (1) và Nhân viên (2) đều được quản lý sản phẩm
 if (!isset($_SESSION["nguoidung"])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
