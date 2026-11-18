@@ -36,7 +36,7 @@
                 <h4 class="gs-footer__title">Đăng ký nhận tin &amp; Voucher</h4>
                 <p style="line-height:1.6;">Nhận ưu đãi độc quyền và mã giảm giá cho đơn hàng đầu tiên của bạn.</p>
                 <form class="gs-newsletter-form" id="gsNewsletterForm">
-                    <input type="email" class="gs-newsletter-input" placeholder="Nhập email của bạn" aria-label="Email" required>
+                    <input type="email" id="gsNewsletterEmail" name="email" class="gs-newsletter-input" placeholder="Nhập email của bạn" aria-label="Email" autocomplete="email" required>
                     <button type="submit" class="gs-newsletter-btn">Gửi</button>
                 </form>
                 <div class="gs-pay">
@@ -218,6 +218,7 @@ function gsXoaTatCaSoSanh() {
     .then(data => {
         const dock = document.getElementById('gsCompareDock');
         if (dock) dock.style.display = 'none';
+        if (typeof window.gsDongBoViTriNoi === 'function') window.gsDongBoViTriNoi();
 
         const badge = document.getElementById('badgeSosanhNavbar');
         if (badge) badge.textContent = '0';
@@ -252,11 +253,15 @@ function gsCapNhatCompareDock(data) {
 
     if (data.count <= 0) {
         dock.style.display = 'none';
+        if (typeof window.gsDongBoViTriNoi === 'function') window.gsDongBoViTriNoi();
         return;
     }
 
-    dock.style.display = 'block';
+    if (dock.dataset.isComparePage !== '1') {
+        dock.style.display = 'block';
+    }
     if (countBadge) countBadge.textContent = data.count + '/3';
+    if (typeof window.gsDongBoViTriNoi === 'function') window.gsDongBoViTriNoi();
 
     if (container && data.items) {
         container.innerHTML = data.items.map(it => `
@@ -273,8 +278,10 @@ function gsCapNhatCompareDock(data) {
 $dsDockIds = isset($_SESSION['gs_sosanh']) && is_array($_SESSION['gs_sosanh']) ? $_SESSION['gs_sosanh'] : array();
 $dsDockItems = (!empty($dsDockIds) && isset($sp)) ? $sp->laysanphamtheomangid($dsDockIds) : array();
 $dockCount = count($dsDockIds);
+$laTrangSoSanh = (isset($_REQUEST['action']) && $_REQUEST['action'] === 'sosanh');
+$hienCompareDock = ($dockCount > 0 && !$laTrangSoSanh);
 ?>
-<div id="gsCompareDock" class="gs-compare-dock shadow-lg" style="display: <?php echo ($dockCount > 0) ? 'block' : 'none'; ?>; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1040; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); border-top: 1px solid rgba(208, 37, 69, 0.25);">
+<div id="gsCompareDock" data-is-compare-page="<?php echo $laTrangSoSanh ? '1' : '0'; ?>" class="gs-compare-dock shadow-lg" style="display: <?php echo $hienCompareDock ? 'block' : 'none'; ?>; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1040; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); border-top: 1px solid rgba(208, 37, 69, 0.25);">
     <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2 py-2">
         <div class="d-flex align-items-center gap-3">
             <div class="d-flex align-items-center gap-2">

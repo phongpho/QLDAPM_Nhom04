@@ -119,7 +119,7 @@
                                             <i class="fa-regular fa-envelope"></i>
                                         </span>
                                         <input type="email" class="form-control" id="login-email" name="txtemail"
-                                            placeholder="name@example.com"
+                                            placeholder="name@example.com" autocomplete="email"
                                             value="<?= htmlspecialchars($loginEmail ?? '') ?>" required>
                                     </div>
                                 </div>
@@ -127,14 +127,14 @@
                                 <div class="mb-4">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="login-pass" class="form-label small fw-semibold mb-0 text-dark">Mật khẩu</label>
-                                        <a href="#" class="text-muted small text-decoration-none">Quên mật khẩu?</a>
+                                        <button type="button" class="btn btn-link p-0 text-muted small text-decoration-none" data-bs-toggle="modal" data-bs-target="#gsForgotPassModal">Quên mật khẩu?</button>
                                     </div>
                                     <div class="input-group mt-1">
                                         <span class="input-group-text">
                                             <i class="fa-solid fa-lock"></i>
                                         </span>
                                         <input type="password" class="form-control" id="login-pass" name="txtmatkhau"
-                                            placeholder="Nhập mật khẩu" required>
+                                            placeholder="Nhập mật khẩu" autocomplete="current-password" required>
                                     </div>
                                 </div>
 
@@ -152,34 +152,34 @@
                                 <div class="mb-2">
                                     <label for="reg-name" class="form-label small fw-semibold text-dark">Họ và tên</label>
                                     <input type="text" class="form-control" id="reg-name" name="txthoten"
-                                        placeholder="Nguyễn Văn A"
+                                        placeholder="Nguyễn Văn A" autocomplete="name"
                                         value="<?= htmlspecialchars($regHoten ?? '') ?>" required>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="reg-email" class="form-label small fw-semibold text-dark">Địa chỉ Email</label>
                                     <input type="email" class="form-control" id="reg-email" name="txtemail"
-                                        placeholder="name@example.com"
+                                        placeholder="name@example.com" autocomplete="email"
                                         value="<?= htmlspecialchars($regEmail ?? '') ?>" required>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="reg-phone" class="form-label small fw-semibold text-dark">Số điện thoại</label>
                                     <input type="tel" class="form-control" id="reg-phone" name="txtsodt"
-                                        placeholder="0901234567" pattern="[0-9]{10}"
+                                        placeholder="0901234567" pattern="[0-9]{10}" autocomplete="tel"
                                         value="<?= htmlspecialchars($regSodt ?? '') ?>" required>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="reg-pass" class="form-label small fw-semibold text-dark">Mật khẩu</label>
                                     <input type="password" class="form-control" id="reg-pass" name="txtmatkhau"
-                                        placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+                                        placeholder="Tối thiểu 6 ký tự" minlength="6" autocomplete="new-password" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="reg-repass" class="form-label small fw-semibold text-dark">Xác nhận mật khẩu</label>
                                     <input type="password" class="form-control" id="reg-repass" name="txtxacnhanmatkhau"
-                                        placeholder="Nhập lại mật khẩu" required>
+                                        placeholder="Nhập lại mật khẩu" autocomplete="new-password" required>
                                 </div>
 
                                 <button class="btn btn-auth-submit w-100 fw-semibold py-2" type="submit">
@@ -199,6 +199,23 @@
             </div>
         </div>
     </main>
+
+    <div class="modal fade" id="gsForgotPassModal" tabindex="-1" aria-labelledby="gsForgotPassModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h6 class="modal-title fw-bold text-dark" id="gsForgotPassModalLabel">Hỗ trợ khôi phục mật khẩu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body small text-muted">
+                    Vui lòng liên hệ bộ phận CSKH GymBro qua hotline <strong>1900 6868</strong> hoặc email <strong>hotro@gymbro.vn</strong> để được cấp lại mật khẩu nhanh chóng.
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-auth-submit btn-sm w-100" data-bs-dismiss="modal">Đã hiểu</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

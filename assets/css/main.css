@@ -2875,8 +2875,8 @@ img {
 
 .gs-backtop {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 24px;
+    right: 24px;
     width: 44px;
     height: 44px;
     border-radius: var(--gs-radius-pill);
@@ -2892,7 +2892,31 @@ img {
     visibility: hidden;
     transform: translateY(10px);
     transition: var(--gs-transition);
-    z-index: 1000;
+    z-index: 1045;
+}
+
+body.has-compare-dock {
+    padding-bottom: 76px;
+}
+
+body.has-bmi-dock {
+    padding-bottom: 72px;
+}
+
+body.has-compare-dock.has-bmi-dock {
+    padding-bottom: 136px;
+}
+
+body.has-bmi-dock .gs-backtop {
+    bottom: 84px;
+}
+
+body.has-compare-dock .gs-backtop {
+    bottom: 84px;
+}
+
+body.has-compare-dock.has-bmi-dock .gs-backtop {
+    bottom: 148px;
 }
 
 .gs-backtop.is-visible {

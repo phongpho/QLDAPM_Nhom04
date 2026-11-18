@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 class DATABASE
 {
     private static $dns = "mysql:host=127.0.0.1;dbname=gymshop;port=3306";

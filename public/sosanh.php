@@ -170,16 +170,21 @@ include(__DIR__ . '/inc/head-client.php');
                                     Đánh giá &amp; Lượt bán
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : 
-                                    $dg = $p['danhgia_thongke'] ?? array('diem' => 5, 'soluot' => 0);
-                                    $diem = $dg['diem'] > 0 ? $dg['diem'] : 5;
+                                    $dg = $p['danhgia_thongke'] ?? array('diem' => 0, 'soluot' => 0);
+                                    $soluot = (int) ($dg['soluot'] ?? 0);
+                                    $diem = ($soluot > 0) ? (float) $dg['diem'] : 0;
                                 ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
                                         <div class="d-flex align-items-center gap-1 mb-1">
                                             <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                                <i class="fa-solid fa-star small" style="color: <?php echo $i <= round($diem) ? '#FFB74A' : '#D1D5DB'; ?>;"></i>
+                                                <i class="fa-solid fa-star small" style="color: <?php echo ($soluot > 0 && $i <= round($diem)) ? '#FFB74A' : '#D1D5DB'; ?>;"></i>
                                             <?php endfor; ?>
-                                            <span class="text-dark fw-bold ms-1 small"><?php echo $diem; ?>/5</span>
-                                            <span class="text-muted small">(<?php echo (int) $dg['soluot']; ?>)</span>
+                                            <?php if ($soluot > 0) : ?>
+                                                <span class="text-dark fw-bold ms-1 small"><?php echo number_format($diem, 1, ',', '.'); ?>/5</span>
+                                                <span class="text-muted small">(<?php echo $soluot; ?>)</span>
+                                            <?php else : ?>
+                                                <span class="text-muted ms-1 small">Chưa có đánh giá</span>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="small text-muted">
                                             Đã bán <?php echo (int) $p['luotmua']; ?> sản phẩm
@@ -318,8 +323,10 @@ include(__DIR__ . '/inc/head-client.php');
                                 </th>
                                 <?php foreach ($dsSosanh as $p) : ?>
                                     <td class="p-3 bg-white" style="border-color: var(--gs-border);">
-                                        <?php if (!empty($p['mausac'])) : ?>
-                                            <span class="text-dark"><?php echo htmlspecialchars($p['mausac']); ?></span>
+                                        <?php if (!empty($p['mausac'])) :
+                                            $mauFormatted = implode(', ', array_filter(array_map('trim', explode(',', (string) $p['mausac']))));
+                                        ?>
+                                            <span class="text-dark"><?php echo htmlspecialchars($mauFormatted); ?></span>
                                         <?php else : ?>
                                             <span class="text-muted">Mặc định</span>
                                         <?php endif; ?>

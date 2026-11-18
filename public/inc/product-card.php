@@ -109,15 +109,24 @@ $danhSachMauCard = !empty($card['mausac']) ? array_slice(explode(',', (string)$c
                     <?php foreach ($danhSachMauCard as $mRaw) :
                         $mt = mb_strtolower(trim($mRaw), 'UTF-8');
                         $hex = '#475569';
-                        if (strpos($mt, 'đen') !== false) $hex = '#18181b';
+                        if (strpos($mt, 'vàng pastel') !== false || strpos($mt, 'vàng nhạt') !== false || strpos($mt, 'bơ') !== false) $hex = '#FDE68A';
+                        elseif (strpos($mt, 'kem') !== false || strpos($mt, 'be') !== false) $hex = '#F3E5AB';
+                        elseif (strpos($mt, 'vàng') !== false) $hex = '#FACC15';
+                        elseif (strpos($mt, 'xanh mint') !== false || strpos($mt, 'bạc hà') !== false || strpos($mt, 'lá pastel') !== false) $hex = '#A7F3D0';
+                        elseif (strpos($mt, 'xanh pastel') !== false || strpos($mt, 'xanh nhạt') !== false || strpos($mt, 'xanh baby') !== false) $hex = '#93C5FD';
+                        elseif (strpos($mt, 'hồng pastel') !== false || strpos($mt, 'hồng nhạt') !== false || strpos($mt, 'hồng phấn') !== false) $hex = '#F9A8D4';
+                        elseif (strpos($mt, 'tím pastel') !== false || strpos($mt, 'tím nhạt') !== false || strpos($mt, 'lavender') !== false) $hex = '#D8B4FE';
+                        elseif (strpos($mt, 'đen') !== false) $hex = '#18181b';
                         elseif (strpos($mt, 'trắng') !== false) $hex = '#ffffff';
-                        elseif (strpos($mt, 'xám') !== false) $hex = '#71717a';
+                        elseif (strpos($mt, 'xám') !== false || strpos($mt, 'ghi') !== false) $hex = '#71717a';
                         elseif (strpos($mt, 'navy') !== false || strpos($mt, 'than') !== false) $hex = '#1e3a8a';
+                        elseif (strpos($mt, 'xanh lá') !== false || strpos($mt, 'rêu') !== false) $hex = '#22c55e';
                         elseif (strpos($mt, 'xanh') !== false) $hex = '#2563eb';
                         elseif (strpos($mt, 'hồng') !== false) $hex = '#f472b6';
                         elseif (strpos($mt, 'đỏ') !== false) $hex = '#D02545';
                         elseif (strpos($mt, 'tím') !== false) $hex = '#a855f7';
                         elseif (strpos($mt, 'cam') !== false) $hex = '#f97316';
+                        elseif (strpos($mt, 'nâu') !== false) $hex = '#92400e';
                     ?>
                         <span class="gs-card-swatch" style="background-color: <?php echo $hex; ?>;" title="<?php echo htmlspecialchars(trim($mRaw)); ?>"></span>
                     <?php endforeach; ?>
