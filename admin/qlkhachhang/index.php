@@ -18,6 +18,7 @@ $nd = new NGUOIDUNG();
 
 $action = $_REQUEST["action"] ?? "macdinh";
 
+
 switch ($action) {
     case "macdinh":
         $khachhang = $nd->laydanhsachkhachhangquantri();
