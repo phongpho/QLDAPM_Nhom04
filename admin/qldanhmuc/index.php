@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Phân quyền: Cả Admin (1) và Nhân viên (2) đều được vào trang Quản lý danh mục
 if (!isset($_SESSION["nguoidung"])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
@@ -17,15 +16,12 @@ require_once("../../model/danhmuc.php");
 
 $dm = new DANHMUC();
 
-// 2. Xác định action
 $action = $_REQUEST["action"] ?? "macdinh";
 
-// 3. Điều hướng xử lý theo action
 switch ($action) {
     case "macdinh":
         $danhmuc = $dm->laydanhmuc();
 
-        // Thống kê nhanh
         $tongDanhmuc = count($danhmuc);
         $demQuanao = 0;
         $demPhukien = 0;
