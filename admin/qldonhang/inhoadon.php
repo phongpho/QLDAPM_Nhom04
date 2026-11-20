@@ -4,7 +4,6 @@ if (!isset($donhang) || !is_array($donhang)) {
     die("Dữ liệu đơn hàng không hợp lệ!");
 }
 
-// Hàm đọc tiền Việt Nam đồng thành chữ
 function docSoThanhChu($so) {
     $so = (int)round($so);
     if ($so <= 0) return 'Không đồng';

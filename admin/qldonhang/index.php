@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Phân quyền: Cả Admin (loai == 1) và Nhân viên (loai == 2) đều được truy cập Quản lý đơn hàng
 if (!isset($_SESSION["nguoidung"])) {
     header("Location: ../ktnguoidung/index.php?action=dangnhap");
     exit();
