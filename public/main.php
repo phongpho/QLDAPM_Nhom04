@@ -5,10 +5,12 @@ if (!isset($gsModule36)) {
     return;
 }
 $gsTieude = 'Trang chủ - Đồ tập Gym & Dinh dưỡng thể thao';
+// Nhúng header và slider banner
 include(__DIR__ . '/inc/head-client.php');
 include(__DIR__ . '/inc/carousel.php');
 ?>
 
+    <!-- Danh mục mua sắm chính -->
     <section class="gs-section">
         <div class="container">
             <div class="gs-section__head">
@@ -58,6 +60,7 @@ include(__DIR__ . '/inc/carousel.php');
 
 
     <?php
+    // Khởi tạo dữ liệu các khối sản phẩm trang chủ
     $gsSizeGoiy = ($gsGoiy && $gsGoiy['sizegoiy']) ? $gsGoiy['sizegoiy']['size'] : '';
     $gsKhoi = array(
         array('key' => 'nam', 'tieude' => 'Đồ tập Nam', 'mota' => 'Trang phục tập luyện nam co giãn, thoát mồ hôi nhanh', 'link' => 'index.php?action=sanpham&loai=quanao&doituong=nam', 'ds' => $sp->laysanphamtheonhom('quanao', 'nam', 4), 'nen' => ''),
@@ -71,6 +74,7 @@ include(__DIR__ . '/inc/carousel.php');
     );
     ?>
 
+    <!-- Hiển thị các khối sản phẩm và banner đại sứ -->
     <?php foreach ($gsKhoi as $khoi) : ?>
         <section class="gs-section<?php echo ($khoi['nen'] === 'grey') ? ' gs-section--grey' : ''; ?>">
             <div class="container">
@@ -121,6 +125,7 @@ include(__DIR__ . '/inc/carousel.php');
         </section>
     <?php endforeach; ?>
 
+    <!-- Câu chuyện thương hiệu GymBro -->
     <section class="gs-section">
         <div class="container">
             <div class="gs-story-head">
@@ -158,6 +163,7 @@ include(__DIR__ . '/inc/carousel.php');
         </div>
     </section>
 
+    <!-- Các modal chi tiết câu chuyện thương hiệu -->
     <div class="modal fade" id="gsStoryModal1" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-white text-dark border-0 shadow-lg">
@@ -198,4 +204,5 @@ include(__DIR__ . '/inc/carousel.php');
         </div>
     </div>
 
+    <!-- Nhúng footer chân trang -->
     <?php include(__DIR__ . '/inc/footer.php'); ?>

@@ -62,9 +62,11 @@ if ($khoanggia !== '') {
 if ($size !== '') {
     $tenloc .= ' - Size ' . $size;
 }
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
+<!-- Tiêu đề trang và breadcrumb -->
 <section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -83,6 +85,7 @@ include(__DIR__ . '/inc/head-client.php');
     <div class="container">
         <div class="row g-4">
 
+            <!-- Cột trái: Bộ lọc sản phẩm (tìm kiếm, nhóm, giá, size, thương hiệu, mục tiêu) -->
             <div class="col-12 col-lg-3">
                 <div class="gs-filter">
                     <form method="get" action="index.php" class="gs-filter__search mb-4 position-relative" id="gsFilterSearchForm" autocomplete="off">
@@ -295,6 +298,7 @@ include(__DIR__ . '/inc/head-client.php');
                 </div>
             </div>
 
+            <!-- Cột phải: Thanh sắp xếp và danh sách sản phẩm -->
             <div class="col-12 col-lg-9">
                 <div class="gs-toolbar">
                     <span class="gs-toolbar__count">
@@ -334,6 +338,7 @@ include(__DIR__ . '/inc/head-client.php');
                         <?php endforeach; ?>
                     </div>
 
+                    <!-- Phân trang sản phẩm -->
                     <?php if ($tongsotrang > 1) : ?>
                         <nav class="gs-pagination" aria-label="Phân trang sản phẩm">
                             <ul class="pagination justify-content-center">
@@ -361,6 +366,7 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
+<!-- Script tìm kiếm nhanh gợi ý sản phẩm -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('gsSidebarSearchInput');
@@ -438,4 +444,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>

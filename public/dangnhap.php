@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập &amp; Đăng ký - GYMBRO</title>
 
+    <!-- Nhúng font chữ và thư viện CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +15,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/main.css?v=<?= file_exists(__DIR__ . '/../assets/css/main.css') ? filemtime(__DIR__ . '/../assets/css/main.css') : time(); ?>" rel="stylesheet">
 
+    <!-- CSS tùy chỉnh giao diện -->
     <style>
         body {
             font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif;
@@ -54,6 +56,7 @@
     <main class="d-flex align-items-center justify-content-center min-vh-100 py-4 py-md-5">
         <div class="card gb-auth-wrapper border-0">
             <div class="row g-0 align-items-stretch">
+                <!-- Banner đại sứ thương hiệu bên trái -->
                 <div class="col-lg-5 d-none d-lg-block position-relative gb-auth-hero">
                     <img src="../assets/images/banners/tieuvy_bmi_popup.jpg?v=<?= file_exists(__DIR__ . '/../assets/images/banners/tieuvy_bmi_popup.jpg') ? filemtime(__DIR__ . '/../assets/images/banners/tieuvy_bmi_popup.jpg') : time(); ?>" 
                          alt="Hoa hậu Trần Tiểu Vy - GymBro Ambassador" 
@@ -79,6 +82,7 @@
                         <p class="small text-muted mt-2 mb-0">Đồng hành cùng mục tiêu tập luyện &amp; vóc dáng của bạn</p>
                     </div>
 
+                    <!-- Thông báo lỗi hoặc thành công -->
                     <?php if (isset($thongbao_loi) && !empty($thongbao_loi)): ?>
                         <div class="alert alert-danger py-2 px-3 small text-center" role="alert">
                             <?= htmlspecialchars($thongbao_loi) ?>
@@ -90,6 +94,7 @@
                         </div>
                     <?php endif; ?>
 
+                    <!-- Tabs chuyển đổi đăng nhập / đăng ký -->
                     <ul class="nav nav-pills nav-fill mb-3 gb-auth-nav" id="authTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link <?= (!isset($tabActive) || $tabActive === 'login') ? 'active' : '' ?> py-2"
@@ -107,6 +112,7 @@
 
                     <div class="tab-content" id="authTabContent">
 
+                        <!-- Form đăng nhập -->
                         <div class="tab-pane fade <?= (!isset($tabActive) || $tabActive === 'login') ? 'show active' : '' ?>"
                             id="tab-login" role="tabpanel">
                             <form action="index.php" method="post">
@@ -144,6 +150,7 @@
                             </form>
                         </div>
 
+                        <!-- Form đăng ký -->
                         <div class="tab-pane fade <?= (isset($tabActive) && $tabActive === 'register') ? 'show active' : '' ?>"
                             id="tab-register" role="tabpanel">
                             <form action="index.php" method="post">
@@ -200,6 +207,7 @@
         </div>
     </main>
 
+    <!-- Modal hỗ trợ quên mật khẩu -->
     <div class="modal fade" id="gsForgotPassModal" tabindex="-1" aria-labelledby="gsForgotPassModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-0 shadow" style="border-radius: 16px;">

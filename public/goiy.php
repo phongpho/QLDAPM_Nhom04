@@ -5,9 +5,11 @@ if (!isset($gsModule36)) {
     return;
 }
 $gsTieude = 'Gợi ý theo chỉ số cơ thể';
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
+<!-- Tiêu đề trang và breadcrumb gợi ý BMI -->
 <section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -24,6 +26,7 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
+<!-- Biểu mẫu nhập và tính toán chỉ số cơ thể BMI -->
 <section class="gs-section">
     <div class="container">
         <?php include(__DIR__ . '/inc/bmi-form.php'); ?>
@@ -38,6 +41,7 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
+<!-- Hiển thị sản phẩm và combo gợi ý sau khi tính BMI -->
 <?php
 if ($gsGoiy) {
     $gsGoiyTieude = 'Kết quả gợi ý dành riêng cho bạn';
@@ -45,4 +49,5 @@ if ($gsGoiy) {
 }
 ?>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>
