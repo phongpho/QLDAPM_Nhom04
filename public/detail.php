@@ -38,9 +38,11 @@ $motaParts = explode("\n\n", $motaRaw);
 $motaTongQuan = array_shift($motaParts);
 $motaChiTiet = implode("\n\n", $motaParts);
 
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
+<!-- Breadcrumb điều hướng -->
 <section class="gs-section gs-section--grey gs-page-head py-3">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -60,6 +62,7 @@ include(__DIR__ . '/inc/head-client.php');
     <div class="container">
         <div class="row g-4 g-lg-5">
 
+            <!-- Cột trái: Hình ảnh sản phẩm -->
             <div class="col-12 col-lg-5">
                 <div class="gs-detail__media" style="background: #F6F6F6; position: relative;">
                     <img class="gs-detail__img" id="gsDetailMainImg" src="../assets/images/products/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>"
@@ -91,6 +94,7 @@ include(__DIR__ . '/inc/head-client.php');
                 </div>
             </div>
 
+            <!-- Cột phải: Thông tin giá, size, màu sắc và đặt hàng -->
             <div class="col-12 col-lg-7">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <span class="badge px-2 py-1 text-uppercase fw-bold" style="background: #FFECF3; color: #D02545; font-size: 0.76rem;"><?php echo htmlspecialchars($danhmucCha); ?></span>
@@ -285,6 +289,7 @@ include(__DIR__ . '/inc/head-client.php');
             </div>
         </div>
 
+        <!-- Tabs thông tin: Mô tả, thông số và đánh giá nhận xét -->
         <div class="gs-detail__info mt-5">
             <ul class="nav nav-tabs gs-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -565,6 +570,7 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </section>
 
+<!-- Thanh mua nhanh cố định khi cuộn trang -->
 <div class="gs-sticky-quickbuy" id="gsStickyQuickBuy">
     <img src="../assets/images/products/<?php echo htmlspecialchars($sanpham['hinhanh']); ?>" alt="" class="gs-sticky-quickbuy__img" onerror="gsOnErrorImg(this)">
     <div class="gs-sticky-quickbuy__info">
@@ -583,6 +589,7 @@ $gsGoiyTieude = 'Sản phẩm & combo gợi ý theo chỉ số cơ thể của b
 include(__DIR__ . '/inc/recommendation.php');
 ?>
 
+<!-- Gợi ý sản phẩm tương tự cùng danh mục -->
 <?php if (count($sanphamtuongtu) > 0) : ?>
     <section class="gs-section gs-section--grey">
         <div class="container">
@@ -606,6 +613,7 @@ include(__DIR__ . '/inc/recommendation.php');
     </section>
 <?php endif; ?>
 
+<!-- Script xử lý số lượng, màu sắc, đánh giá sao và thanh mua nhanh -->
 <script>
 function gsGiamSoLuong() {
     var inp = document.getElementById('gsSoLuong');
@@ -667,4 +675,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>

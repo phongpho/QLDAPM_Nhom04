@@ -9,9 +9,11 @@ $gsTieude = 'Đơn hàng của tôi';
 if (!isset($dsDonhang)) {
     $dsDonhang = array();
 }
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 ?>
 
+<!-- Tiêu đề trang và breadcrumb đơn hàng -->
 <section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -37,6 +39,7 @@ include(__DIR__ . '/inc/head-client.php');
 
 <section class="gs-section">
     <div class="container">
+        <!-- Giao diện khi chưa có đơn hàng -->
         <?php if (count($dsDonhang) === 0) : ?>
             <div class="gs-empty gs-cart-empty-box">
                 <h3 class="mt-2 mb-2">Bạn chưa có đơn hàng nào</h3>
@@ -44,6 +47,7 @@ include(__DIR__ . '/inc/head-client.php');
                 <a class="btn-gs btn-gs--primary" href="index.php?action=sanpham">Mua sắm ngay</a>
             </div>
         <?php else : ?>
+            <!-- Danh sách đơn hàng đã đặt -->
             <div class="gs-orders-list">
                 <?php foreach ($dsDonhang as $od) : ?>
                     <?php $chitietdon = $dh->laychitietdonhang($od['id']); ?>
@@ -164,6 +168,7 @@ include(__DIR__ . '/inc/head-client.php');
 </section>
 
 
+<!-- Modal đánh giá sản phẩm sau khi nhận hàng -->
 <div class="modal fade" id="modalDanhGia" tabindex="-1" aria-labelledby="modalDanhGiaLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-white border text-dark shadow-lg">
@@ -221,6 +226,7 @@ include(__DIR__ . '/inc/head-client.php');
     </div>
 </div>
 
+<!-- Script xử lý chọn sao và mở modal đánh giá -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const modalEl = document.getElementById('modalDanhGia');
@@ -302,4 +308,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>

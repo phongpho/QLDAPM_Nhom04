@@ -5,6 +5,7 @@ if (!isset($gsModule36)) {
     return;
 }
 $gsTieude = 'Giỏ hàng của bạn';
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 
 $gsFreeshipMoc = 500000;
@@ -13,6 +14,7 @@ $gsConThieuFreeship = max(0, $gsFreeshipMoc - $gsTamtinhHientai);
 $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, round(($gsTamtinhHientai / $gsFreeshipMoc) * 100));
 ?>
 
+<!-- Tiêu đề trang và breadcrumb giỏ hàng -->
 <section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -48,6 +50,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
 
 <section class="gs-section">
     <div class="container">
+        <!-- Giao diện khi giỏ hàng trống -->
         <?php if (count($giohang) === 0) : ?>
             <div class="gs-empty gs-cart-empty-box">
                 <h3 class="mt-2 mb-2">Giỏ hàng của bạn đang trống</h3>
@@ -65,6 +68,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
             </div>
         <?php else : ?>
             <div class="row g-4">
+                <!-- Danh sách sản phẩm trong giỏ hàng -->
                 <div class="col-12 col-lg-8">
                     <div class="gs-cart">
                         <div class="gs-cart__header d-none d-md-flex">
@@ -174,6 +178,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                     </div>
                 </div>
 
+                <!-- Tổng kết đơn hàng, mã giảm giá và nút thanh toán -->
                 <div class="col-12 col-lg-4">
                     <div class="gs-cart-summary">
                         <div class="gs-cart-summary__head">
@@ -308,6 +313,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
     </div>
 </section>
 
+<!-- Gợi ý sản phẩm mua kèm theo chỉ số cơ thể -->
 <?php if ($gh->dadangnhap() && count($goiyMuakem) > 0) : ?>
     <section class="gs-section gs-section--grey">
         <div class="container">
@@ -335,4 +341,5 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
     </section>
 <?php endif; ?>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>

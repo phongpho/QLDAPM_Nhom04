@@ -6,6 +6,7 @@ if (!isset($gsModule36)) {
 }
 
 $gsTieude = 'Tài khoản của tôi';
+// Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 
 $user = $nd->laythongtinnguoidung($gsND['email']) ?: $gsND;
@@ -14,6 +15,7 @@ $hosoThetrang = $sp->layhosothetrang($gsNguoidungId);
 $tabActive = $_GET['tab'] ?? 'profile';
 ?>
 
+<!-- Tiêu đề trang và breadcrumb tài khoản -->
 <section class="gs-section gs-section--grey gs-page-head">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -35,6 +37,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
 <section class="gs-section">
     <div class="container">
         <div class="row g-4">
+            <!-- Cột trái: Thông tin đại diện và menu các tab tài khoản -->
             <div class="col-12 col-lg-3">
                 <div class="gs-checkout__box p-3">
                     <div class="d-flex align-items-center gap-3 pb-3 border-bottom border-opacity-10">
@@ -84,10 +87,12 @@ $tabActive = $_GET['tab'] ?? 'profile';
                 </div>
             </div>
 
+            <!-- Cột phải: Nội dung chi tiết các tab -->
             <div class="col-12 col-lg-9">
                 <div class="gs-checkout__box p-4">
                     <div class="tab-content" id="accountTabsContent">
 
+                        <!-- Tab 1: Hồ sơ cá nhân -->
                         <div class="tab-pane fade <?= ($tabActive === 'profile') ? 'show active' : '' ?>" id="pane-profile" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Hồ sơ cá nhân</h3>
@@ -135,6 +140,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             </form>
                         </div>
 
+                        <!-- Tab 2: Sổ địa chỉ nhận hàng -->
                         <div class="tab-pane fade <?= ($tabActive === 'address') ? 'show active' : '' ?>" id="pane-address" role="tabpanel">
                             <div class="d-flex flex-wrap justify-content-between align-items-center gs-checkout__box-head mb-4 gap-2">
                                 <div>
@@ -183,6 +189,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             <?php endif; ?>
                         </div>
 
+                        <!-- Tab 3: Hồ sơ thể trạng và BMI -->
                         <div class="tab-pane fade <?= ($tabActive === 'thetrang') ? 'show active' : '' ?>" id="pane-thetrang" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Hồ sơ thể trạng &amp; BMI</h3>
@@ -218,6 +225,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
                             <?php endif; ?>
                         </div>
 
+                        <!-- Tab 4: Đổi mật khẩu -->
                         <div class="tab-pane fade <?= ($tabActive === 'password') ? 'show active' : '' ?>" id="pane-password" role="tabpanel">
                             <div class="gs-checkout__box-head mb-4">
                                 <h3 class="gs-checkout__title mb-1">Đổi mật khẩu</h3>
@@ -255,6 +263,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
     </div>
 </section>
 
+<!-- Modal thêm địa chỉ nhận hàng mới -->
 <div class="modal fade" id="modalThemDiaChi" tabindex="-1" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color: #FFFFFF; border: 1px solid var(--gs-border); border-radius: var(--gs-radius-lg);">
@@ -293,6 +302,7 @@ $tabActive = $_GET['tab'] ?? 'profile';
     </div>
 </div>
 
+<!-- Script xem trước ảnh đại diện tải lên -->
 <script>
 function previewImg(input) {
     if (input.files && input.files[0]) {
@@ -305,4 +315,5 @@ function previewImg(input) {
 }
 </script>
 
+<!-- Nhúng footer chân trang -->
 <?php include(__DIR__ . '/inc/footer.php'); ?>
