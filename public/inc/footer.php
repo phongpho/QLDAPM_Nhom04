@@ -58,6 +58,9 @@
     </div>
 </footer>
 
+<!-- Widget liên hệ nhanh đa kênh GYMBRO -->
+<?php include(__DIR__ . '/contact-widget.php'); ?>
+
 <button class="gs-backtop" id="gsBackTop" aria-label="Về đầu trang">
     <i class="fa-solid fa-chevron-up"></i>
 </button>
