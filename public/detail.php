@@ -191,8 +191,13 @@ include(__DIR__ . '/inc/head-client.php');
 
                     <?php if (count($mangsizes) > 0) : ?>
                         <div class="mb-3">
-                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                <span class="gs-detail__label mb-0">Chọn size</span>
+                            <div class="d-flex align-items-center justify-content-between mb-1 flex-wrap gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="gs-detail__label mb-0">Chọn size</span>
+                                    <button type="button" class="btn btn-link p-0 text-decoration-none small text-danger fw-semibold d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#modalBangSize" style="font-size: 0.82rem;">
+                                        <i class="fa-solid fa-ruler-combined"></i> Bảng quy đổi size
+                                    </button>
+                                </div>
                                 <?php if ($sizegoiy !== '') : ?>
                                     <span class="gs-sizegoiy-note mt-0">
                                         Gợi ý theo chỉ số: <strong>Size <?php echo htmlspecialchars($sizegoiy); ?></strong>
@@ -612,6 +617,171 @@ include(__DIR__ . '/inc/recommendation.php');
         </div>
     </section>
 <?php endif; ?>
+
+<!-- Modal bảng quy đổi size đồ tập GymBro -->
+<div class="modal fade" id="modalBangSize" tabindex="-1" aria-labelledby="modalBangSizeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-header border-0 bg-dark text-white p-3 p-md-4">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-ruler-combined text-danger fs-4"></i>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 text-white" id="modalBangSizeLabel">BẢNG QUY ĐỔI SIZE CHUẨN GYMBRO</h5>
+                        <small class="text-white-50">Chuẩn phom dáng thể hình &amp; co giãn 4 chiều</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body p-3 p-md-4">
+                <ul class="nav nav-pills nav-fill mb-3" id="pills-size-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold py-2" id="tab-size-nam-btn" data-bs-toggle="pill" data-bs-target="#tab-size-nam" type="button" role="tab">
+                            <i class="fa-solid fa-mars me-1 text-primary"></i> Đồ tập Nam
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold py-2" id="tab-size-nu-btn" data-bs-toggle="pill" data-bs-target="#tab-size-nu" type="button" role="tab">
+                            <i class="fa-solid fa-venus me-1 text-danger"></i> Đồ tập Nữ
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold py-2" id="tab-size-tip-btn" data-bs-toggle="pill" data-bs-target="#tab-size-tip" type="button" role="tab">
+                            <i class="fa-solid fa-lightbulb me-1 text-warning"></i> Mẹo chọn size
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-size-content">
+                    <!-- Tab Nam -->
+                    <div class="tab-pane fade show active" id="tab-size-nam" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover text-center align-middle mb-2">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-danger fw-bold">Size</th>
+                                        <th>Chiều cao (cm)</th>
+                                        <th>Cân nặng (kg)</th>
+                                        <th>Vòng ngực (cm)</th>
+                                        <th>Vòng eo (cm)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong class="badge bg-dark px-2 py-1">S</strong></td>
+                                        <td>160 - 167</td>
+                                        <td>52 - 62</td>
+                                        <td>86 - 92</td>
+                                        <td>68 - 74</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-dark px-2 py-1">M</strong></td>
+                                        <td>168 - 173</td>
+                                        <td>63 - 70</td>
+                                        <td>93 - 98</td>
+                                        <td>75 - 80</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-dark px-2 py-1">L</strong></td>
+                                        <td>174 - 178</td>
+                                        <td>71 - 78</td>
+                                        <td>99 - 104</td>
+                                        <td>81 - 86</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-dark px-2 py-1">XL</strong></td>
+                                        <td>179 - 185</td>
+                                        <td>79 - 88</td>
+                                        <td>105 - 110</td>
+                                        <td>87 - 92</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-dark px-2 py-1">XXL</strong></td>
+                                        <td>182 - 190</td>
+                                        <td>89 - 100+</td>
+                                        <td>111 - 118</td>
+                                        <td>93 - 100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            * Bảng số đo áp dụng cho các dòng áo tập Body Fit, Áo ba lỗ Tanktop và Quần tập gym nam GymBro.
+                        </small>
+                    </div>
+
+                    <!-- Tab Nữ -->
+                    <div class="tab-pane fade" id="tab-size-nu" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover text-center align-middle mb-2">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-danger fw-bold">Size</th>
+                                        <th>Chiều cao (cm)</th>
+                                        <th>Cân nặng (kg)</th>
+                                        <th>Vòng ngực (cm)</th>
+                                        <th>Vòng mông (cm)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong class="badge bg-danger px-2 py-1">S</strong></td>
+                                        <td>150 - 156</td>
+                                        <td>42 - 48</td>
+                                        <td>78 - 83</td>
+                                        <td>85 - 90</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-danger px-2 py-1">M</strong></td>
+                                        <td>157 - 163</td>
+                                        <td>49 - 54</td>
+                                        <td>84 - 89</td>
+                                        <td>91 - 96</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-danger px-2 py-1">L</strong></td>
+                                        <td>164 - 169</td>
+                                        <td>55 - 61</td>
+                                        <td>90 - 95</td>
+                                        <td>97 - 102</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong class="badge bg-danger px-2 py-1">XL</strong></td>
+                                        <td>170 - 176</td>
+                                        <td>62 - 70</td>
+                                        <td>96 - 102</td>
+                                        <td>103 - 110</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            * Bảng số đo áp dụng cho Áo tập Bra, Áo croptop và Quần Legging nữ GymBro Ambassador Collection.
+                        </small>
+                    </div>
+
+                    <!-- Tab Mẹo chọn size -->
+                    <div class="tab-pane fade" id="tab-size-tip" role="tabpanel">
+                        <div class="p-3 bg-light rounded-3">
+                            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-dumbbell text-danger me-2"></i>Mẹo chọn đồ chuẩn cho Gymer:</h6>
+                            <ul class="small text-muted ps-3 mb-3" style="line-height: 1.7;">
+                                <li><strong>Form Body Fit (Ôm sát cơ):</strong> Chọn đúng size theo bảng số đo để tôn trọn nét cắt cơ bắp và hỗ trợ cố định cơ khi tập nặng.</li>
+                                <li><strong>Form Oversize / Regular (Thoải mái):</strong> Tăng lên 1 size nếu bạn thích sự rộng rãi, thoáng mát trong các buổi tập Cardio hay Leg Day.</li>
+                                <li><strong>Ở giữa 2 size:</strong> Nếu cân nặng của bạn nằm ở ranh giới giữa 2 size, hãy ưu tiên chọn size lớn hơn để luôn thoải mái vận động.</li>
+                            </ul>
+                            <div class="alert alert-danger py-2 px-3 small mb-0 d-flex align-items-center gap-2" role="alert">
+                                <i class="fa-solid fa-rotate-left fs-5"></i>
+                                <div><strong>Chính sách đổi size:</strong> GymBro hỗ trợ đổi size miễn phí trong vòng 7 ngày nếu không vừa vặn.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-dark w-100 fw-semibold py-2" data-bs-dismiss="modal">Đã hiểu</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Script xử lý số lượng, màu sắc, đánh giá sao và thanh mua nhanh -->
 <script>
