@@ -12,7 +12,6 @@ $user = $_SESSION["nguoidung"];
 $isAdmin = ((int)$user["loai"] === 1);
 $roleName = $isAdmin ? "Quản trị viên" : "Nhân viên vận hành";
 
-// Khởi tạo các biến thống kê an toàn
 $countDanhMuc = 0;
 $countSanPham = 0;
 $countKhachHang = 0;
@@ -37,30 +36,24 @@ $danhGiaMoiNhat = [];
 try {
     $dbcon = DATABASE::connect();
 
-    // 1. Thống kê đơn hàng & doanh thu
     if (file_exists("../../model/donhang.php")) {
         require_once("../../model/donhang.php");
         $donhangModel = new DONHANG();
         $tkDonHang = $donhangModel->thongkedonhangquantri();
     }
 
-    // Doanh thu hôm nay
     $sqlToday = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND DATE(ngay) = CURDATE()";
     $doanhThuHomNay = (float)$dbcon->query($sqlToday)->fetchColumn();
 
-    // Doanh thu tháng này
     $sqlMonth = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND MONTH(ngay) = MONTH(CURDATE()) AND YEAR(ngay) = YEAR(CURDATE())";
     $doanhThuThangNay = (float)$dbcon->query($sqlMonth)->fetchColumn();
 
-    // 2. Thống kê sản phẩm & danh mục
     $countSanPham = (int)$dbcon->query("SELECT COUNT(*) FROM sanpham")->fetchColumn();
     $countDanhMuc = (int)$dbcon->query("SELECT COUNT(*) FROM danhmuc")->fetchColumn();
 
-    // 3. Thống kê người dùng
     $countKhachHang = (int)$dbcon->query("SELECT COUNT(*) FROM nguoidung WHERE loai = 3")->fetchColumn();
     $countNhanSu = (int)$dbcon->query("SELECT COUNT(*) FROM nguoidung WHERE loai = 2")->fetchColumn();
 
-    // 4. Sản phẩm cảnh báo tồn kho (soluongton <= 5)
     $sqlTonKho = "SELECT s.id, s.tensanpham, s.soluongton, s.hinhanh, s.giaban, d.tendanhmuc 
                   FROM sanpham s 
                   LEFT JOIN danhmuc d ON d.id = s.danhmuc_id 
@@ -68,13 +61,11 @@ try {
                   ORDER BY s.soluongton ASC, s.id DESC LIMIT 5";
     $spSapHet = $dbcon->query($sqlTonKho)->fetchAll(PDO::FETCH_ASSOC);
 
-    // 5. Đơn hàng mới nhất
     $sqlTopDon = "SELECT id, madonhang, tennguoinhan, sdtnhan, tongtien, trangthai, ngay 
                   FROM donhang 
                   ORDER BY id DESC LIMIT 5";
     $donHangMoiNhat = $dbcon->query($sqlTopDon)->fetchAll(PDO::FETCH_ASSOC);
 
-    // 6. Đánh giá mới nhất
     $sqlTopDg = "SELECT dg.*, nd.hoten, sp.tensanpham, sp.hinhanh as sanpham_anh 
                  FROM danhgia dg 
                  LEFT JOIN nguoidung nd ON nd.id = dg.nguoidung_id 
@@ -82,7 +73,6 @@ try {
                  ORDER BY dg.id DESC LIMIT 4";
     $danhGiaMoiNhat = $dbcon->query($sqlTopDg)->fetchAll(PDO::FETCH_ASSOC);
 
-    // 7. Thống kê 7 ngày gần nhất cho biểu đồ doanh thu & đơn hàng
     $chartDates = [];
     $chartRevenueData = [];
     $chartOrdersData = [];
