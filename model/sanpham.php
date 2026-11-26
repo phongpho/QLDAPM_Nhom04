@@ -972,5 +972,39 @@ class SANPHAM
             return false;
         }
     }
+
+    // Đếm tổng số sản phẩm cho Dashboard
+    public function demsanpham()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            return (int)$dbcon->query("SELECT COUNT(*) FROM sanpham")->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Lỗi demsanpham: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    // Lấy danh sách sản phẩm sắp hết hàng cho Dashboard
+    public function laysanphamsaphet($nguong = 5, $limit = 5)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT s.id, s.tensanpham, s.soluongton, s.hinhanh, s.giaban, d.tendanhmuc
+                    FROM sanpham s
+                    LEFT JOIN danhmuc d ON d.id = s.danhmuc_id
+                    WHERE s.trangthai = 1 AND s.soluongton <= :nguong
+                    ORDER BY s.soluongton ASC, s.id DESC
+                    LIMIT :limit";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":nguong", (int)$nguong, PDO::PARAM_INT);
+            $cmd->bindValue(":limit", max(1, (int)$limit), PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Lỗi laysanphamsaphet: " . $e->getMessage());
+            return [];
+        }
+    }
 }
 ?>

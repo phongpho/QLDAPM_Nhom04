@@ -469,5 +469,21 @@ class NGUOIDUNG
             return false;
         }
     }
+
+    // Đếm số lượng người dùng theo loại (1: Admin, 2: Nhân sự, 3: Khách hàng)
+    public function demnguoidungtheoloai($loai)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COUNT(*) FROM nguoidung WHERE loai = :loai";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":loai", (int)$loai, PDO::PARAM_INT);
+            $cmd->execute();
+            return (int)$cmd->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Lỗi demnguoidungtheoloai: " . $e->getMessage());
+            return 0;
+        }
+    }
 }
 ?>

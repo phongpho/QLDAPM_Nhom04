@@ -4,6 +4,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require("../../model/database.php");
 require("../../model/nguoidung.php");
+require("../../model/donhang.php");
+require("../../model/sanpham.php");
+require("../../model/danhmuc.php");
+require("../../model/danhgia.php");
 $isLogin = isset($_SESSION["nguoidung"]);
 if (isset($_REQUEST["action"])) {
     $action = $_REQUEST["action"];
@@ -15,6 +19,41 @@ if (isset($_REQUEST["action"])) {
 $nd = new NGUOIDUNG();
 switch ($action) {
     case "macdinh":
+        if (!isset($_SESSION["nguoidung"])) {
+            header("Location: index.php?action=dangnhap");
+            exit();
+        }
+        $user = $_SESSION["nguoidung"];
+        $isAdmin = ((int)$user["loai"] === 1);
+        $roleName = $isAdmin ? "Quản trị viên" : "Nhân viên vận hành";
+
+        $donhangModel = new DONHANG();
+        $sanphamModel = new SANPHAM();
+        $danhmucModel = new DANHMUC();
+        $danhgiaModel = new DANHGIA();
+
+        $tkDonHang = $donhangModel->thongkedonhangquantri();
+        $doanhThuHomNay = $donhangModel->laydoanhthuhomnay();
+        $doanhThuThangNay = $donhangModel->laydoanhthuthangnay();
+        $donHangMoiNhat = $donhangModel->laydonhangmoinhat(5);
+
+        $chartStats = $donhangModel->laythongke7ngaygannhat();
+        $chartDates = $chartStats['dates'];
+        $chartRevenueData = $chartStats['revenues'];
+        $chartOrdersData = $chartStats['orders'];
+        $tongDoanhThu7Ngay = $chartStats['tongDoanhThu7Ngay'];
+
+        $countSanPham = $sanphamModel->demsanpham();
+        $spSapHet = $sanphamModel->laysanphamsaphet(5, 5);
+        $countDanhMuc = $danhmucModel->demdanhmuc();
+        $countKhachHang = $nd->demnguoidungtheoloai(3);
+        $countNhanSu = $nd->demnguoidungtheoloai(2);
+        $danhGiaMoiNhat = $danhgiaModel->laydanhgiamoinhat(4);
+
+        $totalOrders = (int)($tkDonHang['tong_don'] ?? 0);
+        $completedOrders = (int)($tkDonHang['don_hoanthanh'] ?? 0);
+        $tyLeHoanThanh = ($totalOrders > 0) ? round(($completedOrders / $totalOrders) * 100, 1) : 0;
+
         include("main.php");
         break;
     case "dangnhap":
@@ -32,7 +71,8 @@ switch ($action) {
                 header("Location: ../../public/index.php");
                 exit();
             } else {
-                include("main.php");
+                header("Location: index.php?action=macdinh");
+                exit();
             }
         } else {
             $thongbao = "Đăng nhập không thành công!";

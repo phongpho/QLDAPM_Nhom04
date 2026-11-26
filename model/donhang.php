@@ -606,4 +606,96 @@ class DONHANG
             return array('ok' => false, 'message' => 'Lỗi khi xóa đơn hàng: ' . $e->getMessage());
         }
     }
+
+    // Doanh thu hoàn thành hôm nay (trangthai = 5)
+    public function laydoanhthuhomnay()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND DATE(ngay) = CURDATE()";
+            return (float)$dbcon->query($sql)->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Lỗi laydoanhthuhomnay: " . $e->getMessage());
+            return 0.0;
+        }
+    }
+
+    // Doanh thu hoàn thành tháng hiện tại (trangthai = 5)
+    public function laydoanhthuthangnay()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND MONTH(ngay) = MONTH(CURDATE()) AND YEAR(ngay) = YEAR(CURDATE())";
+            return (float)$dbcon->query($sql)->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Lỗi laydoanhthuthangnay: " . $e->getMessage());
+            return 0.0;
+        }
+    }
+
+    // Lấy danh sách đơn hàng mới nhất cho Dashboard
+    public function laydonhangmoinhat($limit = 5)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT id, madonhang, tennguoinhan, sdtnhan, tongtien, trangthai, ngay
+                    FROM donhang
+                    ORDER BY id DESC
+                    LIMIT :limit";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":limit", max(1, (int)$limit), PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Lỗi laydonhangmoinhat: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    // Thống kê doanh thu (đơn hoàn thành) & số lượng đơn 7 ngày gần nhất
+    public function laythongke7ngaygannhat()
+    {
+        $dbcon = DATABASE::connect();
+        $dates = [];
+        $revenues = [];
+        $orders = [];
+        $tongDoanhThu7Ngay = 0.0;
+
+        try {
+            $startDate = date('Y-m-d', strtotime('-6 days'));
+            $sql = "SELECT DATE(ngay) AS ngay_tk,
+                           COALESCE(SUM(CASE WHEN trangthai = 5 THEN tongtien ELSE 0 END), 0) AS doanh_thu,
+                           COUNT(*) AS so_don
+                    FROM donhang
+                    WHERE DATE(ngay) >= :start_date
+                    GROUP BY DATE(ngay)";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":start_date", $startDate);
+            $cmd->execute();
+
+            $byDate = [];
+            foreach ($cmd->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $byDate[$row['ngay_tk']] = $row;
+            }
+
+            for ($i = 6; $i >= 0; $i--) {
+                $curDate = date('Y-m-d', strtotime("-$i days"));
+                $dates[] = date('d/m', strtotime("-$i days"));
+                $revVal = isset($byDate[$curDate]) ? (float)$byDate[$curDate]['doanh_thu'] : 0.0;
+                $cntVal = isset($byDate[$curDate]) ? (int)$byDate[$curDate]['so_don'] : 0;
+                $revenues[] = $revVal;
+                $orders[] = $cntVal;
+                $tongDoanhThu7Ngay += $revVal;
+            }
+        } catch (PDOException $e) {
+            error_log("Lỗi laythongke7ngaygannhat: " . $e->getMessage());
+        }
+
+        return [
+            'dates' => $dates,
+            'revenues' => $revenues,
+            'orders' => $orders,
+            'tongDoanhThu7Ngay' => $tongDoanhThu7Ngay
+        ];
+    }
 }

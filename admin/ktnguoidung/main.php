@@ -8,16 +8,16 @@ if (!isset($_SESSION["nguoidung"])) {
     exit();
 }
 
-$user = $_SESSION["nguoidung"];
-$isAdmin = ((int)$user["loai"] === 1);
-$roleName = $isAdmin ? "Quản trị viên" : "Nhân viên vận hành";
+$user = $user ?? $_SESSION["nguoidung"];
+$isAdmin = $isAdmin ?? ((int)$user["loai"] === 1);
+$roleName = $roleName ?? ($isAdmin ? "Quản trị viên" : "Nhân viên vận hành");
 
-$countDanhMuc = 0;
-$countSanPham = 0;
-$countKhachHang = 0;
-$countNhanSu = 0;
+$countDanhMuc = $countDanhMuc ?? 0;
+$countSanPham = $countSanPham ?? 0;
+$countKhachHang = $countKhachHang ?? 0;
+$countNhanSu = $countNhanSu ?? 0;
 
-$tkDonHang = [
+$tkDonHang = $tkDonHang ?? [
     'tong_don' => 0,
     'don_moi' => 0,
     'don_xacnhan' => 0,
@@ -27,80 +27,16 @@ $tkDonHang = [
     'doanhthu_hoanthanh' => 0,
     'tong_doanhso' => 0
 ];
-$doanhThuHomNay = 0;
-$doanhThuThangNay = 0;
-$spSapHet = [];
-$donHangMoiNhat = [];
-$danhGiaMoiNhat = [];
-
-try {
-    $dbcon = DATABASE::connect();
-
-    if (file_exists("../../model/donhang.php")) {
-        require_once("../../model/donhang.php");
-        $donhangModel = new DONHANG();
-        $tkDonHang = $donhangModel->thongkedonhangquantri();
-    }
-
-    $sqlToday = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND DATE(ngay) = CURDATE()";
-    $doanhThuHomNay = (float)$dbcon->query($sqlToday)->fetchColumn();
-
-    $sqlMonth = "SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND MONTH(ngay) = MONTH(CURDATE()) AND YEAR(ngay) = YEAR(CURDATE())";
-    $doanhThuThangNay = (float)$dbcon->query($sqlMonth)->fetchColumn();
-
-    $countSanPham = (int)$dbcon->query("SELECT COUNT(*) FROM sanpham")->fetchColumn();
-    $countDanhMuc = (int)$dbcon->query("SELECT COUNT(*) FROM danhmuc")->fetchColumn();
-
-    $countKhachHang = (int)$dbcon->query("SELECT COUNT(*) FROM nguoidung WHERE loai = 3")->fetchColumn();
-    $countNhanSu = (int)$dbcon->query("SELECT COUNT(*) FROM nguoidung WHERE loai = 2")->fetchColumn();
-
-    $sqlTonKho = "SELECT s.id, s.tensanpham, s.soluongton, s.hinhanh, s.giaban, d.tendanhmuc 
-                  FROM sanpham s 
-                  LEFT JOIN danhmuc d ON d.id = s.danhmuc_id 
-                  WHERE s.trangthai = 1 AND s.soluongton <= 5 
-                  ORDER BY s.soluongton ASC, s.id DESC LIMIT 5";
-    $spSapHet = $dbcon->query($sqlTonKho)->fetchAll(PDO::FETCH_ASSOC);
-
-    $sqlTopDon = "SELECT id, madonhang, tennguoinhan, sdtnhan, tongtien, trangthai, ngay 
-                  FROM donhang 
-                  ORDER BY id DESC LIMIT 5";
-    $donHangMoiNhat = $dbcon->query($sqlTopDon)->fetchAll(PDO::FETCH_ASSOC);
-
-    $sqlTopDg = "SELECT dg.*, nd.hoten, sp.tensanpham, sp.hinhanh as sanpham_anh 
-                 FROM danhgia dg 
-                 LEFT JOIN nguoidung nd ON nd.id = dg.nguoidung_id 
-                 LEFT JOIN sanpham sp ON sp.id = dg.sanpham_id 
-                 ORDER BY dg.id DESC LIMIT 4";
-    $danhGiaMoiNhat = $dbcon->query($sqlTopDg)->fetchAll(PDO::FETCH_ASSOC);
-
-    $chartDates = [];
-    $chartRevenueData = [];
-    $chartOrdersData = [];
-    $tongDoanhThu7Ngay = 0;
-
-    for ($i = 6; $i >= 0; $i--) {
-        $curDate = date('Y-m-d', strtotime("-$i days"));
-        $curLabel = date('d/m', strtotime("-$i days"));
-        $chartDates[] = $curLabel;
-
-        $stmtRev = $dbcon->prepare("SELECT COALESCE(SUM(tongtien), 0) FROM donhang WHERE trangthai = 5 AND DATE(ngay) = ?");
-        $stmtRev->execute([$curDate]);
-        $revVal = (float)$stmtRev->fetchColumn();
-        $chartRevenueData[] = $revVal;
-        $tongDoanhThu7Ngay += $revVal;
-
-        $stmtCnt = $dbcon->prepare("SELECT COUNT(*) FROM donhang WHERE DATE(ngay) = ?");
-        $stmtCnt->execute([$curDate]);
-        $chartOrdersData[] = (int)$stmtCnt->fetchColumn();
-    }
-
-    $totalOrders = (int)$tkDonHang['tong_don'];
-    $completedOrders = (int)$tkDonHang['don_hoanthanh'];
-    $tyLeHoanThanh = ($totalOrders > 0) ? round(($completedOrders / $totalOrders) * 100, 1) : 0;
-
-} catch (Exception $e) {
-    error_log("Lỗi tải dữ liệu Dashboard: " . $e->getMessage());
-}
+$doanhThuHomNay = $doanhThuHomNay ?? 0;
+$doanhThuThangNay = $doanhThuThangNay ?? 0;
+$spSapHet = $spSapHet ?? [];
+$donHangMoiNhat = $donHangMoiNhat ?? [];
+$danhGiaMoiNhat = $danhGiaMoiNhat ?? [];
+$chartDates = $chartDates ?? [];
+$chartRevenueData = $chartRevenueData ?? [];
+$chartOrdersData = $chartOrdersData ?? [];
+$tongDoanhThu7Ngay = $tongDoanhThu7Ngay ?? 0;
+$tyLeHoanThanh = $tyLeHoanThanh ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="vi">

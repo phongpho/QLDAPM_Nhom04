@@ -236,5 +236,26 @@ class DANHGIA
             return false;
         }
     }
+
+    // Lấy danh sách đánh giá mới nhất cho Dashboard
+    public function laydanhgiamoinhat($limit = 4)
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            $sql = "SELECT dg.*, nd.hoten, sp.tensanpham, sp.hinhanh AS sanpham_anh
+                    FROM danhgia dg
+                    LEFT JOIN nguoidung nd ON nd.id = dg.nguoidung_id
+                    LEFT JOIN sanpham sp ON sp.id = dg.sanpham_id
+                    ORDER BY dg.id DESC
+                    LIMIT :limit";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":limit", max(1, (int)$limit), PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Lỗi laydanhgiamoinhat: " . $e->getMessage());
+            return [];
+        }
+    }
 }
 ?>

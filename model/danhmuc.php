@@ -219,5 +219,17 @@ class DANHMUC
             exit();
         }
     }
+
+    // Đếm tổng số danh mục cho Dashboard
+    public function demdanhmuc()
+    {
+        $dbcon = DATABASE::connect();
+        try {
+            return (int)$dbcon->query("SELECT COUNT(*) FROM danhmuc")->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Lỗi demdanhmuc: " . $e->getMessage());
+            return 0;
+        }
+    }
 }
 ?>
