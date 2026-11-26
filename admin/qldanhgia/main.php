@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -21,7 +21,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <!-- Unified Admin Design System -->
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>
@@ -159,7 +159,7 @@
 
                                 <div class="col-md-3">
                                     <select name="sao" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="0">-- Tất cả số sao --</option>
+                                        <option value="0">Tất cả số sao</option>
                                         <option value="5" <?= (isset($_GET["sao"]) && (int)$_GET["sao"] === 5) ? "selected" : "" ?>>5 sao ★★★★★</option>
                                         <option value="4" <?= (isset($_GET["sao"]) && (int)$_GET["sao"] === 4) ? "selected" : "" ?>>4 sao ★★★★</option>
                                         <option value="3" <?= (isset($_GET["sao"]) && (int)$_GET["sao"] === 3) ? "selected" : "" ?>>3 sao ★★★</option>
@@ -170,7 +170,7 @@
 
                                 <div class="col-md-2">
                                     <select name="trangthai" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="">-- Trạng thái --</option>
+                                        <option value="">Tất cả trạng thái</option>
                                         <option value="1" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "1") ? "selected" : "" ?>>Đã hiển thị</option>
                                         <option value="0" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "0") ? "selected" : "" ?>>Đang tạm ẩn</option>
                                     </select>

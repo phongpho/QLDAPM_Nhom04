@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -21,7 +21,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <!-- Unified Admin Design System -->
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>
@@ -160,7 +160,7 @@
 
                                 <div class="col-6 col-md-3 col-lg-2">
                                     <select name="trangthai" class="form-select" onchange="this.form.submit()">
-                                        <option value="">-- Trạng thái đơn --</option>
+                                        <option value="">Tất cả trạng thái đơn</option>
                                         <option value="1" <?= ($trangthai === "1") ? "selected" : "" ?>>Mới (Chờ duyệt)</option>
                                         <option value="2" <?= ($trangthai === "2") ? "selected" : "" ?>>Đã xác nhận</option>
                                         <option value="3" <?= ($trangthai === "3") ? "selected" : "" ?>>Đang đóng gói</option>
@@ -172,7 +172,7 @@
 
                                 <div class="col-6 col-md-3 col-lg-2">
                                     <select name="phuongthuc" class="form-select" onchange="this.form.submit()">
-                                        <option value="">-- Phương thức TT --</option>
+                                        <option value="">Tất cả phương thức TT</option>
                                         <option value="cod" <?= ($phuongthuc === "cod") ? "selected" : "" ?>>COD (Khi nhận)</option>
                                         <option value="chuyenkhoan" <?= ($phuongthuc === "chuyenkhoan") ? "selected" : "" ?>>Chuyển khoản</option>
                                         <option value="vnpay" <?= ($phuongthuc === "vnpay") ? "selected" : "" ?>>VNPay</option>
@@ -181,7 +181,7 @@
 
                                 <div class="col-6 col-md-3 col-lg-2">
                                     <select name="datt" class="form-select" onchange="this.form.submit()">
-                                        <option value="">-- Thanh toán --</option>
+                                        <option value="">Tất cả thanh toán</option>
                                         <option value="1" <?= ($datt === "1") ? "selected" : "" ?>>Đã thanh toán</option>
                                         <option value="0" <?= ($datt === "0") ? "selected" : "" ?>>Chưa thanh toán</option>
                                     </select>

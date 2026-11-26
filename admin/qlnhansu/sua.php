@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -32,7 +32,7 @@ if (!isset($_SESSION["nguoidung"]) || $_SESSION["nguoidung"]["loai"] != 1) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <!-- Unified Admin Design System -->
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>

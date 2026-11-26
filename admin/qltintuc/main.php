@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -17,7 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>
@@ -155,7 +155,7 @@
 
                                 <div class="col-md-3">
                                     <select name="loai" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="">-- Tất cả thể loại --</option>
+                                        <option value="">Tất cả thể loại</option>
                                         <option value="tintuc" <?= (isset($_GET["loai"]) && $_GET["loai"] === "tintuc") ? "selected" : "" ?>>Cẩm nang / Tin tức</option>
                                         <option value="sukien" <?= (isset($_GET["loai"]) && $_GET["loai"] === "sukien") ? "selected" : "" ?>>Sự kiện tập luyện</option>
                                         <option value="khuyenmai" <?= (isset($_GET["loai"]) && $_GET["loai"] === "khuyenmai") ? "selected" : "" ?>>Tin khuyến mãi</option>
@@ -164,7 +164,7 @@
 
                                 <div class="col-md-2">
                                     <select name="trangthai" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="">-- Trạng thái --</option>
+                                        <option value="">Tất cả trạng thái</option>
                                         <option value="1" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "1") ? "selected" : "" ?>>Đang hiển thị</option>
                                         <option value="0" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "0") ? "selected" : "" ?>>Tạm ẩn / Nháp</option>
                                     </select>

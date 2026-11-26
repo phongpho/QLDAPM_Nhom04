@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -21,7 +21,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <!-- Unified Admin Design System -->
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>
@@ -159,7 +159,7 @@
 
                                 <div class="col-md-3">
                                     <select name="loai" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="">-- Tất cả hình thức giảm --</option>
+                                        <option value="">Tất cả hình thức giảm</option>
                                         <option value="phantram" <?= (isset($_GET["loai"]) && $_GET["loai"] === "phantram") ? "selected" : "" ?>>Giảm theo phần trăm (%)</option>
                                         <option value="sotien" <?= (isset($_GET["loai"]) && $_GET["loai"] === "sotien") ? "selected" : "" ?>>Giảm theo số tiền (VNĐ)</option>
                                     </select>
@@ -167,7 +167,7 @@
 
                                 <div class="col-md-3">
                                     <select name="trangthai" class="form-select bg-light" onchange="this.form.submit()">
-                                        <option value="">-- Tất cả trạng thái --</option>
+                                        <option value="">Tất cả trạng thái</option>
                                         <option value="active" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "active") ? "selected" : "" ?>>Đang áp dụng</option>
                                         <option value="expired" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "expired") ? "selected" : "" ?>>Đã hết hạn</option>
                                         <option value="outofstock" <?= (isset($_GET["trangthai"]) && $_GET["trangthai"] === "outofstock") ? "selected" : "" ?>>Hết lượt dùng</option>

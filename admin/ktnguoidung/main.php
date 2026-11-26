@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -63,7 +63,7 @@ $tyLeHoanThanh = $tyLeHoanThanh ?? 0;
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Unified Admin Design System -->
-    <link href="../inc/css/main.css" rel="stylesheet">
+    <link href="../inc/css/main.css?v=20261126" rel="stylesheet">
 </head>
 
 <body>
