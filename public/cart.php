@@ -1,4 +1,5 @@
 <?php
+// Chuyển hướng về bộ điều phối index.php nếu truy cập trực tiếp file
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'giohang';
     require __DIR__ . '/index.php';
@@ -8,6 +9,7 @@ $gsTieude = 'Giỏ hàng của bạn';
 // Nhúng header giao diện
 include(__DIR__ . '/inc/head-client.php');
 
+// Tính số tiền còn thiếu và phần trăm tiến độ đạt mốc miễn phí vận chuyển (500.000đ)
 $gsFreeshipMoc = 500000;
 $gsTamtinhHientai = (float) $gsTongtien['tamtinh'];
 $gsConThieuFreeship = max(0, $gsFreeshipMoc - $gsTamtinhHientai);
@@ -81,6 +83,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
 
                         <?php foreach ($giohang as $dong) : ?>
                             <?php
+                            // Tính thành tiền và lấy thông tin tồn kho của từng sản phẩm trong giỏ
                             $giagoc = (float) $dong['giagoc'];
                             $giaban = (float) $dong['giaban'];
                             $thanhtien = $giaban * (int) $dong['soluong'];
@@ -127,6 +130,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                                     <?php endif; ?>
                                 </div>
 
+                                <!-- Cập nhật số lượng sản phẩm (+/- hoặc nhập trực tiếp) -->
                                 <div class="gs-cart__qty">
                                     <form method="post" action="index.php" class="gs-qty-form">
                                         <input type="hidden" name="action" value="capnhatgiohang">
@@ -153,6 +157,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                                     <span class="gs-cart__total-value"><?php echo gsTien($thanhtien); ?></span>
                                 </div>
 
+                                <!-- Xóa một sản phẩm khỏi giỏ hàng -->
                                 <form class="gs-cart__remove" method="post" action="index.php" onsubmit="return confirm('Xóa sản phẩm này khỏi giỏ hàng?');">
                                     <input type="hidden" name="action" value="xoagiohang">
                                     <input type="hidden" name="sanpham_id" value="<?php echo $spId; ?>">
@@ -165,6 +170,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                         <?php endforeach; ?>
                     </div>
 
+                    <!-- Nút tiếp tục mua sắm và xóa toàn bộ giỏ hàng -->
                     <div class="gs-cart__actions mt-3">
                         <a class="btn-gs btn-gs--outline btn-gs--sm" href="index.php?action=sanpham">
                             Tiếp tục mua sắm
@@ -185,6 +191,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                             <h3 class="gs-cart-summary__title mb-0">Tổng kết đơn hàng</h3>
                         </div>
 
+                        <!-- Thanh tiến trình theo dõi điều kiện miễn phí vận chuyển -->
                         <div class="gs-freeship-banner mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1 small">
                                 <?php if ($gsConThieuFreeship > 0) : ?>
@@ -211,6 +218,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                             </div>
                         </div>
 
+                        <!-- Form nhập và áp dụng mã giảm giá (voucher) -->
                         <form method="post" action="index.php" class="gs-voucher-form mb-3">
                             <input type="hidden" name="action" value="apdungvoucher">
                             <input type="hidden" name="quaylai" value="giohang">
@@ -264,6 +272,7 @@ $gsPhantramFreeship = ($gsTamtinhHientai >= $gsFreeshipMoc) ? 100 : min(100, rou
                             </div>
                         <?php endif; ?>
 
+                        <!-- Chi tiết tạm tính, giảm giá, phí vận chuyển và tổng thanh toán -->
                         <div class="gs-cart-summary__breakdown">
                             <div class="gs-cart-summary__line">
                                 <span>Tạm tính</span>
