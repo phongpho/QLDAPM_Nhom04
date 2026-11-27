@@ -1,4 +1,5 @@
 <?php
+// Chuyển hướng về bộ điều phối index.php nếu truy cập trực tiếp file
 if (!isset($gsModule36)) {
     $_REQUEST['action'] = 'chitiet';
     require __DIR__ . '/index.php';
@@ -6,6 +7,7 @@ if (!isset($gsModule36)) {
 }
 $gsTieude = $sanpham['tensanpham'];
 
+// Tính phần trăm giảm giá, trạng thái tồn kho và danh sách size của sản phẩm
 $giagoc = (float) $sanpham['giagoc'];
 $giaban = (float) $sanpham['giaban'];
 $phantramgiam = 0;
@@ -18,6 +20,7 @@ $danhmucCha = gsTenLoai($sanpham['loai']);
 $mucdanhmuc = array('quanao' => 'Đồ tập', 'phukien' => 'Phụ kiện', 'tpbs' => 'Thực phẩm bổ sung');
 $mangsizes = isset($mangsizes) ? $mangsizes : $sp->tachsizethanhmmang($sanpham['sizes']);
 
+// Quy đổi tên màu sắc sang mã màu HEX để hiển thị chấm màu
 function gsLayMauHex($ten) {
     $t = mb_strtolower(trim($ten), 'UTF-8');
     if (strpos($t, 'đen') !== false) return '#18181b';
@@ -33,6 +36,7 @@ function gsLayMauHex($ten) {
     return '#475569';
 }
 
+// Tách mô tả thành phần tổng quan (đoạn đầu) và hướng dẫn chi tiết (các đoạn sau)
 $motaRaw = (string)$sanpham['mota'];
 $motaParts = explode("\n\n", $motaRaw);
 $motaTongQuan = array_shift($motaParts);
@@ -114,6 +118,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <div><strong class="text-dark"><?php echo (int) $sanpham['luotxem'] + 1; ?></strong> lượt xem</div>
                 </div>
 
+                <!-- Hiển thị giá bán, giá gốc và số tiền tiết kiệm -->
                 <div class="gs-detail__price">
                     <span class="gs-price"><?php echo gsTien($giaban); ?></span>
                     <?php if ($phantramgiam > 0) : ?>
@@ -122,6 +127,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <?php endif; ?>
                 </div>
 
+                <!-- Tóm tắt đặc tính, size gợi ý và độ nén / hiệu suất -->
                 <div class="gs-pdp-spec-card">
                     <div>
                         <div class="gs-pdp-spec-label">ĐẶC TÍNH (FIT)</div>
@@ -185,6 +191,7 @@ include(__DIR__ . '/inc/head-client.php');
                     <?php endif; ?>
                 </div>
 
+                <!-- Form chọn size, màu sắc, số lượng và thêm vào giỏ / yêu thích / so sánh -->
                 <form class="gs-form-cart gs-detail__form" id="gsFormThemGioMain" method="post" action="index.php">
                     <input type="hidden" name="action" value="themvaogiohang">
                     <input type="hidden" name="sanpham_id" value="<?php echo (int) $sanpham['id']; ?>">
@@ -315,6 +322,7 @@ include(__DIR__ . '/inc/head-client.php');
             </ul>
 
             <div class="tab-content gs-tab-content pt-4">
+                <!-- Tab 1: Mô tả chi tiết và hướng dẫn sử dụng -->
                 <div class="tab-pane fade show active" id="gsTabMota" role="tabpanel">
                     <div class="gs-mota-section">
                         <h4 class="gs-mota-title">
@@ -357,6 +365,7 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
                 </div>
 
+                <!-- Tab 2: Thông số sản phẩm hoặc thành phần dinh dưỡng -->
                 <div class="tab-pane fade" id="gsTabThongso" role="tabpanel">
                     <div class="gs-mota-section">
                         <h4 class="gs-mota-title">
@@ -480,6 +489,7 @@ include(__DIR__ . '/inc/head-client.php');
                     </div>
                 </div>
 
+                <!-- Tab 3: Gửi đánh giá (khi đã mua) và danh sách nhận xét -->
                 <div class="tab-pane fade" id="gsTabDanhgia" role="tabpanel">
                     <?php if ($gsNguoidungId <= 0) : ?>
                         <div class="p-3 mb-4 rounded border bg-light d-flex align-items-center gap-2">
@@ -589,6 +599,7 @@ include(__DIR__ . '/inc/head-client.php');
     <?php endif; ?>
 </div>
 
+<!-- Gợi ý sản phẩm & combo theo chỉ số cơ thể (BMI) -->
 <?php
 $gsGoiyTieude = 'Sản phẩm & combo gợi ý theo chỉ số cơ thể của bạn';
 include(__DIR__ . '/inc/recommendation.php');
